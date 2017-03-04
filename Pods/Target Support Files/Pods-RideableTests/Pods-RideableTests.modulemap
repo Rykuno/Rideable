@@ -1,0 +1,6 @@
+framework module Pods_RideableTests {
+  umbrella header "Pods-RideableTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

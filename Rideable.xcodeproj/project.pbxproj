@@ -1,0 +1,665 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B521E6E2C84F1B2FDA307791 /* Pods_Rideable.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BC51906F74CD08E9CBFAFA4 /* Pods_Rideable.framework */; };
+		EF77F6FF491DA831F43B21A8 /* Pods_RideableTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C451FC5C5CCACB2B83492655 /* Pods_RideableTests.framework */; };
+		FC34F38D1E6A8A2E00EE3DFD /* WeatherParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC34F38C1E6A8A2E00EE3DFD /* WeatherParser.swift */; };
+		FC3C621D1E6888BF00E37D49 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3C621C1E6888BF00E37D49 /* CoreDataStack.swift */; };
+		FC3C62211E6901FF00E37D49 /* TodayVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3C62201E6901FF00E37D49 /* TodayVC.swift */; };
+		FC3C62251E6A0E8100E37D49 /* TomorrowVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3C62241E6A0E8100E37D49 /* TomorrowVC.swift */; };
+		FC3C62271E6A1CE900E37D49 /* VCExtras.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3C62261E6A1CE900E37D49 /* VCExtras.swift */; };
+		FC3C622A1E6A359200E37D49 /* TomorrowWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3C62291E6A359200E37D49 /* TomorrowWeather.swift */; };
+		FC3C622C1E6A3B9C00E37D49 /* WeeklyWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3C622B1E6A3B9C00E37D49 /* WeeklyWeather.swift */; };
+		FC3D12241E64A85F0050B401 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3D12231E64A85F0050B401 /* AppDelegate.swift */; };
+		FC3D12291E64A85F0050B401 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC3D12271E64A85F0050B401 /* Main.storyboard */; };
+		FC3D122C1E64A85F0050B401 /* Rideable.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FC3D122A1E64A85F0050B401 /* Rideable.xcdatamodeld */; };
+		FC3D122E1E64A85F0050B401 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FC3D122D1E64A85F0050B401 /* Assets.xcassets */; };
+		FC3D12311E64A85F0050B401 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC3D122F1E64A85F0050B401 /* LaunchScreen.storyboard */; };
+		FC3D123C1E64A85F0050B401 /* RideableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3D123B1E64A85F0050B401 /* RideableTests.swift */; };
+		FC3D124B1E64A9180050B401 /* WeatherClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3D124A1E64A9180050B401 /* WeatherClient.swift */; };
+		FC3D124D1E64A93E0050B401 /* WeatherInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3D124C1E64A93E0050B401 /* WeatherInfo.swift */; };
+		FC3D12561E64C5690050B401 /* TodayWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3D12551E64C5690050B401 /* TodayWeather.swift */; };
+		FC3D12581E64C76C0050B401 /* WeatherHour.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3D12571E64C76C0050B401 /* WeatherHour.swift */; };
+		FC3D125C1E65F43C0050B401 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3D125B1E65F43C0050B401 /* Constants.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		FC3D12381E64A85F0050B401 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FC3D12181E64A85F0050B401 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FC3D121F1E64A85F0050B401;
+			remoteInfo = Rideable;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		6BB96983859C04218415E9B0 /* Pods-RideableTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RideableTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RideableTests/Pods-RideableTests.debug.xcconfig"; sourceTree = "<group>"; };
+		6CE2862EAA36A8A180C4BFAE /* Pods-Rideable.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rideable.release.xcconfig"; path = "Pods/Target Support Files/Pods-Rideable/Pods-Rideable.release.xcconfig"; sourceTree = "<group>"; };
+		7911CBF1486FE47BCB203348 /* Pods-RideableTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RideableTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-RideableTests/Pods-RideableTests.release.xcconfig"; sourceTree = "<group>"; };
+		9BC51906F74CD08E9CBFAFA4 /* Pods_Rideable.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Rideable.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9286D39414142F898371EBF /* Pods-Rideable.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rideable.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Rideable/Pods-Rideable.debug.xcconfig"; sourceTree = "<group>"; };
+		C451FC5C5CCACB2B83492655 /* Pods_RideableTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RideableTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FC34F38C1E6A8A2E00EE3DFD /* WeatherParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherParser.swift; sourceTree = "<group>"; };
+		FC3C621C1E6888BF00E37D49 /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CoreDataStack.swift; path = "../../ios-should-i-ride/ShouldIRide/CoreDataStack.swift"; sourceTree = "<group>"; };
+		FC3C62201E6901FF00E37D49 /* TodayVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodayVC.swift; sourceTree = "<group>"; };
+		FC3C62221E69DBB300E37D49 /* Rideable 1.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Rideable 1.1.xcdatamodel"; sourceTree = "<group>"; };
+		FC3C62241E6A0E8100E37D49 /* TomorrowVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TomorrowVC.swift; sourceTree = "<group>"; };
+		FC3C62261E6A1CE900E37D49 /* VCExtras.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VCExtras.swift; sourceTree = "<group>"; };
+		FC3C62291E6A359200E37D49 /* TomorrowWeather.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TomorrowWeather.swift; sourceTree = "<group>"; };
+		FC3C622B1E6A3B9C00E37D49 /* WeeklyWeather.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeeklyWeather.swift; sourceTree = "<group>"; };
+		FC3D12201E64A85F0050B401 /* Rideable.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rideable.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FC3D12231E64A85F0050B401 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		FC3D12281E64A85F0050B401 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		FC3D122B1E64A85F0050B401 /* Rideable.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Rideable.xcdatamodel; sourceTree = "<group>"; };
+		FC3D122D1E64A85F0050B401 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FC3D12301E64A85F0050B401 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		FC3D12321E64A85F0050B401 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FC3D12371E64A85F0050B401 /* RideableTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RideableTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FC3D123B1E64A85F0050B401 /* RideableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideableTests.swift; sourceTree = "<group>"; };
+		FC3D123D1E64A85F0050B401 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FC3D124A1E64A9180050B401 /* WeatherClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherClient.swift; sourceTree = "<group>"; };
+		FC3D124C1E64A93E0050B401 /* WeatherInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherInfo.swift; sourceTree = "<group>"; };
+		FC3D12551E64C5690050B401 /* TodayWeather.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodayWeather.swift; sourceTree = "<group>"; };
+		FC3D12571E64C76C0050B401 /* WeatherHour.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherHour.swift; sourceTree = "<group>"; };
+		FC3D125B1E65F43C0050B401 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FC3D121D1E64A85F0050B401 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B521E6E2C84F1B2FDA307791 /* Pods_Rideable.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FC3D12341E64A85F0050B401 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EF77F6FF491DA831F43B21A8 /* Pods_RideableTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		43549173E4B33C571E25BD13 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9BC51906F74CD08E9CBFAFA4 /* Pods_Rideable.framework */,
+				C451FC5C5CCACB2B83492655 /* Pods_RideableTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		483D380344A8F1653AC182F8 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B9286D39414142F898371EBF /* Pods-Rideable.debug.xcconfig */,
+				6CE2862EAA36A8A180C4BFAE /* Pods-Rideable.release.xcconfig */,
+				6BB96983859C04218415E9B0 /* Pods-RideableTests.debug.xcconfig */,
+				7911CBF1486FE47BCB203348 /* Pods-RideableTests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		FC3D12171E64A85F0050B401 = {
+			isa = PBXGroup;
+			children = (
+				FC3D12221E64A85F0050B401 /* Rideable */,
+				FC3D123A1E64A85F0050B401 /* RideableTests */,
+				FC3D12211E64A85F0050B401 /* Products */,
+				483D380344A8F1653AC182F8 /* Pods */,
+				43549173E4B33C571E25BD13 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		FC3D12211E64A85F0050B401 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FC3D12201E64A85F0050B401 /* Rideable.app */,
+				FC3D12371E64A85F0050B401 /* RideableTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FC3D12221E64A85F0050B401 /* Rideable */ = {
+			isa = PBXGroup;
+			children = (
+				FC3D12461E64A89A0050B401 /* Model */,
+				FC3D12471E64A89F0050B401 /* View */,
+				FC3D12481E64A8A30050B401 /* Controller */,
+				FC3D12491E64A8BC0050B401 /* Assets */,
+			);
+			path = Rideable;
+			sourceTree = "<group>";
+		};
+		FC3D123A1E64A85F0050B401 /* RideableTests */ = {
+			isa = PBXGroup;
+			children = (
+				FC3D123B1E64A85F0050B401 /* RideableTests.swift */,
+				FC3D123D1E64A85F0050B401 /* Info.plist */,
+			);
+			path = RideableTests;
+			sourceTree = "<group>";
+		};
+		FC3D12461E64A89A0050B401 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				FC3D124A1E64A9180050B401 /* WeatherClient.swift */,
+				FC3D124C1E64A93E0050B401 /* WeatherInfo.swift */,
+				FC3C621C1E6888BF00E37D49 /* CoreDataStack.swift */,
+				FC34F38C1E6A8A2E00EE3DFD /* WeatherParser.swift */,
+				FC3D12541E64C5110050B401 /* Objects */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		FC3D12471E64A89F0050B401 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		FC3D12481E64A8A30050B401 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				FC3C62201E6901FF00E37D49 /* TodayVC.swift */,
+				FC3C62241E6A0E8100E37D49 /* TomorrowVC.swift */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		FC3D12491E64A8BC0050B401 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				FC3C62261E6A1CE900E37D49 /* VCExtras.swift */,
+				FC3D125B1E65F43C0050B401 /* Constants.swift */,
+				FC3D12231E64A85F0050B401 /* AppDelegate.swift */,
+				FC3D12271E64A85F0050B401 /* Main.storyboard */,
+				FC3D122D1E64A85F0050B401 /* Assets.xcassets */,
+				FC3D122F1E64A85F0050B401 /* LaunchScreen.storyboard */,
+				FC3D12321E64A85F0050B401 /* Info.plist */,
+				FC3D122A1E64A85F0050B401 /* Rideable.xcdatamodeld */,
+			);
+			name = Assets;
+			sourceTree = "<group>";
+		};
+		FC3D12541E64C5110050B401 /* Objects */ = {
+			isa = PBXGroup;
+			children = (
+				FC3D12551E64C5690050B401 /* TodayWeather.swift */,
+				FC3C62291E6A359200E37D49 /* TomorrowWeather.swift */,
+				FC3C622B1E6A3B9C00E37D49 /* WeeklyWeather.swift */,
+				FC3D12571E64C76C0050B401 /* WeatherHour.swift */,
+			);
+			name = Objects;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		FC3D121F1E64A85F0050B401 /* Rideable */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FC3D12401E64A85F0050B401 /* Build configuration list for PBXNativeTarget "Rideable" */;
+			buildPhases = (
+				68FC7768E63A757ABF2CB0A5 /* [CP] Check Pods Manifest.lock */,
+				FC3D121C1E64A85F0050B401 /* Sources */,
+				FC3D121D1E64A85F0050B401 /* Frameworks */,
+				FC3D121E1E64A85F0050B401 /* Resources */,
+				17DE0E631B64756690617542 /* [CP] Embed Pods Frameworks */,
+				B6FAA9F0B12EC3EC93BD5EAC /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Rideable;
+			productName = Rideable;
+			productReference = FC3D12201E64A85F0050B401 /* Rideable.app */;
+			productType = "com.apple.product-type.application";
+		};
+		FC3D12361E64A85F0050B401 /* RideableTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FC3D12431E64A85F0050B401 /* Build configuration list for PBXNativeTarget "RideableTests" */;
+			buildPhases = (
+				B040879F36B39C5A672A2BB9 /* [CP] Check Pods Manifest.lock */,
+				FC3D12331E64A85F0050B401 /* Sources */,
+				FC3D12341E64A85F0050B401 /* Frameworks */,
+				FC3D12351E64A85F0050B401 /* Resources */,
+				5F7C2E0FFD802B586AA10AFE /* [CP] Embed Pods Frameworks */,
+				98D281BC731C5299B9767DE3 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FC3D12391E64A85F0050B401 /* PBXTargetDependency */,
+			);
+			name = RideableTests;
+			productName = RideableTests;
+			productReference = FC3D12371E64A85F0050B401 /* RideableTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FC3D12181E64A85F0050B401 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0820;
+				LastUpgradeCheck = 0820;
+				ORGANIZATIONNAME = RyStudios;
+				TargetAttributes = {
+					FC3D121F1E64A85F0050B401 = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = L594ZX5N55;
+						ProvisioningStyle = Automatic;
+					};
+					FC3D12361E64A85F0050B401 = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = L594ZX5N55;
+						ProvisioningStyle = Automatic;
+						TestTargetID = FC3D121F1E64A85F0050B401;
+					};
+				};
+			};
+			buildConfigurationList = FC3D121B1E64A85F0050B401 /* Build configuration list for PBXProject "Rideable" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = FC3D12171E64A85F0050B401;
+			productRefGroup = FC3D12211E64A85F0050B401 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				FC3D121F1E64A85F0050B401 /* Rideable */,
+				FC3D12361E64A85F0050B401 /* RideableTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		FC3D121E1E64A85F0050B401 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FC3D12311E64A85F0050B401 /* LaunchScreen.storyboard in Resources */,
+				FC3D122E1E64A85F0050B401 /* Assets.xcassets in Resources */,
+				FC3D12291E64A85F0050B401 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FC3D12351E64A85F0050B401 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		17DE0E631B64756690617542 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Rideable/Pods-Rideable-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5F7C2E0FFD802B586AA10AFE /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RideableTests/Pods-RideableTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		68FC7768E63A757ABF2CB0A5 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		98D281BC731C5299B9767DE3 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RideableTests/Pods-RideableTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B040879F36B39C5A672A2BB9 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		B6FAA9F0B12EC3EC93BD5EAC /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Rideable/Pods-Rideable-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FC3D121C1E64A85F0050B401 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FC3D124B1E64A9180050B401 /* WeatherClient.swift in Sources */,
+				FC3C622A1E6A359200E37D49 /* TomorrowWeather.swift in Sources */,
+				FC3D122C1E64A85F0050B401 /* Rideable.xcdatamodeld in Sources */,
+				FC3C621D1E6888BF00E37D49 /* CoreDataStack.swift in Sources */,
+				FC3C62251E6A0E8100E37D49 /* TomorrowVC.swift in Sources */,
+				FC3D12581E64C76C0050B401 /* WeatherHour.swift in Sources */,
+				FC3D12561E64C5690050B401 /* TodayWeather.swift in Sources */,
+				FC3D124D1E64A93E0050B401 /* WeatherInfo.swift in Sources */,
+				FC3C622C1E6A3B9C00E37D49 /* WeeklyWeather.swift in Sources */,
+				FC3D12241E64A85F0050B401 /* AppDelegate.swift in Sources */,
+				FC3C62271E6A1CE900E37D49 /* VCExtras.swift in Sources */,
+				FC34F38D1E6A8A2E00EE3DFD /* WeatherParser.swift in Sources */,
+				FC3D125C1E65F43C0050B401 /* Constants.swift in Sources */,
+				FC3C62211E6901FF00E37D49 /* TodayVC.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FC3D12331E64A85F0050B401 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FC3D123C1E64A85F0050B401 /* RideableTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FC3D12391E64A85F0050B401 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FC3D121F1E64A85F0050B401 /* Rideable */;
+			targetProxy = FC3D12381E64A85F0050B401 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		FC3D12271E64A85F0050B401 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FC3D12281E64A85F0050B401 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		FC3D122F1E64A85F0050B401 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FC3D12301E64A85F0050B401 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		FC3D123E1E64A85F0050B401 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		FC3D123F1E64A85F0050B401 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		FC3D12411E64A85F0050B401 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B9286D39414142F898371EBF /* Pods-Rideable.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = L594ZX5N55;
+				INFOPLIST_FILE = Rideable/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.rykuno.Rideable;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		FC3D12421E64A85F0050B401 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6CE2862EAA36A8A180C4BFAE /* Pods-Rideable.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = L594ZX5N55;
+				INFOPLIST_FILE = Rideable/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.rykuno.Rideable;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+		FC3D12441E64A85F0050B401 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6BB96983859C04218415E9B0 /* Pods-RideableTests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = L594ZX5N55;
+				INFOPLIST_FILE = RideableTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.rykuno.RideableTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Rideable.app/Rideable";
+			};
+			name = Debug;
+		};
+		FC3D12451E64A85F0050B401 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7911CBF1486FE47BCB203348 /* Pods-RideableTests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = L594ZX5N55;
+				INFOPLIST_FILE = RideableTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.rykuno.RideableTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Rideable.app/Rideable";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FC3D121B1E64A85F0050B401 /* Build configuration list for PBXProject "Rideable" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FC3D123E1E64A85F0050B401 /* Debug */,
+				FC3D123F1E64A85F0050B401 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FC3D12401E64A85F0050B401 /* Build configuration list for PBXNativeTarget "Rideable" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FC3D12411E64A85F0050B401 /* Debug */,
+				FC3D12421E64A85F0050B401 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FC3D12431E64A85F0050B401 /* Build configuration list for PBXNativeTarget "RideableTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FC3D12441E64A85F0050B401 /* Debug */,
+				FC3D12451E64A85F0050B401 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		FC3D122A1E64A85F0050B401 /* Rideable.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				FC3C62221E69DBB300E37D49 /* Rideable 1.1.xcdatamodel */,
+				FC3D122B1E64A85F0050B401 /* Rideable.xcdatamodel */,
+			);
+			currentVersion = FC3C62221E69DBB300E37D49 /* Rideable 1.1.xcdatamodel */;
+			path = Rideable.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = FC3D12181E64A85F0050B401 /* Project object */;
+}
