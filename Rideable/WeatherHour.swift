@@ -26,10 +26,10 @@ struct WeatherHour {
     func getCurrentHours(moc: NSManagedObjectContext, day: Day) -> [Hour]{
         var hours = [Hour]()
         
-        /**
+        /*
          If Today, parse hours the next 12 hours(0-12),
          If Tomorrow, parse the next 12 hours starting tomorrow at 7am(24-currentHour+6)
-        **/
+        */
         let distance = Int(24-Calendar.current.component(.hour, from: Date()) + 6)
         let start = (day == Day.Today) ?  0 : distance
         

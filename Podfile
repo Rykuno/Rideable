@@ -6,6 +6,8 @@ target 'Rideable' do
   use_frameworks!
 
   # Pods for Rideable
+pod 'GaugeKit', '~> 0.4'
+pod 'SWRevealViewController', '~> 2.3'
 pod 'Alamofire', '~> 4.4'
 pod 'SwiftyJSON', '~> 3.1'
   target 'RideableTests' do

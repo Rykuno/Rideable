@@ -8,23 +8,35 @@
 
 import UIKit
 import CoreData
+import SWRevealViewController
 
 class TomorrowVC: UITableViewController {
-    let stack = (UIApplication.shared.delegate as! AppDelegate).stack
-
-    private var fetchedResultsController: NSFetchedResultsController<Day>!
+    
+    @IBOutlet weak var menuButton: UIBarButtonItem!
+    
+    private let stack = (UIApplication.shared.delegate as! AppDelegate).stack
+    private var FRC: NSFetchedResultsController<Day>!
     private var hours: [Hour]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupFetchedResultsController()
+        menuButton.target = revealViewController()
+        menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
         self.activityIndicatorShowing(showing: WeatherInfo.sharedInstance.isCurrentlyLoading, view: self.view)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setBackgroundImage()
+        /* Notification recieved from the WeatherInfo class. The classes obseving
+         will listen for the download to be finished, update the table, and disable
+         the activity indicator. */
         NotificationCenter.default.addObserver(forName: Constants.Notifications.REFRESH_NOTIFICATION, object: nil, queue: nil) { (notification) in
             DispatchQueue.main.async {
+                
+                /*If VC is current window, display message and cancel loading indicator,
+                  else, we will just set the variables */
                 guard notification.object == nil && self.isViewLoaded && (self.view.window != nil) else{
                     if notification.object as? String != nil{
                         self.displayError(title: "Error", message: notification.object as! String)
@@ -32,41 +44,35 @@ class TomorrowVC: UITableViewController {
                     self.activityIndicatorShowing(showing: false, view: self.view)
                     return
                 }
-                self.sortHourArray()
+                self.hours = self.sortHourArray(day: (self.FRC.fetchedObjects! as [Day]).first)
                 self.activityIndicatorShowing(showing: false, view: self.view)
                 self.tableView.reloadData()
             }
         }
     }
     
+    private func setBackgroundImage(){
+        let backgroundImage = UIImage(named: "backgroundNight")
+        let imageView = UIImageView(image: backgroundImage)
+        self.tableView.backgroundView = imageView
+        imageView.contentMode = .scaleAspectFill
+    }
+    
     //Create the FRC to fetch Tomorrows Weather
-    func setupFetchedResultsController(){
+    private func setupFetchedResultsController(){
         let fetchedRequest: NSFetchRequest<Day> = Day.fetchRequest()
         fetchedRequest.predicate = NSPredicate(format: "type == %@", Constants.TypeOfDay.TOMORROW) 
         fetchedRequest.sortDescriptors = []
-        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchedRequest, managedObjectContext: stack.context , sectionNameKeyPath: nil, cacheName: nil)
+        FRC = NSFetchedResultsController(fetchRequest: fetchedRequest, managedObjectContext: stack.context , sectionNameKeyPath: nil, cacheName: nil)
         fetchedRequest.fetchBatchSize = 1
-        fetchedResultsController.delegate = self
+        FRC.delegate = self
         
         do{
-            try fetchedResultsController.performFetch()
-            self.sortHourArray()
+            try FRC.performFetch()
+            self.hours = self.sortHourArray(day: (self.FRC.fetchedObjects! as [Day]).first)
         }catch{
             print(error.localizedDescription)
         }
-    }
-    
-    //Since the FRC has no way of sorting the one-many entities(hours), we must do so here before displaying
-    func sortHourArray(){
-        let result = (self.fetchedResultsController.fetchedObjects! as [Day]).first
-        self.hours = result?.hour?.allObjects as? [Hour]
-        self.hours = self.hours?.sorted(by: { (a, b) -> Bool in
-            if a.id < b.id {
-                return true
-            }else{
-                return false
-            }
-        })
     }
     
     // MARK: - Table view data source
@@ -84,13 +90,13 @@ class TomorrowVC: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0{ //Return Day Cell
             let cell = tableView.dequeueReusableCell(withIdentifier: "day", for: indexPath)
-            if let label = cell.textLabel, fetchedResultsController != nil, let day = (fetchedResultsController.fetchedObjects! as [Day]).first {
+            if let label = cell.textLabel, FRC != nil, let day = (FRC.fetchedObjects! as [Day]).first {
                 label.text = day.summary
             }
             return cell
         }else{ //Return Hour Cell
             let cell = tableView.dequeueReusableCell(withIdentifier: "hour", for: indexPath)
-            if let label = cell.textLabel, fetchedResultsController != nil, hours != nil {
+            if let label = cell.textLabel, FRC != nil, hours != nil {
                 if let hour = hours?[indexPath.row]{
                     label.text = "\(self.militaryToCivilTime(time: Int(hour.time)))"
                 }

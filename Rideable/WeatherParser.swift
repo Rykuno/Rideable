@@ -14,7 +14,7 @@ extension WeatherClient {
     
     // MARK: Parsing
     // Here we parse the Today, Tomorrow, and 10Day forecasts.
-    public func parseJson(json: JSON, completionHandler: @escaping completionHandler){
+    func parseJson(json: JSON, completionHandler: @escaping completionHandler){
         let stack = (UIApplication.shared.delegate as! AppDelegate).stack
         
         //Parse Todays Weather

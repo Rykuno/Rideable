@@ -39,8 +39,6 @@ struct TomorrowWeather {
             var hours = day.hour?.allObjects as! [Hour]
             hours = WeatherHour(json: json).modifyHours(hours: hours, moc: moc, day: .Tomorrow)
         }
-        
-
         return day
     }
 }

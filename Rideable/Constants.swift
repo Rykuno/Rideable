@@ -7,8 +7,9 @@
 //
 
 import Foundation
-
+import UIKit
 struct Constants {
+    
     struct Notifications{
         static let REFRESH_NOTIFICATION = NSNotification.Name("RefreshNotification")
     }
@@ -23,11 +24,41 @@ struct Constants {
     }
     
     struct Data {
-        static let weatherUpdateIntervalInMinutes = 0
+        static let weatherUpdateIntervalInMinutes = 15
+        static let timeoutInSeconds = TimeInterval(30)
     }
     
     struct CellReuseIdentifiers {
         static let day = "day"
         static let hour = "hour"
+    }
+    
+    // MARK: Menu Constants
+    struct Menu {
+        struct Icons{
+            private static let todayWeather = UIImage(named: "todayIcon")
+            private static let tomorrowWeather = UIImage(named: "tomorrowIcon")
+            private static let weeklyWeather = UIImage(named: "10DayIcon")
+            private static let settingsIcon = UIImage(named: "toolsIcon")
+            private static let aboutIcon = UIImage(named: "aboutIcon")
+            private static let facebookIcon = UIImage(named: "facebookIcon")
+            private static let twitterIcon = UIImage(named: "twitterIcon")
+            private static let githubIcon = UIImage(named: "githubIcon")
+            
+            static let weatherIcons = [todayWeather, tomorrowWeather, weeklyWeather]
+            static let optionsIcons = [settingsIcon, aboutIcon]
+            static let shareIcons = [facebookIcon, twitterIcon, githubIcon]
+            
+        }
+        
+        struct Items {
+            static let weatherItems = ["Today", "Tomorrow", "10 Day"]
+            static let optionItems = ["Settings", "About"]
+            static let shareItems = ["Facebook", "Twitter", "GitHub"]
+        }
+        
+        struct Sections {
+            static let sections = ["Weather", "Options", "Share"]
+        }
     }
 }

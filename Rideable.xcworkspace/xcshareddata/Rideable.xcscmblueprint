@@ -1,16 +1,16 @@
 {
-  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "9E45FCC13CDB50D1E06AE0200C4A83757567751A",
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "722ECB4739706BF4A1C3DFDD4D8BDBB19E686F65",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
 
   },
   "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
     "621FF13306DAC1688E47DFC742DE1E03111DC331" : 9223372036854775807,
-    "9E45FCC13CDB50D1E06AE0200C4A83757567751A" : 9223372036854775807
+    "722ECB4739706BF4A1C3DFDD4D8BDBB19E686F65" : 9223372036854775807
   },
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "CF6A8253-6959-4B5B-BD24-090343488B35",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
     "621FF13306DAC1688E47DFC742DE1E03111DC331" : "ios-should-i-ride\/",
-    "9E45FCC13CDB50D1E06AE0200C4A83757567751A" : "Rideable\/"
+    "722ECB4739706BF4A1C3DFDD4D8BDBB19E686F65" : "Rideable\/"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "Rideable",
   "DVTSourceControlWorkspaceBlueprintVersion" : 204,
@@ -24,7 +24,7 @@
     {
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:Rykuno\/Rideable.git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
-      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "9E45FCC13CDB50D1E06AE0200C4A83757567751A"
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "722ECB4739706BF4A1C3DFDD4D8BDBB19E686F65"
     }
   ]
 }

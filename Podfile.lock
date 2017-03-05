@@ -1,15 +1,21 @@
 PODS:
   - Alamofire (4.4.0)
+  - GaugeKit (0.4.0)
   - SwiftyJSON (3.1.4)
+  - SWRevealViewController (2.3.0)
 
 DEPENDENCIES:
   - Alamofire (~> 4.4)
+  - GaugeKit (~> 0.4)
   - SwiftyJSON (~> 3.1)
+  - SWRevealViewController (~> 2.3)
 
 SPEC CHECKSUMS:
   Alamofire: dc44b1600b800eb63da6a19039a0083d62a6a62d
+  GaugeKit: 422d082cfd8abf68d6df0b4ec625b4d19d39c89e
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
+  SWRevealViewController: 6d3fd97f70112fd7cef9de14df4260eacce4c63a
 
-PODFILE CHECKSUM: 47b6c884040eaf81ee72b612194ce421d40cc377
+PODFILE CHECKSUM: 0cac953b8a9a7402cf835243d524d888eae45a5f
 
 COCOAPODS: 1.2.0

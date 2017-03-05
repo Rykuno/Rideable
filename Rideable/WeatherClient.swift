@@ -17,7 +17,7 @@ class WeatherClient {
     func sendRequest(completionHandler: @escaping completionHandler) {
         
         let manager = Alamofire.SessionManager.default
-        manager.session.configuration.timeoutIntervalForRequest = 30
+        manager.session.configuration.timeoutIntervalForRequest = Constants.Data.timeoutInSeconds
         
         // Add Headers
         let headers = [

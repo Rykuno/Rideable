@@ -58,10 +58,11 @@ extension UITableViewController{
         }
     }
     
+    //Converts Military time to standard time
     func militaryToCivilTime(time: Int)->String{
         let time = Int(time)
         if time == 0 {
-            return "12 am"
+            return "12 pm"
         }
         if time < 13 {
             return "\(time) am"
@@ -70,11 +71,29 @@ extension UITableViewController{
             return "\(civilTime) pm"
         }
     }
+    
+    //Since the FRC has no way of sorting the one-many entities(hours), we must do so here before displaying
+    func sortHourArray(day: Day?) -> [Hour]?{
+        //return nil if the day or hours are nil
+        guard let day = day, var hours = day.hour?.allObjects as? [Hour] else{
+            return nil
+        }
+        
+        //sort the hours and return result
+        hours = hours.sorted(by: { (a, b) -> Bool in
+            if a.id < b.id {
+                return true
+            }else{
+                return false
+            }
+        })
+        return hours
+    }
+    
 }
 
 //MARK: - Network Status
 import SystemConfiguration
-
 
 protocol Utilities {
 }
