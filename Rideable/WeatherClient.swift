@@ -24,8 +24,8 @@ class WeatherClient {
             "Cookie":"DT=1487473989:26720:ip-10-226-237-178; Prefs=FAVS:1|WXSN:1|PWSOBS:1|WPHO:1|PHOT:1|RADC:0|RADALL:0|HIST0:NULL|GIFT:1|PHOTOTHUMBS:50|EXPFCT:1|",
             ]
 
-        // Fetch Request
-        manager.request("https://api.wunderground.com/api/43ee969456775837/conditions/hourly/forecast/forecast10day/q/Tyler,Tx.json", method: .get, headers: headers)
+        // Fetch Request 
+        manager.request("https://api.wunderground.com/api/\(IgnoreConstants.apiKey)/conditions/hourly/forecast/forecast10day/q/Tyler,Tx.json", method: .get, headers: headers)
             .validate(statusCode: 200..<300)
             .responseJSON { response in
                 if (response.result.error == nil) {

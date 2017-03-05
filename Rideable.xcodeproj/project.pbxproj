@@ -10,6 +10,7 @@
 		B521E6E2C84F1B2FDA307791 /* Pods_Rideable.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BC51906F74CD08E9CBFAFA4 /* Pods_Rideable.framework */; };
 		EF77F6FF491DA831F43B21A8 /* Pods_RideableTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C451FC5C5CCACB2B83492655 /* Pods_RideableTests.framework */; };
 		FC34F38D1E6A8A2E00EE3DFD /* WeatherParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC34F38C1E6A8A2E00EE3DFD /* WeatherParser.swift */; };
+		FC34F3901E6C8D3A00EE3DFD /* IgnoreConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC34F38F1E6C8D3A00EE3DFD /* IgnoreConstants.swift */; };
 		FC3C621D1E6888BF00E37D49 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3C621C1E6888BF00E37D49 /* CoreDataStack.swift */; };
 		FC3C62211E6901FF00E37D49 /* TodayVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3C62201E6901FF00E37D49 /* TodayVC.swift */; };
 		FC3C62251E6A0E8100E37D49 /* TomorrowVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3C62241E6A0E8100E37D49 /* TomorrowVC.swift */; };
@@ -47,6 +48,7 @@
 		B9286D39414142F898371EBF /* Pods-Rideable.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rideable.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Rideable/Pods-Rideable.debug.xcconfig"; sourceTree = "<group>"; };
 		C451FC5C5CCACB2B83492655 /* Pods_RideableTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RideableTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC34F38C1E6A8A2E00EE3DFD /* WeatherParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherParser.swift; sourceTree = "<group>"; };
+		FC34F38F1E6C8D3A00EE3DFD /* IgnoreConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IgnoreConstants.swift; sourceTree = "<group>"; };
 		FC3C621C1E6888BF00E37D49 /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CoreDataStack.swift; path = "../../ios-should-i-ride/ShouldIRide/CoreDataStack.swift"; sourceTree = "<group>"; };
 		FC3C62201E6901FF00E37D49 /* TodayVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodayVC.swift; sourceTree = "<group>"; };
 		FC3C62221E69DBB300E37D49 /* Rideable 1.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Rideable 1.1.xcdatamodel"; sourceTree = "<group>"; };
@@ -193,6 +195,7 @@
 			children = (
 				FC3C62261E6A1CE900E37D49 /* VCExtras.swift */,
 				FC3D125B1E65F43C0050B401 /* Constants.swift */,
+				FC34F38F1E6C8D3A00EE3DFD /* IgnoreConstants.swift */,
 				FC3D12231E64A85F0050B401 /* AppDelegate.swift */,
 				FC3D12271E64A85F0050B401 /* Main.storyboard */,
 				FC3D122D1E64A85F0050B401 /* Assets.xcassets */,
@@ -431,6 +434,7 @@
 				FC34F38D1E6A8A2E00EE3DFD /* WeatherParser.swift in Sources */,
 				FC3D125C1E65F43C0050B401 /* Constants.swift in Sources */,
 				FC3C62211E6901FF00E37D49 /* TodayVC.swift in Sources */,
+				FC34F3901E6C8D3A00EE3DFD /* IgnoreConstants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
