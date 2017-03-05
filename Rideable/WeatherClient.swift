@@ -12,16 +12,20 @@ import SwiftyJSON
 
 class WeatherClient {
     
-    let stack = (UIApplication.shared.delegate as! AppDelegate).stack
+    typealias completionHandler = (_ success : Bool, _ error: String?) -> Void
     
-    func sendRequest(completionHandler: @escaping (_ success : Bool, _ error: String?) -> Void) {
+    func sendRequest(completionHandler: @escaping completionHandler) {
+        
+        let manager = Alamofire.SessionManager.default
+        manager.session.configuration.timeoutIntervalForRequest = 30
+        
         // Add Headers
         let headers = [
             "Cookie":"DT=1487473989:26720:ip-10-226-237-178; Prefs=FAVS:1|WXSN:1|PWSOBS:1|WPHO:1|PHOT:1|RADC:0|RADALL:0|HIST0:NULL|GIFT:1|PHOTOTHUMBS:50|EXPFCT:1|",
             ]
-        
+
         // Fetch Request
-        Alamofire.request("https://api.wunderground.com/api/43ee969456775837/conditions/hourly/forecast/forecast10day/q/Tyler,Tx.json", method: .get, headers: headers)
+        manager.request("https://api.wunderground.com/api/43ee969456775837/conditions/hourly/forecast/forecast10day/q/Tyler,Tx.json", method: .get, headers: headers)
             .validate(statusCode: 200..<300)
             .responseJSON { response in
                 if (response.result.error == nil) {
@@ -33,12 +37,12 @@ class WeatherClient {
                         }
                         
                         let json = JSON(data: data)
-                        self.parseJson(json: json, completionHandler: { (success) in
-                            if success{
-                                completionHandler(true, nil)
-                            }else{
-                                completionHandler(false, "Error loading data")
+                        self.parseJson(json: json, completionHandler: { (success, error) in
+                            guard success == true else{
+                                completionHandler(false, error)
+                                return
                             }
+                            completionHandler(true, nil)
                         })
                     }
                 }
@@ -48,17 +52,6 @@ class WeatherClient {
                 }
         }
     }
-    
-    // MARK: Parsing
-    // Here we parse the Today, Tomorrow, and 10Day forecasts.
-    private func parseJson(json: JSON, completionHandler: @escaping (_ success: Bool) -> Void){
-        TodayWeather(json: json)
-        TomorrowWeather(json: json)
-        WeeklyWeather(json: json)
-        completionHandler(true)
-     
-    }
-    
     
     // MARK: Singleton
     static let sharedInstance = WeatherClient()

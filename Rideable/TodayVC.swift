@@ -15,18 +15,29 @@ class TodayVC: UITableViewController {
     fileprivate var fetchedResultsController: NSFetchedResultsController<Day>!
     private var hours: [Hour]?
     
+    //setup FRC
     override func viewDidLoad() {
         super.viewDidLoad()
         setupFetchedResultsController()
-        self.activityIndicatoryShowing(showing: WeatherInfo.sharedInstance.isCurrentlyLoading, view: self.view)
+        self.activityIndicatorShowing(showing: WeatherInfo.sharedInstance.isCurrentlyLoading, view: self.view)
     }
     
+    //Add Observer to listen for data completion notifications.
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         NotificationCenter.default.addObserver(forName: Constants.Notifications.REFRESH_NOTIFICATION, object: nil, queue: nil) { (notification) in
             DispatchQueue.main.async {
+                
+                //If VC is current window, display message and cancel loading indicator
+                guard notification.object == nil && self.isViewLoaded && (self.view.window != nil) else{
+                    if notification.object as? String != nil{
+                        self.displayError(title: "Error", message: notification.object as! String)
+                    }
+                    self.activityIndicatorShowing(showing: false, view: self.view)
+                    return
+                }
                 self.sortHourArray()
-                self.activityIndicatoryShowing(showing: false, view: self.view)
+                self.activityIndicatorShowing(showing: false, view: self.view)
                 self.tableView.reloadData()
             }
         }
@@ -62,6 +73,7 @@ class TodayVC: UITableViewController {
         })
     }
     
+
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
         //Only 2 sections, Day and Hour.
@@ -76,13 +88,13 @@ class TodayVC: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0{ //Return Day Cell
-            let cell = tableView.dequeueReusableCell(withIdentifier: "day", for: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: Constants.CellReuseIdentifiers.day, for: indexPath)
             if let label = cell.textLabel, fetchedResultsController != nil, let day = (fetchedResultsController.fetchedObjects! as [Day]).first {
                 label.text = day.summary
             }
             return cell
-        }else{ //Return Hour Cell
-            let cell = tableView.dequeueReusableCell(withIdentifier: "hour", for: indexPath)
+        }else{ //Return Hour Cell 
+            let cell = tableView.dequeueReusableCell(withIdentifier: Constants.CellReuseIdentifiers.hour, for: indexPath)
             if let label = cell.textLabel, fetchedResultsController != nil, hours != nil {
                 if let hour = hours?[indexPath.row]{
                     label.text = "\(self.militaryToCivilTime(time: Int(hour.time)))"

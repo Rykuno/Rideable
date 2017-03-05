@@ -12,21 +12,28 @@ import CoreData
 class TomorrowVC: UITableViewController {
     let stack = (UIApplication.shared.delegate as! AppDelegate).stack
 
-    fileprivate var fetchedResultsController: NSFetchedResultsController<Day>!
+    private var fetchedResultsController: NSFetchedResultsController<Day>!
     private var hours: [Hour]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupFetchedResultsController()
-        self.activityIndicatoryShowing(showing: WeatherInfo.sharedInstance.isCurrentlyLoading, view: self.view)
+        self.activityIndicatorShowing(showing: WeatherInfo.sharedInstance.isCurrentlyLoading, view: self.view)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         NotificationCenter.default.addObserver(forName: Constants.Notifications.REFRESH_NOTIFICATION, object: nil, queue: nil) { (notification) in
             DispatchQueue.main.async {
+                guard notification.object == nil && self.isViewLoaded && (self.view.window != nil) else{
+                    if notification.object as? String != nil{
+                        self.displayError(title: "Error", message: notification.object as! String)
+                    }
+                    self.activityIndicatorShowing(showing: false, view: self.view)
+                    return
+                }
                 self.sortHourArray()
-                self.activityIndicatoryShowing(showing: false, view: self.view)
+                self.activityIndicatorShowing(showing: false, view: self.view)
                 self.tableView.reloadData()
             }
         }

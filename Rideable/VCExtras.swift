@@ -20,9 +20,10 @@ extension UITableViewController{
         }
     }
     
+    
     //MARK: - Activity Indicator
     // Show activity indicator. Credit to raywenderlich.com
-    func activityIndicatoryShowing(showing: Bool, view: UIView) {
+    func activityIndicatorShowing(showing: Bool, view: UIView) {
         if showing {
             let activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
             let container: UIView = UIView()
@@ -57,15 +58,6 @@ extension UITableViewController{
         }
     }
     
-    func initializeViewGradient(view: UIView){
-        let gradient: CAGradientLayer = CAGradientLayer()
-        gradient.frame = view.bounds
-        gradient.colors = [UIColor( red:0.333, green:0.337, blue:0.337, alpha:1.000).cgColor,UIColor( red:0.247, green:0.247, blue:0.247, alpha:1.000).cgColor,UIColor( red:0.294, green:0.298, blue:0.298, alpha:1.000).cgColor,UIColor( red:0.369, green:0.373, blue:0.376, alpha:1.000).cgColor,UIColor( red:0.282, green:0.286, blue:0.286, alpha:1.000).cgColor,UIColor( red:0.314, green:0.318, blue:0.302, alpha:1.000).cgColor]
-        gradient.startPoint = CGPoint(x: 0.50, y: 0.00)
-        gradient.endPoint = CGPoint(x: 0.50, y: 1.00)
-        view.layer.insertSublayer(gradient, at: 0)
-    }
-    
     func militaryToCivilTime(time: Int)->String{
         let time = Int(time)
         if time == 0 {
@@ -79,7 +71,6 @@ extension UITableViewController{
         }
     }
 }
-
 
 //MARK: - Network Status
 import SystemConfiguration

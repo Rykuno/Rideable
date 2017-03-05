@@ -12,35 +12,13 @@ import CoreData
 
 struct WeeklyWeather {
     
+    private var json: JSON!
     
-    let stack = (UIApplication.shared.delegate as! AppDelegate).stack
-    var json: JSON!
-    
-    init(json: JSON) {
+    init(_ json: JSON) {
         self.json = json
-        saveToCoreData()
     }
     
-    private func saveToCoreData(){
-        stack.performAndWaitBackgroundBatchOperation { (moc) in
-            let request: NSFetchRequest<Week> = Week.fetchRequest()
-
-            do{
-                var results = try moc.fetch(request)
-                
-                if results.isEmpty{
-                    results = self.editOrCreateDay(nil, moc)
-                }else{
-                    results = self.editOrCreateDay(results, moc)
-                }
-            }catch{
-                
-            }
-        }
-        stack.save()
-    }
-    
-    private func editOrCreateDay(_ weekDays: [Week]?, _ moc: NSManagedObjectContext )-> [Week] {
+    public func parse(_ weekDays: [Week]?, _ moc: NSManagedObjectContext )-> [Week] {
         if weekDays == nil {
             var weekArray = [Week]()
             for index in 0...9 {

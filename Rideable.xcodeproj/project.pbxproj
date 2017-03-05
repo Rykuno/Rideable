@@ -111,6 +111,15 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		FC34F38E1E6C7B4200EE3DFD /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				FC3C621C1E6888BF00E37D49 /* CoreDataStack.swift */,
+				FC3D122A1E64A85F0050B401 /* Rideable.xcdatamodeld */,
+			);
+			name = CoreData;
+			sourceTree = "<group>";
+		};
 		FC3D12171E64A85F0050B401 = {
 			isa = PBXGroup;
 			children = (
@@ -134,6 +143,7 @@
 		FC3D12221E64A85F0050B401 /* Rideable */ = {
 			isa = PBXGroup;
 			children = (
+				FC34F38E1E6C7B4200EE3DFD /* CoreData */,
 				FC3D12461E64A89A0050B401 /* Model */,
 				FC3D12471E64A89F0050B401 /* View */,
 				FC3D12481E64A8A30050B401 /* Controller */,
@@ -156,7 +166,6 @@
 			children = (
 				FC3D124A1E64A9180050B401 /* WeatherClient.swift */,
 				FC3D124C1E64A93E0050B401 /* WeatherInfo.swift */,
-				FC3C621C1E6888BF00E37D49 /* CoreDataStack.swift */,
 				FC34F38C1E6A8A2E00EE3DFD /* WeatherParser.swift */,
 				FC3D12541E64C5110050B401 /* Objects */,
 			);
@@ -189,7 +198,6 @@
 				FC3D122D1E64A85F0050B401 /* Assets.xcassets */,
 				FC3D122F1E64A85F0050B401 /* LaunchScreen.storyboard */,
 				FC3D12321E64A85F0050B401 /* Info.plist */,
-				FC3D122A1E64A85F0050B401 /* Rideable.xcdatamodeld */,
 			);
 			name = Assets;
 			sourceTree = "<group>";

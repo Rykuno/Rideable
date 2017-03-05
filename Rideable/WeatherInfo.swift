@@ -11,22 +11,59 @@ import UIKit
 
 class WeatherInfo: NSObject {
     
-    var isCurrentlyLoading = false
+    private(set) var isCurrentlyLoading = false
+    private var lastUpdateTime: Date?
     
     func updateWeatherInfo(){
-        isCurrentlyLoading = true
-        WeatherClient.sharedInstance.sendRequest { (success, error) in
-            guard success == true else{
+        if weatherInfoExpired() {
+            isCurrentlyLoading = true
+            WeatherClient.sharedInstance.sendRequest { (success, error) in
+                guard success == true else{
+                    self.isCurrentlyLoading = false
+                    print("ERROR = \(error)")
+                    NotificationCenter.default.post(name: Constants.Notifications.REFRESH_NOTIFICATION, object: error)
+                    return
+                }
+                
+                UserDefaults.standard.set(Date(), forKey: "date")
                 self.isCurrentlyLoading = false
-                return
+                NotificationCenter.default.post(name: Constants.Notifications.REFRESH_NOTIFICATION, object: nil)
             }
+        }
+    }
+    
+    //Checks to see if the weather info has expired.
+     func weatherInfoExpired() -> Bool {
         
-        self.isCurrentlyLoading = false
-        NotificationCenter.default.post(name: Constants.Notifications.REFRESH_NOTIFICATION, object: nil)
+        /*
+         if the lastUpdateTime is nil, then
+         its probably a first time startup so
+         return true.
+         */
+        guard lastUpdateTime != nil else {
+            return true
+        }
+        
+        /*
+         If lastUpdateTime exists, check if last fetch info has expired.
+         NOTE: According to Wunderground, the API is updated every 15 minutes.
+         https://www.wunderground.com/about/data
+        */
+        let unitsPassedSinceLastUpdate = Calendar.current.dateComponents([.minute], from: (lastUpdateTime)! as Date, to: Date()).minute ?? Constants.Data.weatherUpdateIntervalInMinutes
+        if unitsPassedSinceLastUpdate >= Constants.Data.weatherUpdateIntervalInMinutes {
+            print("Weather out of date")
+            return true
+        }else{
+            print("Weather up to date")
+            return false
         }
     }
     
     // MARK: Singleton
     static let sharedInstance = WeatherInfo()
-    private override init() {} //To prevent others from using the default '()' initializer
+    private override init() {
+        //Set lastUpdateTime to check for invalid data.
+        lastUpdateTime = UserDefaults.standard.object(forKey: "date") as! Date?
+    }
 }
+ 

@@ -21,4 +21,13 @@ struct Constants {
     
     struct Measurement {
     }
+    
+    struct Data {
+        static let weatherUpdateIntervalInMinutes = 0
+    }
+    
+    struct CellReuseIdentifiers {
+        static let day = "day"
+        static let hour = "hour"
+    }
 }

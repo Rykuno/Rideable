@@ -12,34 +12,13 @@ import CoreData
 
 struct TomorrowWeather {
     
-    let stack = (UIApplication.shared.delegate as! AppDelegate).stack
-    var json: JSON!
+    private var json: JSON!
     
-    init(json: JSON) {
+    init(_ json: JSON) {
         self.json = json
-        saveToCoreData()
     }
     
-    private func saveToCoreData(){
-        stack.performAndWaitBackgroundBatchOperation { (moc) in
-            let request: NSFetchRequest<Day> = Day.fetchRequest()
-            request.predicate = NSPredicate(format: "type == %@", Constants.TypeOfDay.TOMORROW)
-            
-            do{
-                if var day = try moc.fetch(request).first {
-                    day = self.editOrCreateDay(day, moc)
-                }else{
-                    var day = Day(context: moc)
-                    day = self.editOrCreateDay(day, moc)
-                }
-            }catch{
-                
-            }
-        }
-        stack.save()
-    }
-    
-    private func editOrCreateDay(_ day: Day, _ moc: NSManagedObjectContext) -> Day {
+    public func parse(_ day: Day, _ moc: NSManagedObjectContext) -> Day {
         let currentForecast = json["forecast"]["simpleforecast"]["forecastday"][1]
         day.summary = currentForecast["conditions"].stringValue
         day.precipitation = Int16(currentForecast["pop"].intValue)
@@ -52,17 +31,16 @@ struct TomorrowWeather {
         day.type = Constants.TypeOfDay.TOMORROW
         
         if (day.hour?.allObjects.isEmpty)!{
-            print("creating hours")
             let hours = WeatherHour(json: json).getCurrentHours(moc: moc, day: .Tomorrow)
             for hour in hours {
                 day.addToHour(hour)
             }
         }else{
-            print("modifying hours")
-            for var hour in day.hour?.allObjects as! [Hour]{
-                hour = WeatherHour(json: json).modifyCurrentHours(hour: hour)
-            }
+            var hours = day.hour?.allObjects as! [Hour]
+            hours = WeatherHour(json: json).modifyHours(hours: hours, moc: moc, day: .Tomorrow)
         }
+        
+
         return day
     }
 }
