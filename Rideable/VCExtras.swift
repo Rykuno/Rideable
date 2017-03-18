@@ -20,7 +20,6 @@ extension UITableViewController{
         }
     }
     
-    
     //MARK: - Activity Indicator
     // Show activity indicator. Credit to raywenderlich.com
     func activityIndicatorShowing(showing: Bool, view: UIView) {

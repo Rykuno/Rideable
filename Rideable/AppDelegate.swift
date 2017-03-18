@@ -19,10 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        //WeatherInfo.sharedInstance.updateWeatherInfo()
-        printTimeElapsedWhenRunningCode(title: "time") {
-            WeatherInfo.sharedInstance.updateWeatherInfo()
-        }
+        isAppAlreadyLaunchedOnce() 
+        WeatherInfo.sharedInstance.updateWeatherInfo()
         return true
     }
 
@@ -50,12 +48,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Saves changes in the application's managed object context before the application terminates.
         stack.save()
     }
+    
+    func isAppAlreadyLaunchedOnce(){
+        let defaults = UserDefaults.standard
 
-    func printTimeElapsedWhenRunningCode(title:String, operation:()->()) {
-        let startTime = CFAbsoluteTimeGetCurrent()
-        operation()
-        let timeElapsed = CFAbsoluteTimeGetCurrent() - startTime
-        print("Time elapsed for \(title): \(timeElapsed) s")
-}
+        if let isAppAlreadyLaunchedOnce = defaults.string(forKey: Constants.Defaults.firstLaunch){
+            print("App already launched : \(isAppAlreadyLaunchedOnce)")
+        }else{
+            defaults.set(true, forKey: Constants.Defaults.standardTime)
+            defaults.set(true, forKey: Constants.Defaults.standardUnit)
+            defaults.set(true, forKey: Constants.Defaults.firstLaunch)
+            defaults.set(70.0, forKey: Constants.Defaults.temp)
+            defaults.set(30.0, forKey: Constants.Defaults.humidity)
+            defaults.set(0.0, forKey: Constants.Defaults.precip)
+            defaults.set(10.0, forKey: Constants.Defaults.wind)
+            defaults.set(30, forKey: Constants.Defaults.tempWeight)
+            defaults.set(15, forKey: Constants.Defaults.humidityWeight)
+            defaults.set(40, forKey: Constants.Defaults.precipWeight)
+            defaults.set(15, forKey: Constants.Defaults.windWeight)
 
+            print("App launched first time")
+        }
+    }
 }

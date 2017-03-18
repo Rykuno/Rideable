@@ -24,7 +24,7 @@ class TomorrowVC: UITableViewController {
         menuButton.target = revealViewController()
         menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
         self.activityIndicatorShowing(showing: WeatherInfo.sharedInstance.isCurrentlyLoading, view: self.view)
-    }
+    }  
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -34,7 +34,6 @@ class TomorrowVC: UITableViewController {
          the activity indicator. */
         NotificationCenter.default.addObserver(forName: Constants.Notifications.REFRESH_NOTIFICATION, object: nil, queue: nil) { (notification) in
             DispatchQueue.main.async {
-                
                 /*If VC is current window, display message and cancel loading indicator,
                   else, we will just set the variables */
                 guard notification.object == nil && self.isViewLoaded && (self.view.window != nil) else{
@@ -44,11 +43,19 @@ class TomorrowVC: UITableViewController {
                     self.activityIndicatorShowing(showing: false, view: self.view)
                     return
                 }
+                
+                //Get the first day(since there is only one) and sort its hours.
                 self.hours = self.sortHourArray(day: (self.FRC.fetchedObjects! as [Day]).first)
                 self.activityIndicatorShowing(showing: false, view: self.view)
+                
+                //once all is done, reload the data.
                 self.tableView.reloadData()
             }
         }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     private func setBackgroundImage(){

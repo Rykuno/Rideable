@@ -29,7 +29,8 @@ struct TomorrowWeather {
         day.wind = Int16(currentForecast["avewind"]["mph"].intValue)
         day.created = Date() as NSDate
         day.type = Constants.TypeOfDay.TOMORROW
-        
+        day.daySummary = json["forecast"]["txt_forecast"]["forecastday"][2]["fcttext"].stringValue
+
         if (day.hour?.allObjects.isEmpty)!{
             let hours = WeatherHour(json: json).getCurrentHours(moc: moc, day: .Tomorrow)
             for hour in hours {

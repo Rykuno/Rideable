@@ -33,6 +33,8 @@ struct TodayWeather{
         day.tempLow = Int16(currentForecast["low"]["fahrenheit"].intValue)
         day.created = Date() as NSDate
         day.type = Constants.TypeOfDay.TODAY
+        day.daySummary = json["forecast"]["txt_forecast"]["forecastday"][0]["fcttext"].stringValue
+        day.feelsLike = Int16(currentObservation["feelslike_f"].intValue)
         
         if (day.hour?.allObjects.isEmpty)!{
             let hours = WeatherHour(json: json).getCurrentHours(moc: moc, day: .Today)

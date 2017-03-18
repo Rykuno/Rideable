@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+
 struct Constants {
     
     struct Notifications{
@@ -24,7 +25,7 @@ struct Constants {
     }
     
     struct Data {
-        static let weatherUpdateIntervalInMinutes = 15
+        static let weatherUpdateIntervalInMinutes = 5
         static let timeoutInSeconds = TimeInterval(30)
     }
     
@@ -33,6 +34,22 @@ struct Constants {
         static let hour = "hour"
     }
     
+    struct Defaults {
+        static let firstLaunch = "isAppAlreadyLaunchedOnce"
+        static let standardUnit = "measurementDefault"
+        static let standardTime = "timeDefault"
+        static let temp = "temp"
+        static let humidity = "humidity"
+        static let precip = "precipitation"
+        static let wind = "wind"
+        static let tempWeight = "tempWeight"
+        static let humidityWeight = "humidityWeight"
+        static let precipWeight = "precipWeight"
+        static let windWeight = "windWeight"
+    }
+    
+    struct Colors {
+    }
     // MARK: Menu Constants
     struct Menu {
         struct Icons{
@@ -60,5 +77,11 @@ struct Constants {
         struct Sections {
             static let sections = ["Weather", "Options", "Share"]
         }
+    }
+    
+    struct Symbols {
+        static let upArrow = "↑"
+        static let downArrow = "↓"
+        static let degree = "°"
     }
 }

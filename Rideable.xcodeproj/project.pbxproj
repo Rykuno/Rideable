@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		B521E6E2C84F1B2FDA307791 /* Pods_Rideable.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BC51906F74CD08E9CBFAFA4 /* Pods_Rideable.framework */; };
 		EF77F6FF491DA831F43B21A8 /* Pods_RideableTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C451FC5C5CCACB2B83492655 /* Pods_RideableTests.framework */; };
+		FC018D8F1E75B9DA00F194CC /* HourCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC018D8E1E75B9DA00F194CC /* HourCell.swift */; };
+		FC018D911E77433000F194CC /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC018D901E77433000F194CC /* SettingsVC.swift */; };
 		FC1C7B1D1E7060B600DD0A66 /* TodayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1C7B1B1E7060B600DD0A66 /* TodayCell.swift */; };
 		FC1C7B1E1E7060B600DD0A66 /* TodayCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC1C7B1C1E7060B600DD0A66 /* TodayCell.xib */; };
 		FC34F38D1E6A8A2E00EE3DFD /* WeatherParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC34F38C1E6A8A2E00EE3DFD /* WeatherParser.swift */; };
@@ -50,6 +52,8 @@
 		9BC51906F74CD08E9CBFAFA4 /* Pods_Rideable.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Rideable.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9286D39414142F898371EBF /* Pods-Rideable.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rideable.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Rideable/Pods-Rideable.debug.xcconfig"; sourceTree = "<group>"; };
 		C451FC5C5CCACB2B83492655 /* Pods_RideableTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RideableTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FC018D8E1E75B9DA00F194CC /* HourCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HourCell.swift; sourceTree = "<group>"; };
+		FC018D901E77433000F194CC /* SettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
 		FC1C7B1B1E7060B600DD0A66 /* TodayCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodayCell.swift; sourceTree = "<group>"; };
 		FC1C7B1C1E7060B600DD0A66 /* TodayCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TodayCell.xib; sourceTree = "<group>"; };
 		FC34F38C1E6A8A2E00EE3DFD /* WeatherParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherParser.swift; sourceTree = "<group>"; };
@@ -185,6 +189,7 @@
 			children = (
 				FC1C7B1B1E7060B600DD0A66 /* TodayCell.swift */,
 				FC1C7B1C1E7060B600DD0A66 /* TodayCell.xib */,
+				FC018D8E1E75B9DA00F194CC /* HourCell.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -195,6 +200,7 @@
 				FC34F3F51E6CF48C00EE3DFD /* SWVC.swift */,
 				FC3C62201E6901FF00E37D49 /* TodayVC.swift */,
 				FC3C62241E6A0E8100E37D49 /* TomorrowVC.swift */,
+				FC018D901E77433000F194CC /* SettingsVC.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -430,9 +436,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FC018D911E77433000F194CC /* SettingsVC.swift in Sources */,
 				FC34F3F41E6CF32700EE3DFD /* CoreDataStack.swift in Sources */,
 				FC3D124B1E64A9180050B401 /* WeatherClient.swift in Sources */,
 				FC3C622A1E6A359200E37D49 /* TomorrowWeather.swift in Sources */,
+				FC018D8F1E75B9DA00F194CC /* HourCell.swift in Sources */,
 				FC3D122C1E64A85F0050B401 /* Rideable.xcdatamodeld in Sources */,
 				FC3C62251E6A0E8100E37D49 /* TomorrowVC.swift in Sources */,
 				FC3D12581E64C76C0050B401 /* WeatherHour.swift in Sources */,

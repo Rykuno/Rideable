@@ -14,9 +14,13 @@ class TodayVC: UITableViewController {
     
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
+    @IBOutlet weak var refreshButton: UIBarButtonItem!
+    
+    var selectedIndexPath : IndexPath?
     private let stack = (UIApplication.shared.delegate as! AppDelegate).stack
     private var FRC: NSFetchedResultsController<Day>!
     private var hours: [Hour]?
+    private var initialLoad = true
     
     //setup FRC
     override func viewDidLoad() {
@@ -51,7 +55,17 @@ class TodayVC: UITableViewController {
         }
     }
     
-    private func setBackgroundImage(){
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    //User action to refresh data
+    @IBAction func refreshInfo(_ sender: Any) {
+        activityIndicatorShowing(showing: true, view: self.view)
+        WeatherInfo.sharedInstance.updateWeatherInfo()
+    }
+    
+    private func setBackgroundImage() {
         let backgroundImage = UIImage(named: "backgroundDay")
         let imageView = UIImageView(image: backgroundImage)
         self.tableView.backgroundView = imageView
@@ -70,7 +84,7 @@ class TodayVC: UITableViewController {
         do{
             try FRC.performFetch()
             self.hours = self.sortHourArray(day: (FRC.fetchedObjects! as [Day]).first)
-            }catch{
+        }catch{
             print(error.localizedDescription)
         }
     }
@@ -89,30 +103,73 @@ class TodayVC: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0{ //Return Day Cell
-            let cell = Bundle.main.loadNibNamed("TodayCell", owner: self, options: nil)?.first as! TodayCell
-            
-            return cell
-        }else{ //Return Hour Cell
-            let cell = tableView.dequeueReusableCell(withIdentifier: Constants.CellReuseIdentifiers.hour, for: indexPath)
-            if let label = cell.textLabel, FRC != nil, hours != nil {
-                if let hour = hours?[indexPath.row]{
-                    label.text = "\(self.militaryToCivilTime(time: Int(hour.time)))"
-                }
+            if initialLoad {
+                let cell = Bundle.main.loadNibNamed("TodayCell", owner: self, options: nil)?.first as! TodayCell
+                cell.initializeDayCell(day: (FRC.fetchedObjects! as [Day]).first, shouldAnimate: true)
+                initialLoad = false
+                return cell
+            }else{
+                let cell = Bundle.main.loadNibNamed("TodayCell", owner: self, options: nil)?.first as! TodayCell
+                cell.initializeDayCell(day: (FRC.fetchedObjects! as [Day]).first, shouldAnimate: false)
+                return cell
             }
+        }else{ //Return Hour Cell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "HourCell", for: indexPath) as! HourCell
+            cell.initializeHourCell(hour: hours?[indexPath.row])
             return cell
         }
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 0 {
-            return self.view.frame.size.height - (self.navigationController?.navigationBar.frame.height)! - 19
-        }else{
-            return 70
+        if  self.isViewLoaded && (self.view.window != nil){
+            if indexPath.section == 0 {
+                return self.view.frame.size.height - (self.navigationController?.navigationBar.frame.height)! - 19
+            }else{
+                if indexPath == selectedIndexPath {
+                    return HourCell.expandedHeight
+                } else {
+                    return HourCell.defaultHeight
+                }
+            }
+        }
+        return 100
+    } 
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let previousIndexPath = selectedIndexPath
+        if indexPath == selectedIndexPath {
+            selectedIndexPath = nil
+        } else {
+            selectedIndexPath = indexPath
+        }
+        
+        var indexPaths : Array<IndexPath> = []
+        if let previous = previousIndexPath {
+            indexPaths += [previous]
+        }
+        if let current = selectedIndexPath {
+            indexPaths += [current]
+        }
+        if indexPaths.count > 0 {
+            tableView.reloadRows(at: indexPaths, with: UITableViewRowAnimation.automatic)
+        }
+        
+        // If the selected row is the last, scroll the tableview up a little.
+        if selectedIndexPath?.row == 11 {
+            tableView.scrollToRow(at: indexPaths.last!, at: .bottom, animated: true)
         }
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if let cell = cell as? HourCell {
+            (cell as HourCell).watchFrameChanges()
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if let cell = cell as? HourCell {
+            (cell as HourCell).ignoreFrameChanges()
+        }
     }
 }
 

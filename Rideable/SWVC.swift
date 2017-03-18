@@ -76,5 +76,12 @@ class SWVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             let newFrontViewController = UINavigationController.init(rootViewController: weekVC)
             revealViewController.pushFrontViewController(newFrontViewController, animated: true)
         }
+        
+        if cell?.textLabel?.text == "Settings" {
+            let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            let weekVC = mainStoryboard.instantiateViewController(withIdentifier: "SettingsVC")
+            let newFrontViewController = UINavigationController.init(rootViewController: weekVC)
+            revealViewController.pushFrontViewController(newFrontViewController, animated: true)
+        }
     }
 }

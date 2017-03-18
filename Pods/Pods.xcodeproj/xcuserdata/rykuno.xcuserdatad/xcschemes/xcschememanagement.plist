@@ -4,7 +4,17 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>ASValueTrackingSlider.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Alamofire.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>EasyToast.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -37,17 +47,12 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>035037714575245C9784C214101BE4FE</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>3BB34B65184CA2C9ED1022EF61AF1D42</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>88A6C3E400AC42BE7492EBBA2A22550A</key>
+		<key>5A9FC7B9A435E4AAE0A33CD788495F21</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -57,7 +62,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E7751EA449391EF407AE0B4B4DAD2A24</key>
+		<key>9F510D2B6A00360BAB8430120448D98C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A98FC4E00DB21F7428044F61B4873595</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>ABA374CC29137BDA15930735167E1D58</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C7A27CEE1A5A58B01166DDC8469E0871</key>
 		<dict>
 			<key>primary</key>
 			<true/>
