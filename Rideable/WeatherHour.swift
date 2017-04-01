@@ -33,7 +33,7 @@ struct WeatherHour {
         let distance = Int(24-Calendar.current.component(.hour, from: Date()) + 6)
         let start = (day == Day.Today) ?  0 : distance
         
-        for index in start...start+11 {
+        for index in start...start+11 { 
             let hour = Hour(context: moc)
             let currentHour = json["hourly_forecast"][index]
             hour.humidity = Int16(currentHour["humidity"].intValue)

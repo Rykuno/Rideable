@@ -80,7 +80,6 @@ class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
     }
     
     @IBAction func save(_ sender: Any) {
-        
         defaults.set(tempSlider.value, forKey: Constants.Defaults.temp)
         defaults.set(humiditySlider.value, forKey: Constants.Defaults.humidity)
         defaults.set(precipSlider.value, forKey: Constants.Defaults.precip)

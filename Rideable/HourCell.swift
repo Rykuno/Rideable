@@ -11,10 +11,13 @@ import GaugeKit
 
 class HourCell: UITableViewCell {
 
-    @IBOutlet weak var score: UILabel!
-    @IBOutlet weak var condition: UILabel!
+
+    @IBOutlet weak var precipIcon: UIImageView!
     @IBOutlet weak var wind: UILabel!
     @IBOutlet weak var humidity: UILabel!
+    @IBOutlet weak var precipDetail: UILabel!
+    @IBOutlet weak var score: UILabel!
+    @IBOutlet weak var condition: UILabel!
     @IBOutlet weak var gauge: Gauge!
     @IBOutlet weak var time: UILabel!
     @IBOutlet weak var temp: UILabel!
@@ -23,7 +26,11 @@ class HourCell: UITableViewCell {
     @IBOutlet weak var view: UIView!
     
     var isObserving = false;
-    class var expandedHeight: CGFloat { get { return 140 } }
+    private let defaults = UserDefaults.standard
+    private let isStandard: Bool = UserDefaults.standard.bool(forKey: Constants.Defaults.standardUnit)
+
+
+    class var expandedHeight: CGFloat { get { return 130 } }
     class var defaultHeight: CGFloat  { get { return 70  } }
     
     func initializeHourCell(hour: Hour?){
@@ -34,38 +41,33 @@ class HourCell: UITableViewCell {
         let calcScore = calculateScore(hour: hour)
         score.text = "\(calcScore)"
         condition.text = hour.condition
-        wind.text = "\(hour.windSpeed) \(hour.windDir!)"
+        wind.text = "\(calculateWind(windInMph: hour.windSpeed)) \(hour.windDir!)"
         humidity.text = "\(hour.humidity)%"
-        time.text = militaryToCivilTime(time: Int(hour.time))
-        temp.text = "\(hour.temp)\(Constants.Symbols.degree)"
+        time.text = calculateTime(time: Int(hour.time))
+        temp.text = "\(calculateTemperature(temp: hour.temp))\(Constants.Symbols.degree)"
         precipChance.text = calculatePrecip(precip: hour.precip)
+        precipDetail.text = calculatePrecip(precip: hour.precip)
         icon.image = UIImage(named: hour.icon!)
         gauge.rate = CGFloat(calcScore)
-        
-        print(Float(calcScore)/100.00)
         gauge.startColor = mixGreenAndRed(score: calcScore)
     }
     
     func mixGreenAndRed(score: Int) -> UIColor {
         let x = (Float(score)/100.00)/3
-        return UIColor(hue:CGFloat(x), saturation:1.0, brightness:1.0, alpha:1.0)
+        return UIColor(hue:CGFloat(x), saturation:0.7, brightness:1.0, alpha:1.0)
     }
-    
  
     private func calculateScore(hour: Hour) -> Int {
-        let defaults = UserDefaults.standard
         let tempWeight = defaults.double(forKey: Constants.Defaults.tempWeight)/100
-        let humidityWeight = defaults.double(forKey: Constants.Defaults.humidityWeight)/100
-        let precipWeight = defaults.double(forKey: Constants.Defaults.precipWeight)/100
+        let humidityWeight = defaults.double(forKey: Constants.Defaults.humidityWeight)/100 * 1.5
+        let precipWeight = defaults.double(forKey: Constants.Defaults.precipWeight)/100 * 2
         let windWeight = defaults.double(forKey: Constants.Defaults.windWeight)/100
-        
         let tempDiff = abs(defaults.double(forKey: Constants.Defaults.temp)-Double(hour.temp))
         let humidityDiff = abs(defaults.double(forKey: Constants.Defaults.humidity)-Double(hour.humidity))
         let precipDiff = abs(defaults.double(forKey: Constants.Defaults.precip)-Double(hour.precip))
         let windDiff = abs(defaults.double(forKey: Constants.Defaults.wind)-Double(hour.windSpeed))
-        
-        return Int(100 - (tempWeight * tempDiff) - (humidityWeight * humidityDiff) - (precipWeight * precipDiff) - (windWeight * windDiff))
-        
+        let calculatedScore = Int(100 - (tempWeight * tempDiff) - (humidityWeight * humidityDiff) - (precipWeight * precipDiff) - (windWeight * windDiff))
+        return calculatedScore<0 ? 0 : calculatedScore
     }
     
     func checkHeight() {
@@ -96,12 +98,41 @@ class HourCell: UITableViewCell {
         let modPrecip = 10 * Int(round(Double(precip) / 10))
             if modPrecip == 0{
                 precipChance.isHidden = true
+                precipIcon.isHidden = true
                 return "\(modPrecip)%"
             }else{
                 precipChance.isHidden = false
+                precipIcon.isHidden = false
                 return "\(modPrecip)%"
         }
     
+    }
+    
+    private func calculateTime(time: Int) -> String {
+        if  defaults.bool(forKey: Constants.Defaults.standardTime) == true {
+            return militaryToCivilTime(time: time)
+        }else{
+            return "\(time)"
+        }
+    }
+    
+    // Set The temperature to either Fahrenheit/Celsius depending on the users pref.
+    private func calculateTemperature(temp: Int16) -> String{
+        if !isStandard {
+            let metricTemp = (Int(temp)-32) * 5/9
+            return "\(metricTemp)"
+        }else{
+            return "\(temp)"
+        }
+    }
+    
+    private func calculateWind(windInMph: Int16) -> String{
+        if !isStandard {
+            let metricWind = Int((Double(windInMph)) * 1.6)
+            return "\(metricWind)"
+        }else{
+            return "\(windInMph)"
+        }
     }
     
     private func militaryToCivilTime(time: Int)->String{

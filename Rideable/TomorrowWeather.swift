@@ -19,11 +19,13 @@ struct TomorrowWeather {
     }
     
     public func parse(_ day: Day, _ moc: NSManagedObjectContext) -> Day {
+        let currentObservation = json["current_observation"]
         let currentForecast = json["forecast"]["simpleforecast"]["forecastday"][1]
         day.summary = currentForecast["conditions"].stringValue
         day.precipitation = Int16(currentForecast["pop"].intValue)
         day.tempHigh = Int16(currentForecast["high"]["fahrenheit"].intValue)
         day.tempLow = Int16(currentForecast["low"]["fahrenheit"].intValue)
+        day.time = currentObservation["observation_time"].stringValue
         day.icon = currentForecast["icon"].stringValue
         day.humidity = "\(currentForecast["avehumidity"].intValue)%"
         day.wind = Int16(currentForecast["avewind"]["mph"].intValue)

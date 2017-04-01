@@ -13,6 +13,10 @@ struct Constants {
     
     struct Notifications{
         static let REFRESH_NOTIFICATION = NSNotification.Name("RefreshNotification")
+        
+        struct Messages {
+            static let alreadyUpdated = "Weather up to date"
+        }
     }
     
     struct TypeOfDay {
@@ -25,7 +29,7 @@ struct Constants {
     }
     
     struct Data {
-        static let weatherUpdateIntervalInMinutes = 5
+        static let weatherUpdateIntervalInMinutes = 3
         static let timeoutInSeconds = TimeInterval(30)
     }
     
@@ -48,8 +52,6 @@ struct Constants {
         static let windWeight = "windWeight"
     }
     
-    struct Colors {
-    }
     // MARK: Menu Constants
     struct Menu {
         struct Icons{
@@ -77,6 +79,17 @@ struct Constants {
         struct Sections {
             static let sections = ["Weather", "Options", "Share"]
         }
+    }
+    
+    struct backgroundImages{
+        static let today = UIImage(named: "today")
+        static let tomorrow = UIImage(named: "tomorrow")
+        static let week = UIImage(named: "week")
+        static let todayRain = UIImage(named: "todayRain")
+        static let todaySnow = UIImage(named: "todaySnow")
+        static let tomorrowSnow = UIImage(named: "tomorrowSnow")
+        static let tomorrowRain = UIImage(named: "tomorrowRain")
+        
     }
     
     struct Symbols {

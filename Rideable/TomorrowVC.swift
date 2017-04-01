@@ -9,14 +9,20 @@
 import UIKit
 import CoreData
 import SWRevealViewController
+import EasyToast
 
 class TomorrowVC: UITableViewController {
     
-    @IBOutlet weak var menuButton: UIBarButtonItem!
     
+    @IBOutlet weak var menuButton: UIBarButtonItem!
+    @IBOutlet weak var refreshButton: UIBarButtonItem!
+    
+    private var selectedIndexPath : IndexPath?
     private let stack = (UIApplication.shared.delegate as! AppDelegate).stack
     private var FRC: NSFetchedResultsController<Day>!
     private var hours: [Hour]?
+    private var initialLoad = true
+    private var notification: NSObjectProtocol!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,51 +30,61 @@ class TomorrowVC: UITableViewController {
         menuButton.target = revealViewController()
         menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
         self.activityIndicatorShowing(showing: WeatherInfo.sharedInstance.isCurrentlyLoading, view: self.view)
-    }  
+        setupNotifications() //Add Observer to listen for data completion notifications.
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setBackgroundImage()
+        self.setBackgroundImage(day: Constants.TypeOfDay.TOMORROW, tableView: tableView, condition: (self.FRC.fetchedObjects?.first?.icon)!)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        NotificationCenter.default.removeObserver(notification)
+    }
+    
+    //User action to refresh data
+    @IBAction func refreshInfo(_ sender: Any) {
+        activityIndicatorShowing(showing: true, view: self.view)
+        WeatherInfo.sharedInstance.updateWeatherInfo()
+    }
+    
+    private func setupNotifications(){
         /* Notification recieved from the WeatherInfo class. The classes obseving
          will listen for the download to be finished, update the table, and disable
          the activity indicator. */
-        NotificationCenter.default.addObserver(forName: Constants.Notifications.REFRESH_NOTIFICATION, object: nil, queue: nil) { (notification) in
+        notification = NotificationCenter.default.addObserver(forName: Constants.Notifications.REFRESH_NOTIFICATION, object: nil, queue: nil) { (notification) in
             DispatchQueue.main.async {
-                /*If VC is current window, display message and cancel loading indicator,
-                  else, we will just set the variables */
+                //If VC is current window, display message and cancel loading indicator
                 guard notification.object == nil && self.isViewLoaded && (self.view.window != nil) else{
                     if notification.object as? String != nil{
-                        self.displayError(title: "Error", message: notification.object as! String)
+                        self.displayMessage(message: notification.object as! String)
                     }
                     self.activityIndicatorShowing(showing: false, view: self.view)
                     return
                 }
-                
-                //Get the first day(since there is only one) and sort its hours.
                 self.hours = self.sortHourArray(day: (self.FRC.fetchedObjects! as [Day]).first)
                 self.activityIndicatorShowing(showing: false, view: self.view)
-                
-                //once all is done, reload the data.
                 self.tableView.reloadData()
             }
         }
     }
     
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-    
-    private func setBackgroundImage(){
-        let backgroundImage = UIImage(named: "backgroundNight")
-        let imageView = UIImageView(image: backgroundImage)
-        self.tableView.backgroundView = imageView
-        imageView.contentMode = .scaleAspectFill
+    private func displayMessage(message: String){
+        switch message {
+        case Constants.Notifications.Messages.alreadyUpdated:
+            self.view.showToast(message, position: .bottom, popTime: 1.0, dismissOnTap: true)
+            break;
+        default:
+            self.view.showToast(message, tag: nil, position: .bottom, popTime: 2.5, dismissOnTap: true, bgColor: UIColor.red, textColor: UIColor.white, font: nil)
+            break;
+        }
     }
     
     //Create the FRC to fetch Tomorrows Weather
     private func setupFetchedResultsController(){
         let fetchedRequest: NSFetchRequest<Day> = Day.fetchRequest()
-        fetchedRequest.predicate = NSPredicate(format: "type == %@", Constants.TypeOfDay.TOMORROW) 
+        fetchedRequest.predicate = NSPredicate(format: "type == %@", Constants.TypeOfDay.TOMORROW)
         fetchedRequest.sortDescriptors = []
         FRC = NSFetchedResultsController(fetchRequest: fetchedRequest, managedObjectContext: stack.context , sectionNameKeyPath: nil, cacheName: nil)
         fetchedRequest.fetchBatchSize = 1
@@ -76,7 +92,11 @@ class TomorrowVC: UITableViewController {
         
         do{
             try FRC.performFetch()
-            self.hours = self.sortHourArray(day: (self.FRC.fetchedObjects! as [Day]).first)
+            
+            //set hours for easy access
+            if let dayObject = (FRC.fetchedObjects)!.first {
+                self.hours = self.sortHourArray(day: dayObject)
+            }
         }catch{
             print(error.localizedDescription)
         }
@@ -96,19 +116,72 @@ class TomorrowVC: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0{ //Return Day Cell
-            let cell = tableView.dequeueReusableCell(withIdentifier: "day", for: indexPath)
-            if let label = cell.textLabel, FRC != nil, let day = (FRC.fetchedObjects! as [Day]).first {
-                label.text = day.summary
+            if initialLoad {
+                let cell = Bundle.main.loadNibNamed("TodayCell", owner: self, options: nil)?.first as! TodayCell
+                cell.initializeDayCell(day: (FRC.fetchedObjects! as [Day]).first, shouldAnimate: true, isTodayCell: false)
+                initialLoad = false
+                return cell
+            }else{
+                let cell = Bundle.main.loadNibNamed("TodayCell", owner: self, options: nil)?.first as! TodayCell
+                cell.initializeDayCell(day: (FRC.fetchedObjects! as [Day]).first, shouldAnimate: false, isTodayCell: false)
+                return cell
             }
-            return cell
         }else{ //Return Hour Cell
-            let cell = tableView.dequeueReusableCell(withIdentifier: "hour", for: indexPath)
-            if let label = cell.textLabel, FRC != nil, hours != nil {
-                if let hour = hours?[indexPath.row]{
-                    label.text = "\(self.militaryToCivilTime(time: Int(hour.time)))"
+            let cell = tableView.dequeueReusableCell(withIdentifier: "HourCell", for: indexPath) as! HourCell
+            cell.initializeHourCell(hour: hours?[indexPath.row])
+            return cell
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if  self.isViewLoaded && (self.view.window != nil){
+            if indexPath.section == 0 {
+                return self.view.frame.size.height - (self.navigationController?.navigationBar.frame.height)! - 19
+            }else{
+                if indexPath == selectedIndexPath {
+                    return HourCell.expandedHeight
+                } else {
+                    return HourCell.defaultHeight
                 }
             }
-            return cell
+        }
+        return 100
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let previousIndexPath = selectedIndexPath
+        if indexPath == selectedIndexPath {
+            selectedIndexPath = nil
+        } else {
+            selectedIndexPath = indexPath
+        }
+        
+        var indexPaths : Array<IndexPath> = []
+        if let previous = previousIndexPath {
+            indexPaths += [previous]
+        }
+        if let current = selectedIndexPath {
+            indexPaths += [current]
+        }
+        if indexPaths.count > 0 {
+            tableView.reloadRows(at: indexPaths, with: UITableViewRowAnimation.automatic)
+        }
+        
+        // If the selected row is the last, scroll the tableview up a little.
+        if selectedIndexPath?.row == 11 {
+            tableView.scrollToRow(at: indexPaths.last!, at: .bottom, animated: true)
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if let cell = cell as? HourCell {
+            (cell as HourCell).watchFrameChanges()
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if let cell = cell as? HourCell {
+            (cell as HourCell).ignoreFrameChanges()
         }
     }
 }
@@ -125,3 +198,4 @@ extension TomorrowVC: NSFetchedResultsControllerDelegate{
     }
     
 }
+

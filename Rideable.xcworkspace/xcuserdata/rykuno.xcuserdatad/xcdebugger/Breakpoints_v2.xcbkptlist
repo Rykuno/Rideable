@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Rideable/TodayCell.swift"
-            timestampString = "511548648.867429"
+            timestampString = "512774022.025087"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "57"
-            endingLineNumber = "57"
+            startingLineNumber = "79"
+            endingLineNumber = "79"
             landmarkName = "calculateScore(day:)"
             landmarkType = "7">
          </BreakpointContent>

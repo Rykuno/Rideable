@@ -36,7 +36,8 @@ class WeatherInfo: NSObject {
                 NotificationCenter.default.post(name: Constants.Notifications.REFRESH_NOTIFICATION, object: nil)
             }
         }else{
-            NotificationCenter.default.post(name: Constants.Notifications.REFRESH_NOTIFICATION, object: nil)
+            let updateMsg = "Weather up to date"
+            NotificationCenter.default.post(name: Constants.Notifications.REFRESH_NOTIFICATION, object: updateMsg)
         }
     }
     

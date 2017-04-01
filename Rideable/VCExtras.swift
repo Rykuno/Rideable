@@ -89,6 +89,37 @@ extension UITableViewController{
         return hours
     }
     
+    func setBackgroundImage(day: String, tableView: UITableView, condition: String?) {
+        var imageView: UIImageView
+        var image: UIImage
+        
+        guard let condition = condition else{
+            image = UIImage(named: "\(day)")!
+            imageView = UIImageView(image: image)
+            return
+        }
+         
+        switch condition {
+        case "chancerain", "chancetstorms", "rain", "tstorms":
+            image = UIImage(named: "\(day)Rain")!
+            imageView = UIImageView(image: image)
+            imageView.layer.opacity = 0.85
+            break
+        case "chanceflurries", "chancesnow", "flurries", "sleet", "snow":
+            image = UIImage(named: "\(day)Snow")!
+            imageView = UIImageView(image: image)
+            imageView.layer.opacity = 0.85
+            break
+        default:
+            image = UIImage(named: "\(day)")!
+            imageView = UIImageView(image: image)
+            imageView.layer.opacity = 1.0
+            break
+        }
+        tableView.backgroundView = imageView
+        imageView.contentMode = .scaleAspectFill
+        imageView.backgroundColor = UIColor.black
+    }
 }
 
 //MARK: - Network Status
