@@ -25,9 +25,9 @@ class TodayCell: UITableViewCell {
     @IBOutlet weak var precip: UILabel!
     
     private let defaults = UserDefaults.standard
-    private let isStandard: Bool = UserDefaults.standard.bool(forKey: Constants.Defaults.standardUnit)
+    private let isMetric: Bool = UserDefaults.standard.bool(forKey: Constants.Defaults.metricUnits)
     
-
+    
     func initializeDayCell(day: Day?, shouldAnimate: Bool, isTodayCell: Bool){
         guard let day = day else{
             return
@@ -50,18 +50,18 @@ class TodayCell: UITableViewCell {
         daySummary.adjustsFontSizeToFitWidth = true
         
         if isTodayCell{
-        tempLow.text = "\(Constants.Symbols.downArrow)\(calculateTemperature(temp: day.tempLow))"
-        tempHigh.text = "\(Constants.Symbols.upArrow)\(calculateTemperature(temp:day.tempHigh))"
-        currentTemp.text = "\(calculateTemperature(temp: day.currentTemp))\(Constants.Symbols.degree)"
+            tempLow.text = "\(Constants.Symbols.downArrow)\(calculateTemperature(temp: day.tempLow))"
+            tempHigh.text = "\(Constants.Symbols.upArrow)\(calculateTemperature(temp:day.tempHigh))"
+            currentTemp.text = "\(calculateTemperature(temp: day.currentTemp))\(Constants.Symbols.degree)"
         }else{
-        currentTemp.text = "\(Constants.Symbols.downArrow)\(calculateTemperature(temp: day.tempLow))\(Constants.Symbols.degree)\(Constants.Symbols.upArrow)\(calculateTemperature(temp:day.tempHigh))\(Constants.Symbols.degree)"
-        currentTemp.font = currentTemp.font.withSize(35)
-        currentTemp.textAlignment = .left
-        tempHigh.isHidden = true
-        tempLow.isHidden = true
-        feelsLike.isHidden = true
+            currentTemp.text = "\(Constants.Symbols.downArrow)\(calculateTemperature(temp: day.tempLow))\(Constants.Symbols.degree)\(Constants.Symbols.upArrow)\(calculateTemperature(temp:day.tempHigh))\(Constants.Symbols.degree)"
+            currentTemp.font = currentTemp.font.withSize(35)
+            currentTemp.textAlignment = .left
+            tempHigh.isHidden = true
+            tempLow.isHidden = true
+            feelsLike.isHidden = true
         }
-
+        
         if shouldAnimate == false {
             gauge.rate = CGFloat(calculateScore(day: day))
         }else{
@@ -71,7 +71,7 @@ class TodayCell: UITableViewCell {
     
     private func calculateScore(day: Day) -> Int {
         let tempWeight = defaults.double(forKey: Constants.Defaults.tempWeight)/100
-        let humidityWeight = defaults.double(forKey: Constants.Defaults.humidityWeight)/100 
+        let humidityWeight = defaults.double(forKey: Constants.Defaults.humidityWeight)/100
         let precipWeight = defaults.double(forKey: Constants.Defaults.precipWeight)/100
         let windWeight = defaults.double(forKey: Constants.Defaults.windWeight)/100
         
@@ -87,7 +87,7 @@ class TodayCell: UITableViewCell {
     
     // Set The temperature to either Fahrenheit/Celsius depending on the users pref.
     private func calculateTemperature(temp: Int16) -> Int{
-        if !isStandard {
+        if isMetric {
             let metricTemp = (Int(temp)-32) * 5/9
             return metricTemp
         }else{
@@ -95,29 +95,29 @@ class TodayCell: UITableViewCell {
         }
     }
     
+    //Calculate Wind to either mph/kph
     private func calculateWind(windInMph: Int16, intValue: Bool) -> String{
         if intValue {
-            if !isStandard {
+            if isMetric {
                 let metricWind = Int((Double(windInMph)) * 1.6)
                 return "\(metricWind)"
             }else{
                 return "\(windInMph)"
             }
         }else{
-        if !isStandard {
-            let metricWind = Int((Double(windInMph)) * 1.6)
-            return "\(metricWind) kph"
-        }else{
-            return "\(windInMph) mph"
-        }
+            if isMetric {
+                let metricWind = Int((Double(windInMph)) * 1.6)
+                return "\(metricWind) kph"
+            }else{
+                return "\(windInMph) mph"
+            }
         }
     }
-    
     
     /*
      The daily summaries can get pretty long, so here we substring the first
      two sentences and return those.
-    */
+     */
     private func parseSentence(sentence: String?) -> String{
         guard let sentence = sentence else{
             return ""

@@ -27,9 +27,9 @@ class HourCell: UITableViewCell {
     
     var isObserving = false;
     private let defaults = UserDefaults.standard
-    private let isStandard: Bool = UserDefaults.standard.bool(forKey: Constants.Defaults.standardUnit)
+    private let isMetric: Bool = UserDefaults.standard.bool(forKey: Constants.Defaults.metricUnits)
 
-
+ 
     class var expandedHeight: CGFloat { get { return 130 } }
     class var defaultHeight: CGFloat  { get { return 70  } }
     
@@ -105,7 +105,6 @@ class HourCell: UITableViewCell {
                 precipIcon.isHidden = false
                 return "\(modPrecip)%"
         }
-    
     }
     
     private func calculateTime(time: Int) -> String {
@@ -118,7 +117,7 @@ class HourCell: UITableViewCell {
     
     // Set The temperature to either Fahrenheit/Celsius depending on the users pref.
     private func calculateTemperature(temp: Int16) -> String{
-        if !isStandard {
+        if isMetric {
             let metricTemp = (Int(temp)-32) * 5/9
             return "\(metricTemp)"
         }else{
@@ -127,7 +126,7 @@ class HourCell: UITableViewCell {
     }
     
     private func calculateWind(windInMph: Int16) -> String{
-        if !isStandard {
+        if isMetric {
             let metricWind = Int((Double(windInMph)) * 1.6)
             return "\(metricWind)"
         }else{

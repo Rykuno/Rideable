@@ -56,7 +56,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("App already launched : \(isAppAlreadyLaunchedOnce)")
         }else{
             defaults.set(true, forKey: Constants.Defaults.standardTime)
-            defaults.set(true, forKey: Constants.Defaults.standardUnit)
+            defaults.set(false, forKey: Constants.Defaults.metricUnits)
             defaults.set(true, forKey: Constants.Defaults.firstLaunch)
             defaults.set(70.0, forKey: Constants.Defaults.temp)
             defaults.set(30.0, forKey: Constants.Defaults.humidity)

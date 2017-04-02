@@ -29,7 +29,7 @@ class TomorrowVC: UITableViewController {
         setupFetchedResultsController()
         menuButton.target = revealViewController()
         menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
-        self.activityIndicatorShowing(showing: WeatherInfo.sharedInstance.isCurrentlyLoading, view: self.view)
+        self.activityIndicatorShowing(showing: WeatherInfo.sharedInstance.isCurrentlyLoading, view: self.view, tableView: self.tableView)
         setupNotifications() //Add Observer to listen for data completion notifications.
     }
     
@@ -45,7 +45,7 @@ class TomorrowVC: UITableViewController {
     
     //User action to refresh data
     @IBAction func refreshInfo(_ sender: Any) {
-        activityIndicatorShowing(showing: true, view: self.view)
+        activityIndicatorShowing(showing: true, view: self.view, tableView: self.tableView)
         WeatherInfo.sharedInstance.updateWeatherInfo()
     }
     
@@ -60,11 +60,11 @@ class TomorrowVC: UITableViewController {
                     if notification.object as? String != nil{
                         self.displayMessage(message: notification.object as! String)
                     }
-                    self.activityIndicatorShowing(showing: false, view: self.view)
+                    self.activityIndicatorShowing(showing: false, view: self.view, tableView: self.tableView)
                     return
                 }
                 self.hours = self.sortHourArray(day: (self.FRC.fetchedObjects! as [Day]).first)
-                self.activityIndicatorShowing(showing: false, view: self.view)
+                self.activityIndicatorShowing(showing: false, view: self.view, tableView: self.tableView)
                 self.tableView.reloadData()
             }
         }

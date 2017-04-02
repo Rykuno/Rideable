@@ -29,7 +29,7 @@ struct Constants {
     }
     
     struct Data {
-        static let weatherUpdateIntervalInMinutes = 3
+        static let weatherUpdateIntervalInMinutes = 5
         static let timeoutInSeconds = TimeInterval(30)
     }
     
@@ -40,7 +40,7 @@ struct Constants {
     
     struct Defaults {
         static let firstLaunch = "isAppAlreadyLaunchedOnce"
-        static let standardUnit = "measurementDefault"
+        static let metricUnits = "measurementDefault"
         static let standardTime = "timeDefault"
         static let temp = "temp"
         static let humidity = "humidity"

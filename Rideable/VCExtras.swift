@@ -22,7 +22,7 @@ extension UITableViewController{
     
     //MARK: - Activity Indicator
     // Show activity indicator. Credit to raywenderlich.com
-    func activityIndicatorShowing(showing: Bool, view: UIView) {
+    func activityIndicatorShowing(showing: Bool, view: UIView, tableView: UITableView) {
         if showing {
             let activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
             let container: UIView = UIView()
@@ -45,9 +45,12 @@ extension UITableViewController{
                 container.addSubview(loadingView)
                 //view.addSubview(loadingView)
                 view.addSubview(container)
+                tableView.scrollToRow(at: IndexPath.init(row: 0, section: 0), at: .top, animated: true)
                 activityIndicator.startAnimating()
+                tableView.isScrollEnabled = false
             }
         } else {
+            tableView.isScrollEnabled = true
             let subViews = view.subviews
             for subview in subViews{
                 if subview.tag == 1 {
@@ -78,8 +81,8 @@ extension UITableViewController{
             return nil
         }
         
-        //sort the hours and return result
-        hours = hours.sorted(by: { (a, b) -> Bool in
+        hours = hours.sorted(by: { (a, b) -> Bool in  //sort the hours and return result
+
             if a.id < b.id {
                 return true
             }else{
@@ -108,14 +111,15 @@ extension UITableViewController{
         case "chanceflurries", "chancesnow", "flurries", "sleet", "snow":
             image = UIImage(named: "\(day)Snow")!
             imageView = UIImageView(image: image)
-            imageView.layer.opacity = 0.85
+            imageView.layer.opacity = 0.80
             break
         default:
             image = UIImage(named: "\(day)")!
             imageView = UIImageView(image: image)
-            imageView.layer.opacity = 1.0
+            imageView.layer.opacity = day == Constants.TypeOfDay.TODAY ? 0.9 : 0.8
             break
         }
+        
         tableView.backgroundView = imageView
         imageView.contentMode = .scaleAspectFill
         imageView.backgroundColor = UIColor.black

@@ -41,7 +41,7 @@ class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        unitMeasurementSwitch.setOn(defaults.bool(forKey: Constants.Defaults.standardUnit), animated: true)
+        unitMeasurementSwitch.setOn(defaults.bool(forKey: Constants.Defaults.metricUnits), animated: true)
         timeMeasurementSwitch.setOn(defaults.bool(forKey: Constants.Defaults.standardTime), animated: true)
          
         tempSlider.value = defaults.float(forKey: Constants.Defaults.temp)
@@ -84,7 +84,7 @@ class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
         defaults.set(humiditySlider.value, forKey: Constants.Defaults.humidity)
         defaults.set(precipSlider.value, forKey: Constants.Defaults.precip)
         defaults.set(windSlider.value, forKey: Constants.Defaults.wind)
-        defaults.set(unitMeasurementSwitch.isOn, forKey: Constants.Defaults.standardUnit)
+        defaults.set(unitMeasurementSwitch.isOn, forKey: Constants.Defaults.metricUnits)
         defaults.set(timeMeasurementSwitch.isOn, forKey: Constants.Defaults.standardTime)
         defaults.set(tempStepper.value, forKey: Constants.Defaults.tempWeight)
         defaults.set(humidityStepper.value, forKey: Constants.Defaults.humidityWeight)
