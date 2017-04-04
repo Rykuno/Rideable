@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import CoreLocation
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,11 +16,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     let stack = CoreDataStack(modelName: "Rideable")!
     
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        
-        isAppAlreadyLaunchedOnce() 
+        isAppAlreadyLaunchedOnce()
         WeatherInfo.sharedInstance.updateWeatherInfo()
         return true
     }
@@ -41,6 +40,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        if !UserDefaults.standard.bool(forKey: "locationalServicesEnabled") {
+            switch CLLocationManager.authorizationStatus() {
+            case .authorizedWhenInUse:
+                print("working")
+                UserDefaults.standard.set(false, forKey: "locationalServicesEnabled")
+                break
+            case .denied:
+                print("denieeed")
+                UserDefaults.standard.set("90001", forKey: Constants.Defaults.location)
+                WeatherInfo.sharedInstance.updateWeatherInfo()
+            default: break
+            }
+        }
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -66,7 +78,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             defaults.set(15, forKey: Constants.Defaults.humidityWeight)
             defaults.set(40, forKey: Constants.Defaults.precipWeight)
             defaults.set(15, forKey: Constants.Defaults.windWeight)
-
+            defaults.set(false, forKey: "locationalServicesEnabled")
             print("App launched first time")
         }
     }

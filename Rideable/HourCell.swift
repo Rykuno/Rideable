@@ -11,7 +11,7 @@ import GaugeKit
 
 class HourCell: UITableViewCell {
 
-
+    //MARK: - Variables
     @IBOutlet weak var precipIcon: UIImageView!
     @IBOutlet weak var wind: UILabel!
     @IBOutlet weak var humidity: UILabel!
@@ -29,46 +29,56 @@ class HourCell: UITableViewCell {
     private let defaults = UserDefaults.standard
     private let isMetric: Bool = UserDefaults.standard.bool(forKey: Constants.Defaults.metricUnits)
 
- 
+    
     class var expandedHeight: CGFloat { get { return 130 } }
     class var defaultHeight: CGFloat  { get { return 70  } }
     
+
+    //MARK: - Cell Initialization
+    //Initializes the cell with the hour from the VC
     func initializeHourCell(hour: Hour?){
+        
         guard let hour = hour else{
             return
         }
-        
+    
+        //Score
         let calcScore = calculateScore(hour: hour)
         score.text = "\(calcScore)"
+        score.adjustsFontSizeToFitWidth = true
+        
+        //Condition
         condition.text = hour.condition
+        
+        //Wind
         wind.text = "\(calculateWind(windInMph: hour.windSpeed)) \(hour.windDir!)"
+        wind.adjustsFontSizeToFitWidth = true
+        
+        //Humidity
         humidity.text = "\(hour.humidity)%"
+        humidity.adjustsFontSizeToFitWidth = true
+        
+        //Time
         time.text = calculateTime(time: Int(hour.time))
+        
+        //Temperature
         temp.text = "\(calculateTemperature(temp: hour.temp))\(Constants.Symbols.degree)"
+        
+        //Precipitation
         precipChance.text = calculatePrecip(precip: hour.precip)
         precipDetail.text = calculatePrecip(precip: hour.precip)
+        precipDetail.adjustsFontSizeToFitWidth = true
+        
+        //Icon
         icon.image = UIImage(named: hour.icon!)
+        
+        //Gauge
         gauge.rate = CGFloat(calcScore)
         gauge.startColor = mixGreenAndRed(score: calcScore)
     }
     
-    func mixGreenAndRed(score: Int) -> UIColor {
-        let x = (Float(score)/100.00)/3
-        return UIColor(hue:CGFloat(x), saturation:0.7, brightness:1.0, alpha:1.0)
-    }
- 
-    private func calculateScore(hour: Hour) -> Int {
-        let tempWeight = defaults.double(forKey: Constants.Defaults.tempWeight)/100
-        let humidityWeight = defaults.double(forKey: Constants.Defaults.humidityWeight)/100 * 1.5
-        let precipWeight = defaults.double(forKey: Constants.Defaults.precipWeight)/100 * 2
-        let windWeight = defaults.double(forKey: Constants.Defaults.windWeight)/100
-        let tempDiff = abs(defaults.double(forKey: Constants.Defaults.temp)-Double(hour.temp))
-        let humidityDiff = abs(defaults.double(forKey: Constants.Defaults.humidity)-Double(hour.humidity))
-        let precipDiff = abs(defaults.double(forKey: Constants.Defaults.precip)-Double(hour.precip))
-        let windDiff = abs(defaults.double(forKey: Constants.Defaults.wind)-Double(hour.windSpeed))
-        let calculatedScore = Int(100 - (tempWeight * tempDiff) - (humidityWeight * humidityDiff) - (precipWeight * precipDiff) - (windWeight * windDiff))
-        return calculatedScore<0 ? 0 : calculatedScore
-    }
+
+    //MARK: - Expanding Cell Functions
     
     func checkHeight() {
         view.isHidden = (frame.size.height < HourCell.expandedHeight)
@@ -94,6 +104,10 @@ class HourCell: UITableViewCell {
         }
     }
     
+    
+    //MARK: - Computing Functions
+    
+    //Calculates precipitation on cell row.
     private func calculatePrecip(precip: Int16) -> String{
         let modPrecip = 10 * Int(round(Double(precip) / 10))
             if modPrecip == 0{
@@ -107,6 +121,7 @@ class HourCell: UITableViewCell {
         }
     }
     
+    //Calculate time depending on users preferences
     private func calculateTime(time: Int) -> String {
         if  defaults.bool(forKey: Constants.Defaults.standardTime) == true {
             return militaryToCivilTime(time: time)
@@ -125,6 +140,7 @@ class HourCell: UITableViewCell {
         }
     }
     
+    //Calculates wind kpm/mph
     private func calculateWind(windInMph: Int16) -> String{
         if isMetric {
             let metricWind = Int((Double(windInMph)) * 1.6)
@@ -134,6 +150,7 @@ class HourCell: UITableViewCell {
         }
     }
     
+    //Converts military to civilian time.
     private func militaryToCivilTime(time: Int)->String{
         let time = Int(time)
         if time == 0 {
@@ -145,6 +162,27 @@ class HourCell: UITableViewCell {
             let civilTime = time-12
             return "\(civilTime) pm"
         }
+    }
+    
+    //Depending on the score, calculate the color of the gauge
+    private func mixGreenAndRed(score: Int) -> UIColor {
+        let x = (Float(score)/100.00)/3
+        return UIColor(hue:CGFloat(x), saturation:0.7, brightness:1.0, alpha:1.0)
+    }
+    
+    // Depending on the users wieght and ride preference, calculate the score
+    // NOTE : Maybe change this to a better alg later.
+    private func calculateScore(hour: Hour) -> Int {
+        let tempWeight = defaults.double(forKey: Constants.Defaults.tempWeight)/100 * 2
+        let humidityWeight = defaults.double(forKey: Constants.Defaults.humidityWeight)/100 * 2
+        let precipWeight = defaults.double(forKey: Constants.Defaults.precipWeight)/100 * 2
+        let windWeight = defaults.double(forKey: Constants.Defaults.windWeight)/100 * 2
+        let tempDiff = abs(defaults.double(forKey: Constants.Defaults.temp)-Double(hour.temp))
+        let humidityDiff = abs(defaults.double(forKey: Constants.Defaults.humidity)-Double(hour.humidity))
+        let precipDiff = abs(defaults.double(forKey: Constants.Defaults.precip)-Double(hour.precip))
+        let windDiff = abs(defaults.double(forKey: Constants.Defaults.wind)-Double(hour.windSpeed))
+        let calculatedScore = Int(100 - (tempWeight * tempDiff) - (humidityWeight * humidityDiff) - (precipWeight * precipDiff) - (windWeight * windDiff))
+        return calculatedScore<0 ? 0 : calculatedScore
     }
 
 }

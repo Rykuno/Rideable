@@ -6,6 +6,7 @@ target 'Rideable' do
   use_frameworks!
 
   # Pods for Rideable
+pod 'SwiftLocation', '~> 2.0'
 pod 'ASValueTrackingSlider', '~> 0.12'
 pod 'EasyToast', '~> 2.0'
 pod 'GaugeKit', '~> 0.4'

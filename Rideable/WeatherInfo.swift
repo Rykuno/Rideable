@@ -7,21 +7,20 @@
 //
 import Foundation
 import UIKit
-
+import SwiftLocation
 
 class WeatherInfo: NSObject {
     
     private(set) var isCurrentlyLoading = false
     private var lastUpdateTime: Date?
-    
+    private var allowUpdateOverride = false
     /*
      Updates Weather Info if the current info is expired
      */
     func updateWeatherInfo(){
         //Set lastUpdateTime
-        lastUpdateTime = UserDefaults.standard.object(forKey: "date") as! Date?
-        
         if weatherInfoExpired() {
+            lastUpdateTime = UserDefaults.standard.object(forKey: "date") as! Date?
             isCurrentlyLoading = true
             WeatherClient.sharedInstance.sendRequest { (success, error) in
                 guard success == true else{
@@ -29,7 +28,7 @@ class WeatherInfo: NSObject {
                     print("ERROR = \(error)")
                     NotificationCenter.default.post(name: Constants.Notifications.REFRESH_NOTIFICATION, object: error)
                     return
-                }
+                } 
                 
                 UserDefaults.standard.set(Date(), forKey: "date")
                 self.isCurrentlyLoading = false
@@ -41,15 +40,24 @@ class WeatherInfo: NSObject {
         }
     }
     
+    public func setUpdateOverrideStatus(shouldOverride: Bool) {
+        allowUpdateOverride = shouldOverride
+    }
+    
     //Checks to see if the weather info has expired.
-     func weatherInfoExpired() -> Bool {
-        
+    private func weatherInfoExpired() -> Bool {
+
         /*
          if the lastUpdateTime is nil, then
          its probably a first time startup so
          return true.
          */
         guard lastUpdateTime != nil else {
+            return true
+        }
+        
+        guard allowUpdateOverride == false else {
+            allowUpdateOverride = false
             return true
         }
         

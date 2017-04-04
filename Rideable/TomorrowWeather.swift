@@ -25,6 +25,7 @@ struct TomorrowWeather {
         day.precipitation = Int16(currentForecast["pop"].intValue)
         day.tempHigh = Int16(currentForecast["high"]["fahrenheit"].intValue)
         day.tempLow = Int16(currentForecast["low"]["fahrenheit"].intValue)
+        day.location = currentObservation["display_location"]["full"].stringValue
         day.time = currentObservation["observation_time"].stringValue
         day.icon = currentForecast["icon"].stringValue
         day.humidity = "\(currentForecast["avehumidity"].intValue)%"

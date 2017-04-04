@@ -9,6 +9,7 @@
 import UIKit
 import SWRevealViewController
 import ASValueTrackingSlider
+import EasyToast
 
 class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
     
@@ -29,21 +30,25 @@ class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
     @IBOutlet weak var humiditySlider: ASValueTrackingSlider!
     @IBOutlet weak var precipSlider: ASValueTrackingSlider!
     @IBOutlet weak var windSlider: ASValueTrackingSlider!
+    @IBOutlet weak var locationTextField: UITextField!
     let defaults = UserDefaults.standard
-    
+     
     override func viewDidLoad() {
         super.viewDidLoad()
         let sliderArray: [ASValueTrackingSlider] = [tempSlider, humiditySlider, precipSlider, windSlider]
         setupSliders(sliders: sliderArray)
         menuButton.target = revealViewController()
         menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SettingsVC.dismissKeyboard))
+        view.addGestureRecognizer(tap)
+        locationTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         unitMeasurementSwitch.setOn(defaults.bool(forKey: Constants.Defaults.metricUnits), animated: true)
         timeMeasurementSwitch.setOn(defaults.bool(forKey: Constants.Defaults.standardTime), animated: true)
-         
+          
         tempSlider.value = defaults.float(forKey: Constants.Defaults.temp)
         humiditySlider.value = defaults.float(forKey: Constants.Defaults.humidity)
         precipSlider.value = defaults.float(forKey: Constants.Defaults.precip)
@@ -54,6 +59,8 @@ class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
         precipStepper.value = defaults.double(forKey: Constants.Defaults.precipWeight)
         windStepper.value = defaults.double(forKey: Constants.Defaults.windWeight)
         updateStepperState()
+        
+        locationTextField.text = defaults.string(forKey: Constants.Defaults.location)
     }
     
     private func setupSliders(sliders: [ASValueTrackingSlider]){
@@ -90,7 +97,10 @@ class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
         defaults.set(humidityStepper.value, forKey: Constants.Defaults.humidityWeight)
         defaults.set(precipStepper.value, forKey: Constants.Defaults.precipWeight)
         defaults.set(windStepper.value, forKey: Constants.Defaults.windWeight)
+        defaults.set(locationTextField.text, forKey: Constants.Defaults.location)
         defaults.synchronize()
+        
+        self.view.showToast("Settings Updated!", position: .bottom, popTime: 1.0, dismissOnTap: true)
     }
     
     private func updateStepperState(){
@@ -110,13 +120,13 @@ class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
             precipStepper.maximumValue = 100
             windStepper.maximumValue = 100
         }
-    }
+    } 
     
     @IBAction func tempCounter(_ sender: UIStepper) {
         let stepperValue = Int(sender.value)
         tempWeightLabel.text = "\(stepperValue)%"
         updateStepperState()
-    }
+    }  
     
     @IBAction func humidityCounter(_ sender: UIStepper) {
         let stepperValue = Int(sender.value)
@@ -134,5 +144,15 @@ class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
         let stepperValue = Int(sender.value)
         windWeightLabel.text = "\(stepperValue)%"
         updateStepperState()
+    }
+    
+    //Calls this function when the tap is recognized.
+    func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
+    }
+    
+    func textFieldDidChange(_ textField: UITextField) {
+        WeatherInfo.sharedInstance.setUpdateOverrideStatus(shouldOverride: true) 
     }
 }

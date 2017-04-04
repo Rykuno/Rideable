@@ -37,7 +37,7 @@ struct Constants {
         static let day = "day"
         static let hour = "hour"
     }
-    
+     
     struct Defaults {
         static let firstLaunch = "isAppAlreadyLaunchedOnce"
         static let metricUnits = "measurementDefault"
@@ -50,6 +50,7 @@ struct Constants {
         static let humidityWeight = "humidityWeight"
         static let precipWeight = "precipWeight"
         static let windWeight = "windWeight"
+        static let location = "location"
     }
     
     // MARK: Menu Constants
@@ -63,6 +64,7 @@ struct Constants {
             private static let facebookIcon = UIImage(named: "facebookIcon")
             private static let twitterIcon = UIImage(named: "twitterIcon")
             private static let githubIcon = UIImage(named: "githubIcon")
+
             
             static let weatherIcons = [todayWeather, tomorrowWeather, weeklyWeather]
             static let optionsIcons = [settingsIcon, aboutIcon]
@@ -73,6 +75,7 @@ struct Constants {
         struct Items {
             static let weatherItems = ["Today", "Tomorrow", "10 Day"]
             static let optionItems = ["Settings", "About"]
+            
             static let shareItems = ["Facebook", "Twitter", "GitHub"]
         }
         

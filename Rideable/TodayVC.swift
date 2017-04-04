@@ -65,7 +65,7 @@ class TodayVC: UITableViewController {
         /* Notification recieved from the WeatherInfo class. The classes obseving
          will listen for the download to be finished, update the table, and disable
          the activity indicator. */
-         notification = NotificationCenter.default.addObserver(forName: Constants.Notifications.REFRESH_NOTIFICATION, object: nil, queue: nil) { (notification) in
+        notification = NotificationCenter.default.addObserver(forName: Constants.Notifications.REFRESH_NOTIFICATION, object: nil, queue: nil) { (notification) in
             DispatchQueue.main.async {
                 //If VC is current window, display message and cancel loading indicator
                 guard notification.object == nil && self.isViewLoaded && (self.view.window != nil) else{

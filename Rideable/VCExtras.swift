@@ -116,7 +116,7 @@ extension UITableViewController{
         default:
             image = UIImage(named: "\(day)")!
             imageView = UIImageView(image: image)
-            imageView.layer.opacity = day == Constants.TypeOfDay.TODAY ? 0.9 : 0.8
+            imageView.layer.opacity = day == Constants.TypeOfDay.TODAY ? 0.95 : 0.8
             break
         }
         
