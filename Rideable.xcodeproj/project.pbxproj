@@ -11,6 +11,8 @@
 		EF77F6FF491DA831F43B21A8 /* Pods_RideableTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C451FC5C5CCACB2B83492655 /* Pods_RideableTests.framework */; };
 		FC018D8F1E75B9DA00F194CC /* HourCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC018D8E1E75B9DA00F194CC /* HourCell.swift */; };
 		FC018D911E77433000F194CC /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC018D901E77433000F194CC /* SettingsVC.swift */; };
+		FC0F5E571E970FA40002F315 /* WeekCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC0F5E551E970FA40002F315 /* WeekCell.swift */; };
+		FC0F5E5A1E9836410002F315 /* WeekVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC0F5E591E9836410002F315 /* WeekVC.swift */; };
 		FC1C7B1D1E7060B600DD0A66 /* TodayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1C7B1B1E7060B600DD0A66 /* TodayCell.swift */; };
 		FC1C7B1E1E7060B600DD0A66 /* TodayCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC1C7B1C1E7060B600DD0A66 /* TodayCell.xib */; };
 		FC34F38D1E6A8A2E00EE3DFD /* WeatherParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC34F38C1E6A8A2E00EE3DFD /* WeatherParser.swift */; };
@@ -54,6 +56,8 @@
 		C451FC5C5CCACB2B83492655 /* Pods_RideableTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RideableTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC018D8E1E75B9DA00F194CC /* HourCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HourCell.swift; sourceTree = "<group>"; };
 		FC018D901E77433000F194CC /* SettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
+		FC0F5E551E970FA40002F315 /* WeekCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeekCell.swift; sourceTree = "<group>"; };
+		FC0F5E591E9836410002F315 /* WeekVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeekVC.swift; sourceTree = "<group>"; };
 		FC1C7B1B1E7060B600DD0A66 /* TodayCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodayCell.swift; sourceTree = "<group>"; };
 		FC1C7B1C1E7060B600DD0A66 /* TodayCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TodayCell.xib; sourceTree = "<group>"; };
 		FC34F38C1E6A8A2E00EE3DFD /* WeatherParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherParser.swift; sourceTree = "<group>"; };
@@ -190,6 +194,7 @@
 				FC1C7B1B1E7060B600DD0A66 /* TodayCell.swift */,
 				FC1C7B1C1E7060B600DD0A66 /* TodayCell.xib */,
 				FC018D8E1E75B9DA00F194CC /* HourCell.swift */,
+				FC0F5E551E970FA40002F315 /* WeekCell.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -201,6 +206,7 @@
 				FC3C62201E6901FF00E37D49 /* TodayVC.swift */,
 				FC3C62241E6A0E8100E37D49 /* TomorrowVC.swift */,
 				FC018D901E77433000F194CC /* SettingsVC.swift */,
+				FC0F5E591E9836410002F315 /* WeekVC.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -447,12 +453,14 @@
 				FC3D12561E64C5690050B401 /* TodayWeather.swift in Sources */,
 				FC3D124D1E64A93E0050B401 /* WeatherInfo.swift in Sources */,
 				FC34F3F61E6CF48C00EE3DFD /* SWVC.swift in Sources */,
+				FC0F5E5A1E9836410002F315 /* WeekVC.swift in Sources */,
 				FC3C622C1E6A3B9C00E37D49 /* WeeklyWeather.swift in Sources */,
 				FC1C7B1D1E7060B600DD0A66 /* TodayCell.swift in Sources */,
 				FC3D12241E64A85F0050B401 /* AppDelegate.swift in Sources */,
 				FC3C62271E6A1CE900E37D49 /* VCExtras.swift in Sources */,
 				FC34F38D1E6A8A2E00EE3DFD /* WeatherParser.swift in Sources */,
 				FC3D125C1E65F43C0050B401 /* Constants.swift in Sources */,
+				FC0F5E571E970FA40002F315 /* WeekCell.swift in Sources */,
 				FC3C62211E6901FF00E37D49 /* TodayVC.swift in Sources */,
 				FC34F3901E6C8D3A00EE3DFD /* IgnoreConstants.swift in Sources */,
 			);

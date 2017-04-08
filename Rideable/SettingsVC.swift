@@ -18,7 +18,7 @@ class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
     @IBOutlet weak var timeMeasurementSwitch: UISwitch!
     @IBOutlet weak var unitMeasurementSwitch: UISwitch!
     @IBOutlet weak var menuButton: UIBarButtonItem!
-    @IBOutlet weak var tempWeightLabel: UILabel!
+    @IBOutlet weak var tempWeightLabel: UILabel! 
     @IBOutlet weak var humidityWeightLabel: UILabel!
     @IBOutlet weak var precipWeightLabel: UILabel!
     @IBOutlet weak var windWeightLabel: UILabel!
@@ -28,7 +28,7 @@ class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
     @IBOutlet weak var windStepper: UIStepper!
     @IBOutlet weak var tempSlider: ASValueTrackingSlider!
     @IBOutlet weak var humiditySlider: ASValueTrackingSlider!
-    @IBOutlet weak var precipSlider: ASValueTrackingSlider!
+    @IBOutlet weak var precipSlider: ASValueTrackingSlider! 
     @IBOutlet weak var windSlider: ASValueTrackingSlider!
     @IBOutlet weak var locationTextField: UITextField!
     let defaults = UserDefaults.standard
@@ -46,20 +46,25 @@ class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        //set switch values
         unitMeasurementSwitch.setOn(defaults.bool(forKey: Constants.Defaults.metricUnits), animated: true)
         timeMeasurementSwitch.setOn(defaults.bool(forKey: Constants.Defaults.standardTime), animated: true)
-          
+        
+        //Set slider values
         tempSlider.value = defaults.float(forKey: Constants.Defaults.temp)
         humiditySlider.value = defaults.float(forKey: Constants.Defaults.humidity)
         precipSlider.value = defaults.float(forKey: Constants.Defaults.precip)
         windSlider.value = defaults.float(forKey: Constants.Defaults.wind)
 
+        //set stepper values
         tempStepper.value = defaults.double(forKey: Constants.Defaults.tempWeight)
         humidityStepper.value = defaults.double(forKey: Constants.Defaults.humidityWeight)
         precipStepper.value = defaults.double(forKey: Constants.Defaults.precipWeight)
         windStepper.value = defaults.double(forKey: Constants.Defaults.windWeight)
         updateStepperState()
         
+        //set location text field
         locationTextField.text = defaults.string(forKey: Constants.Defaults.location)
     }
     
@@ -69,9 +74,9 @@ class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
             slider.popUpViewArrowLength = 0.1
             slider.popUpViewColor = self.view.tintColor
         }
-    } 
+    }
     
-    func slider(_ slider: ASValueTrackingSlider!, stringForValue value: Float) -> String! {
+    internal func slider(_ slider: ASValueTrackingSlider!, stringForValue value: Float) -> String! {
         switch slider.accessibilityIdentifier! {
         case "temp":
             return "\(Int(value))°"
@@ -98,9 +103,9 @@ class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
         defaults.set(precipStepper.value, forKey: Constants.Defaults.precipWeight)
         defaults.set(windStepper.value, forKey: Constants.Defaults.windWeight)
         defaults.set(locationTextField.text, forKey: Constants.Defaults.location)
-        defaults.synchronize()
         
-        self.view.showToast("Settings Updated!", position: .bottom, popTime: 1.0, dismissOnTap: true)
+        // Display messave for feedback to user the settings were saved
+        self.displayMessage(message: Constants.Notifications.Messages.settingsUpdated, view: self.view)
     }
     
     private func updateStepperState(){
@@ -147,12 +152,12 @@ class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
     }
     
     //Calls this function when the tap is recognized.
-    func dismissKeyboard() {
+    internal func dismissKeyboard() {
         //Causes the view (or one of its embedded text fields) to resign the first responder status.
         view.endEditing(true)
     }
     
-    func textFieldDidChange(_ textField: UITextField) {
+    internal func textFieldDidChange(_ textField: UITextField) {
         WeatherInfo.sharedInstance.setUpdateOverrideStatus(shouldOverride: true) 
     }
 }

@@ -42,7 +42,7 @@ class SWVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sectionsArray[section]
-    }
+    } 
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return sectionsArray.count

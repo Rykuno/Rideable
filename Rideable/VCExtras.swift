@@ -60,6 +60,17 @@ extension UITableViewController{
         }
     }
     
+    func displayMessage(message: String, view: UIView){
+        switch message {
+        case Constants.Notifications.Messages.alreadyUpdated, Constants.Notifications.Messages.settingsUpdated:
+            view.showToast(message, position: .bottom, popTime: 1.0, dismissOnTap: false)
+            break; 
+        default:
+            view.showToast(message, tag: nil, position: .bottom, popTime: 2.5, dismissOnTap: true, bgColor: UIColor.red, textColor: UIColor.white, font: nil)
+            break;
+        }
+    }
+    
     //Converts Military time to standard time
     func militaryToCivilTime(time: Int)->String{
         let time = Int(time)

@@ -71,7 +71,7 @@ class HourCell: UITableViewCell {
         
         //Icon
         icon.image = UIImage(named: hour.icon!)
-        
+
         //Gauge
         gauge.rate = CGFloat(calcScore)
         gauge.startColor = mixGreenAndRed(score: calcScore)

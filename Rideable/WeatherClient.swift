@@ -25,12 +25,12 @@ class WeatherClient {
             ]
         
         getLocation { (location, error) in
-            
             guard error == nil else{
                 completionHandler(false, error)
                 return
             }
             
+            //send request with location
             manager.request("https://api.wunderground.com/api/\(IgnoreConstants.apiKey)/conditions/hourly/forecast/forecast10day/q/\(location!).json", method: .get, headers: headers)
                 .validate(statusCode: 200..<300)
                 .responseJSON { response in
@@ -56,11 +56,11 @@ class WeatherClient {
                     }
             }
         }
-        }
+    }
     
     private func getLocation(completionHandler: @escaping (_ location: String?, _ error: String?) -> Void) {
-
-        //If the user has not accepted or has declined the auth, provide a default and 
+        
+        //If the user has not accepted or has declined the auth, provide a default and
         //resort to user input in the settings for location
         guard CLLocationManager.authorizationStatus() == .authorizedWhenInUse || CLLocationManager.authorizationStatus() == .notDetermined else {
             if UserDefaults.standard.string(forKey: Constants.Defaults.location) == nil {
@@ -83,10 +83,10 @@ class WeatherClient {
             completionHandler(coords, nil)
         }) { (request, location, error) -> (Void) in
             completionHandler(nil, error.localizedDescription)
-
+            
         }
     }
-
+    
     // MARK: Singleton
     static let sharedInstance = WeatherClient()
     private init() {} //To prevent others from using the default '()' initializer

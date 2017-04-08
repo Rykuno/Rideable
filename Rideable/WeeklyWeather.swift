@@ -18,6 +18,7 @@ struct WeeklyWeather {
         self.json = json
     }
     
+    //Parse weekly json
     public func parse(_ weekDays: [Week]?, _ moc: NSManagedObjectContext )-> [Week] {
         if weekDays == nil {
             var weekArray = [Week]()
@@ -34,6 +35,7 @@ struct WeeklyWeather {
                 week.windDirection = forecast["avewind"]["dir"].stringValue
                 week.humidity = Int16(forecast["avehumidity"].intValue)
                 week.id = Int16(index)
+
                 weekArray.append(week)
             }
             return weekArray

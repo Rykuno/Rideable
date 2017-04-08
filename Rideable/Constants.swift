@@ -16,6 +16,7 @@ struct Constants {
         
         struct Messages {
             static let alreadyUpdated = "Weather up to date"
+            static let settingsUpdated = "Settings Updated!"
         }
     }
     

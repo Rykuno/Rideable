@@ -1,4 +1,12 @@
 //
+//  WeekVC.swift
+//  Rideable
+//
+//  Created by Donny Blaine on 4/7/17.
+//  Copyright © 2017 RyStudios. All rights reserved.
+//
+
+//
 //  TodayVCTableViewController.swift
 //  Rideable
 //
@@ -11,22 +19,24 @@ import CoreData
 import SWRevealViewController
 import EasyToast
 
-class TodayVC: UITableViewController {
-    
+class WeekVC: UITableViewController {
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var refreshButton: UIBarButtonItem!
     
     private var selectedIndexPath : IndexPath?
     private let stack = (UIApplication.shared.delegate as! AppDelegate).stack
-    private var FRC: NSFetchedResultsController<Day>!
-    private var hours: [Hour]?
+    private var FRC: NSFetchedResultsController<Week>!
+    private var weekDays: [Week]?
     private var initialLoad = true
     private var notification: NSObjectProtocol!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setBackground()
+        let image = UIImage(named: "b3test")
+        let imageView = UIImageView(image: image)
+        tableView.backgroundView  = imageView
+        imageView.contentMode = .scaleAspectFill
         setupFetchedResultsController()
         menuButton.target = revealViewController()
         menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
@@ -36,9 +46,7 @@ class TodayVC: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if let condition = self.FRC.fetchedObjects?.first?.icon {
-            self.setBackgroundImage(day: Constants.TypeOfDay.TODAY, tableView: self.tableView, condition: condition)
-        }
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -46,14 +54,6 @@ class TodayVC: UITableViewController {
         NotificationCenter.default.removeObserver(notification)
     }
     
-    private func setBackground(){
-        let image = UIImage(named: "today")!
-        let imageView = UIImageView(image: image)
-        
-        tableView.backgroundView = imageView
-        imageView.contentMode = .scaleAspectFill
-        imageView.backgroundColor = UIColor.black
-    }
     
     //User action to refresh data
     @IBAction func refreshInfo(_ sender: Any) {
@@ -70,13 +70,11 @@ class TodayVC: UITableViewController {
                 //If VC is current window, display message and cancel loading indicator
                 guard notification.object == nil && self.isViewLoaded && (self.view.window != nil) else{
                     if notification.object as? String != nil{
-                        self.displayMessage(message: notification.object as! String, view: self.view) 
+                        self.displayMessage(message: notification.object as! String, view: self.view)
                     }
                     self.activityIndicatorShowing(showing: false, view: self.view, tableView: self.tableView)
                     return
                 }
-                self.setBackgroundImage(day: Constants.TypeOfDay.TODAY, tableView: self.tableView, condition: (self.FRC.fetchedObjects?.first?.icon)!)
-                self.hours = self.sortHourArray(day: (self.FRC.fetchedObjects! as [Day]).first)
                 self.activityIndicatorShowing(showing: false, view: self.view, tableView: self.tableView)
                 self.tableView.reloadData()
             }
@@ -86,9 +84,8 @@ class TodayVC: UITableViewController {
     
     //Create the FRC to fetch Tomorrows Weather
     private func setupFetchedResultsController(){
-        let fetchedRequest: NSFetchRequest<Day> = Day.fetchRequest()
-        fetchedRequest.predicate = NSPredicate(format: "type == %@", Constants.TypeOfDay.TODAY)
-        fetchedRequest.sortDescriptors = []
+        let fetchedRequest: NSFetchRequest<Week> = Week.fetchRequest()
+        fetchedRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
         FRC = NSFetchedResultsController(fetchRequest: fetchedRequest, managedObjectContext: stack.context , sectionNameKeyPath: nil, cacheName: nil)
         fetchedRequest.fetchBatchSize = 1
         FRC.delegate = self
@@ -96,9 +93,10 @@ class TodayVC: UITableViewController {
         do{
             try FRC.performFetch()
             
-            //set hours for easy access
-            if let dayObject = (FRC.fetchedObjects)!.first {
-                self.hours = self.sortHourArray(day: dayObject)
+            //set weekdays for easy access
+            if let weekObjects = (FRC.fetchedObjects) {
+                print(weekObjects.count)
+                weekDays = weekObjects
             }
         }catch{
             print(error.localizedDescription)
@@ -107,49 +105,31 @@ class TodayVC: UITableViewController {
     
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
-        //Only 2 sections, Day and Hour.
-        return 2
+        return 1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //Section 0 - Day cell(count = 1)
-        //Section 1 - Hour cell(count = 12)
-        return section == 0 ? 1 : 12
+        return 9
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0{ //Return Day Cell
-            if initialLoad {
-                let cell = Bundle.main.loadNibNamed("TodayCell", owner: self, options: nil)?.first as! TodayCell
-                cell.initializeDayCell(day: (FRC.fetchedObjects! as [Day]).first, shouldAnimate: true, isTodayCell: true)
-                initialLoad = false
-                return cell
-            }else{
-                let cell = Bundle.main.loadNibNamed("TodayCell", owner: self, options: nil)?.first as! TodayCell
-                cell.initializeDayCell(day: (FRC.fetchedObjects! as [Day]).first, shouldAnimate: false, isTodayCell: true)
-                return cell
-            }
-        }else{ //Return Hour Cell
-            let cell = tableView.dequeueReusableCell(withIdentifier: "HourCell", for: indexPath) as! HourCell
-            cell.initializeHourCell(hour: hours?[indexPath.row])
-            return cell
-        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: "WeekCell", for: indexPath) as! WeekCell
+        cell.initializeWeekCell(week: (weekDays?[indexPath.row])!)
+        return cell
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if  self.isViewLoaded && (self.view.window != nil){
-            if indexPath.section == 0 {
-                return self.view.frame.size.height - (self.navigationController?.navigationBar.frame.height)! - 19
-            }else{
-                if indexPath == selectedIndexPath {
-                    return HourCell.expandedHeight
-                } else {
-                    return HourCell.defaultHeight
-                }
+            if indexPath == selectedIndexPath {
+                return WeekCell.expandedHeight
+            } else {
+                return WeekCell.defaultHeight
             }
+            
         }
         return 100
     }
+    
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let previousIndexPath = selectedIndexPath
@@ -177,20 +157,20 @@ class TodayVC: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if let cell = cell as? HourCell {
-            (cell as HourCell).watchFrameChanges()
+        if let cell = cell as? WeekCell {
+            (cell as WeekCell).watchFrameChanges()
         }
     }
     
     override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if let cell = cell as? HourCell {
-            (cell as HourCell).ignoreFrameChanges()
+        if let cell = cell as? WeekCell {
+            (cell as WeekCell).ignoreFrameChanges()
         }
     }
 }
 
 //To notify of changes made to the table
-extension TodayVC: NSFetchedResultsControllerDelegate{
+extension WeekVC: NSFetchedResultsControllerDelegate{
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         self.tableView.beginUpdates()

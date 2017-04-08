@@ -18,6 +18,7 @@ struct TodayWeather{
         self.json = json
     }
     
+    //Parse the json for Today
     public func parse(_ day: Day, _ moc: NSManagedObjectContext) -> Day {
         let currentObservation = json["current_observation"]
         day.summary = currentObservation["weather"].stringValue

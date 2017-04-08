@@ -20,7 +20,7 @@ class TodayCell: UITableViewCell {
     @IBOutlet weak var tempLow: UILabel!
     @IBOutlet weak var tempHigh: UILabel!
     @IBOutlet weak var currentTemp: UILabel!
-    @IBOutlet weak var feelsLike: UILabel!
+    @IBOutlet weak var location: UILabel!
     @IBOutlet weak var humidity: UILabel!
     @IBOutlet weak var wind: UILabel!
     @IBOutlet weak var precip: UILabel!
@@ -37,7 +37,7 @@ class TodayCell: UITableViewCell {
         }
         
         //Score
-        score.text = "\(calculateScore(day: day))"
+        score.text = "\(calculateScore(day: day, isTodayCell: isTodayCell))"
         
         //Precipitation
         precip.text = "\(day.precipitation)%"
@@ -65,13 +65,13 @@ class TodayCell: UITableViewCell {
         daySummary.numberOfLines = 2
         daySummary.adjustsFontSizeToFitWidth = true
         
-        //FeelsLike
-        feelsLike.text = "Feels like \(day.feelsLike)"
+        //Location
+        location.text = "\(day.location!)"
+        location.adjustsFontSizeToFitWidth = true
         
         //UpdatedAt
-        updatedAtLabel.text = "Last Updated \(currentTime()) at \(day.location!)"
+        updatedAtLabel.text = "\(day.time!)"
         updatedAtLabel.adjustsFontSizeToFitWidth = true
-        
         
         //Configure labels dependent upon the type of day
         if isTodayCell{ //If the cell is today
@@ -81,23 +81,23 @@ class TodayCell: UITableViewCell {
         }else{ //If the cell is tomorrow lets replace current temperature with the high/low temp
             currentTemp.text = "\(Constants.Symbols.downArrow)\(calculateTemperature(temp: day.tempLow))\(Constants.Symbols.degree)\(Constants.Symbols.upArrow)\(calculateTemperature(temp:day.tempHigh))\(Constants.Symbols.degree)"
             currentTemp.font = currentTemp.font.withSize(35)
-            currentTemp.textAlignment = .left
+            currentTemp.textAlignment = .left 
             tempHigh.isHidden = true
             tempLow.isHidden = true
-            feelsLike.isHidden = true 
+            location.isHidden = true
         }
         
         //Determines if the gauge view should animate or not
         if shouldAnimate == false {
-            gauge.rate = CGFloat(calculateScore(day: day))
+            gauge.rate = CGFloat(calculateScore(day: day, isTodayCell: isTodayCell))
         }else{
-            gauge.animateRate(TimeInterval(1), newValue: CGFloat(calculateScore(day: day))) { (success) in}
+            gauge.animateRate(TimeInterval(1), newValue: CGFloat(calculateScore(day: day, isTodayCell: isTodayCell))) { (success) in}
         }
     }
     
     //MARK: - Computing Functions
     //Calculate Score depending on user's weight/preferences
-    private func calculateScore(day: Day) -> Int {
+    private func calculateScore(day: Day, isTodayCell: Bool) -> Int {
         let tempWeight = defaults.double(forKey: Constants.Defaults.tempWeight)/100 * 2
         let humidityWeight = defaults.double(forKey: Constants.Defaults.humidityWeight)/100 * 2
         let precipWeight = defaults.double(forKey: Constants.Defaults.precipWeight)/100 * 2
@@ -105,7 +105,16 @@ class TodayCell: UITableViewCell {
         
         //regex to remove any non digit characters from the humidity
         let humidityInt = Int((day.humidity?.replacingOccurrences(of: "\\D", with: "", options: .regularExpression, range: (day.humidity?.startIndex)!..<(day.humidity?.endIndex)!))!)
-        let tempDiff = abs(defaults.double(forKey: Constants.Defaults.temp)-Double(calculateTemperature(temp: day.currentTemp)))
+        
+        let tempDiff: Double!
+        if isTodayCell{
+            tempDiff = abs(defaults.double(forKey: Constants.Defaults.temp)-Double(calculateTemperature(temp: day.currentTemp)))
+        }else{
+            let avgHighLowTemp = Int16((day.tempHigh + day.tempLow)/2)
+            tempDiff = abs(defaults.double(forKey: Constants.Defaults.temp)-Double(calculateTemperature(temp: avgHighLowTemp)))
+        } 
+        
+        
         let humidityDiff = abs(defaults.double(forKey: Constants.Defaults.humidity)-Double(humidityInt!))
         let precipDiff = abs(defaults.double(forKey: Constants.Defaults.precip)-Double(day.precipitation))
         let windDiff = abs(defaults.double(forKey: Constants.Defaults.wind)-Double(calculateWind(windInMph: day.wind, intValue: true))!)
@@ -140,14 +149,6 @@ class TodayCell: UITableViewCell {
                 return "\(windInMph) mph"
             }
         }
-    }
-    
-    private func currentTime() -> String {
-        let date = Date()
-        let calendar = Calendar.current
-        let hour = calendar.component(.hour, from: date)
-        let minutes = calendar.component(.minute, from: date)
-        return "\(hour):\(minutes)"
     }
     
     /*
