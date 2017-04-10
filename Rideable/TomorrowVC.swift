@@ -133,6 +133,7 @@ class TomorrowVC: UITableViewController {
         }
     }
     
+    //Set row height depending on if the row should be expanded or not
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if  self.isViewLoaded && (self.view.window != nil){
             if indexPath.section == 0 {

@@ -39,6 +39,10 @@ class TodayVC: UITableViewController {
         if let condition = self.FRC.fetchedObjects?.first?.icon {
             self.setBackgroundImage(day: Constants.TypeOfDay.TODAY, tableView: self.tableView, condition: condition)
         }
+        if WeatherInfo.sharedInstance.allowUpdateOverride {
+            activityIndicatorShowing(showing: true, view: self.view, tableView: self.tableView)
+            WeatherInfo.sharedInstance.updateWeatherInfo()
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {

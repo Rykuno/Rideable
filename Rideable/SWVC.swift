@@ -8,21 +8,22 @@
 
 import UIKit
 import SWRevealViewController
+import Social
 
 class SWVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
-
+    
     @IBOutlet weak var tableView: UITableView!
     
     let imagesArray = [Constants.Menu.Icons.weatherIcons, Constants.Menu.Icons.optionsIcons, Constants.Menu.Icons.shareIcons]
     let optionsArray = [Constants.Menu.Items.weatherItems, Constants.Menu.Items.optionItems, Constants.Menu.Items.shareItems]
     let sectionsArray = Constants.Menu.Sections.sections
     
-     override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
-    } 
- 
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return optionsArray[section].count
     }
@@ -31,6 +32,8 @@ class SWVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         cell.textLabel?.text = optionsArray[indexPath.section][indexPath.row]
         cell.imageView?.image = imagesArray[indexPath.section][indexPath.row]
+        cell.imageView?.contentMode = .scaleAspectFit
+        cell.imageView?.layer.masksToBounds = true
         return cell
     }
     
@@ -42,7 +45,7 @@ class SWVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sectionsArray[section]
-    } 
+    }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return sectionsArray.count
@@ -77,6 +80,26 @@ class SWVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             let weekVC = mainStoryboard.instantiateViewController(withIdentifier: "SettingsVC")
             let newFrontViewController = UINavigationController.init(rootViewController: weekVC)
             revealViewController.pushFrontViewController(newFrontViewController, animated: true)
+        }
+        
+        if cell?.textLabel?.text == "Facebook" {
+            if let score = UserDefaults.standard.object(forKey: "TodayScore") {
+                let vc = SLComposeViewController(forServiceType:SLServiceTypeFacebook)
+                vc?.add(UIImage(named: "shareIcon")!)
+                vc?.add(URL(string: "http://www.example.com/"))
+                vc?.setInitialText("Rideable scores today as a \(score).")
+                self.present(vc!, animated: true, completion: nil)
+            }
+        }
+        
+        if cell?.textLabel?.text == "Twitter" {
+            if let score = UserDefaults.standard.object(forKey: "TodayScore") {
+                let vc = SLComposeViewController(forServiceType:SLServiceTypeTwitter)
+                vc?.add(UIImage(named: "shareIcon")!)
+                vc?.add(URL(string: "http://www.example.com/"))
+                vc?.setInitialText("Rideable scores today as a \(score).")
+                self.present(vc!, animated: true, completion: nil)
+            }
         }
     }
 }

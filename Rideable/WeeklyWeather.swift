@@ -25,12 +25,14 @@ struct WeeklyWeather {
             for index in 0...9 {
                 let week = Week(context: moc)
                 let forecast = json["forecast"]["simpleforecast"]["forecastday"][index]
+                let txtForecast = json["forecast"]["txt_forecast"]["forecastday"][index]
                 week.weekday = forecast["date"]["weekday"].stringValue
                 week.tempHigh = Int16(forecast["high"]["fahrenheit"].intValue)
                 week.tempLow = Int16(forecast["low"]["fahrenheit"].intValue)
                 week.condition = forecast["conditions"].stringValue
+                week.detailCondition = txtForecast["fcttext"].stringValue
                 week.icon = forecast["icon"].stringValue
-                week.precip = Int16(forecast["pop"].intValue)
+                week.precip = Int16(forecast["pop"].intValue) 
                 week.windSpeed = Int16(forecast["avewind"]["mph"].intValue)
                 week.windDirection = forecast["avewind"]["dir"].stringValue
                 week.humidity = Int16(forecast["avehumidity"].intValue)
@@ -42,6 +44,7 @@ struct WeeklyWeather {
         }else{
             for week in weekDays! {
                 let forecast = json["forecast"]["simpleforecast"]["forecastday"][Int(week.id)]
+                let txtForecast = json["forecast"]["txt_forecast"]["forecastday"][Int(week.id)]
                 week.weekday = forecast["date"]["weekday"].stringValue
                 week.tempHigh = Int16(forecast["high"]["fahrenheit"].intValue)
                 week.tempLow = Int16(forecast["low"]["fahrenheit"].intValue)
@@ -51,6 +54,8 @@ struct WeeklyWeather {
                 week.windSpeed = Int16(forecast["avewind"]["mph"].intValue)
                 week.windDirection = forecast["avewind"]["dir"].stringValue
                 week.humidity = Int16(forecast["avehumidity"].intValue)
+                week.detailCondition = txtForecast["fcttext"].stringValue
+
             }
             return weekDays!
         }

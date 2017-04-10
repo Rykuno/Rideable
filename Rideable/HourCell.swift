@@ -10,7 +10,7 @@ import UIKit
 import GaugeKit
 
 class HourCell: UITableViewCell {
-
+    
     //MARK: - Variables
     @IBOutlet weak var precipIcon: UIImageView!
     @IBOutlet weak var wind: UILabel!
@@ -28,12 +28,11 @@ class HourCell: UITableViewCell {
     var isObserving = false;
     private let defaults = UserDefaults.standard
     private let isMetric: Bool = UserDefaults.standard.bool(forKey: Constants.Defaults.metricUnits)
-
     
     class var expandedHeight: CGFloat { get { return 130 } }
     class var defaultHeight: CGFloat  { get { return 70  } }
     
-
+    
     //MARK: - Cell Initialization
     //Initializes the cell with the hour from the VC
     func initializeHourCell(hour: Hour?){
@@ -41,7 +40,7 @@ class HourCell: UITableViewCell {
         guard let hour = hour else{
             return
         }
-    
+        
         //Score
         let calcScore = calculateScore(hour: hour)
         score.text = "\(calcScore)"
@@ -71,13 +70,13 @@ class HourCell: UITableViewCell {
         
         //Icon
         icon.image = UIImage(named: hour.icon!)
-
+        
         //Gauge
         gauge.rate = CGFloat(calcScore)
         gauge.startColor = mixGreenAndRed(score: calcScore)
     }
     
-
+    
     //MARK: - Expanding Cell Functions
     
     func checkHeight() {
@@ -108,16 +107,21 @@ class HourCell: UITableViewCell {
     //MARK: - Computing Functions
     
     //Calculates precipitation on cell row.
+    //NOTE: If we hide the views, it breaks the UI for some reason so fixing via opacity.
     private func calculatePrecip(precip: Int16) -> String{
         let modPrecip = 10 * Int(round(Double(precip) / 10))
-            if modPrecip == 0{
-                precipChance.isHidden = true
-                precipIcon.isHidden = true
-                return "\(modPrecip)%"
-            }else{
-                precipChance.isHidden = false
-                precipIcon.isHidden = false
-                return "\(modPrecip)%"
+        if modPrecip == 0{
+            //precipChance.isHidden = true
+            //precipIcon.isHidden = true
+            precipChance.layer.opacity = 0.0
+            precipIcon.layer.opacity = 0.0
+            return "\(modPrecip)%"
+        }else{
+            //precipChance.isHidden = false
+            //precipIcon.isHidden = false
+            precipChance.layer.opacity = 1.0
+            precipIcon.layer.opacity = 1.0
+            return "\(modPrecip)%"
         }
     }
     
@@ -184,5 +188,5 @@ class HourCell: UITableViewCell {
         let calculatedScore = Int(100 - (tempWeight * tempDiff) - (humidityWeight * humidityDiff) - (precipWeight * precipDiff) - (windWeight * windDiff))
         return calculatedScore<0 ? 0 : calculatedScore
     }
-
+    
 }

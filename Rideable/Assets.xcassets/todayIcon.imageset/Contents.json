@@ -2,11 +2,12 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "1486946854_cloud.png",
+      "filename" : "todayIcon-60.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
+      "filename" : "todayIcon-60@2x.png",
       "scale" : "2x"
     },
     {

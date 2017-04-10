@@ -15,6 +15,8 @@ import CoreLocation
 class WeatherClient {
     typealias completionHandler = (_ success : Bool, _ error: String?) -> Void
     
+    
+    //Makes request to API
     func sendRequest(completionHandler: @escaping completionHandler) {
         let manager = Alamofire.SessionManager.default
         manager.session.configuration.timeoutIntervalForRequest = Constants.Data.timeoutInSeconds
@@ -51,20 +53,21 @@ class WeatherClient {
                         }
                     }
                     else {
-                        debugPrint("HTTP Request failed: \(response.result.error)")
                         completionHandler(false, response.result.error?.localizedDescription)
                     }
             }
         }
     }
     
+    
+    //Get location of user depending on whether locaiton services is on.
     private func getLocation(completionHandler: @escaping (_ location: String?, _ error: String?) -> Void) {
         
         //If the user has not accepted or has declined the auth, provide a default and
         //resort to user input in the settings for location
         guard CLLocationManager.authorizationStatus() == .authorizedWhenInUse || CLLocationManager.authorizationStatus() == .notDetermined else {
             if UserDefaults.standard.string(forKey: Constants.Defaults.location) == nil {
-                completionHandler("90001", nil)
+                completionHandler("Dallas,Texas", nil)
                 return
             }else{
                 completionHandler(UserDefaults.standard.string(forKey: Constants.Defaults.location), nil)
@@ -72,7 +75,7 @@ class WeatherClient {
             }
         }
         
-        guard UserDefaults.standard.string(forKey: Constants.Defaults.location) == nil else {
+        guard UserDefaults.standard.string(forKey: Constants.Defaults.location) == nil ||  UserDefaults.standard.bool(forKey: Constants.Defaults.userPrefersLocationServices) == true else {
             completionHandler(UserDefaults.standard.string(forKey: Constants.Defaults.location), nil)
             return
         }

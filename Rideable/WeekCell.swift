@@ -13,23 +13,59 @@ import GaugeKit
 class WeekCell: UITableViewCell {
     
     @IBOutlet weak var weekday: UILabel!
-
     @IBOutlet weak var condition: UILabel!
-    
     @IBOutlet weak var icon: UIImageView!
     @IBOutlet weak var gauge: Gauge!
-    
     @IBOutlet weak var view: UIView!
+    @IBOutlet weak var temperature: UILabel!
+    @IBOutlet weak var daySummary: UILabel!
+    @IBOutlet weak var scoreDetail: UILabel!
+    @IBOutlet weak var rain: UILabel!
+    @IBOutlet weak var humidity: UILabel!
+    @IBOutlet weak var wind: UILabel!
+    
+    private let defaults = UserDefaults.standard
+    private let isMetric: Bool = UserDefaults.standard.bool(forKey: Constants.Defaults.metricUnits)
     var isObserving = false;
+  
     class var expandedHeight: CGFloat { get { return 150 } }
     class var defaultHeight: CGFloat  { get { return 70  } }
     
     
     func initializeWeekCell(week: Week){
+        
+        //Score
+        let score = calculateScore(week: week)
+        gauge.rate = CGFloat(score)
+        gauge.startColor = mixGreenAndRed(score: score)
+        scoreDetail.text = "\(score)"
+        
+        //Weekday
         weekday.text = week.weekday
+        
+        //Condition
         condition.text = week.condition
-        icon.image = UIImage(named: week.icon!)
         condition.adjustsFontSizeToFitWidth = true
+        
+        //Icon
+        icon.image = UIImage(named: week.icon!)
+        
+        //Temperature
+        let avgTemp = (week.tempLow + week.tempHigh)/2
+        temperature.text = "\(calculateTemperature(temp: avgTemp))\(Constants.Symbols.degree)"
+        
+        //Detail Summary
+        daySummary.text = parseSentence(sentence: week.detailCondition)
+        daySummary.adjustsFontSizeToFitWidth = true
+        
+        //Precipitation
+        rain.text = "\(Int(week.precip))%"
+        
+        //Humidity
+        humidity.text = "\(Int(week.humidity))%"
+        
+        //Wind
+        wind.text = "\(week.windSpeed) \(week.windDirection!)"
     }
     
     //MARK: - Expanding Cell Functions
@@ -56,5 +92,98 @@ class WeekCell: UITableViewCell {
         if keyPath == "frame" {
             checkHeight()
         }
+    }
+    
+    //MARK: - Computing Functions
+    //Calculate Score depending on user's weight/preferences
+    private func calculateScore(week: Week) -> Int {
+        let tempWeight = defaults.double(forKey: Constants.Defaults.tempWeight)/100 * 1.5
+        let humidityWeight = defaults.double(forKey: Constants.Defaults.humidityWeight)/100 * 1.5
+        let precipWeight = defaults.double(forKey: Constants.Defaults.precipWeight)/100 * 1.5
+        let windWeight = defaults.double(forKey: Constants.Defaults.windWeight)/100 * 1.5
+        
+        let avgHighLowTemp = Int16((week.tempHigh + week.tempLow)/2)
+        let tempDiff = abs(defaults.double(forKey: Constants.Defaults.temp)-Double(calculateTemperature(temp: avgHighLowTemp)))
+        let humidityDiff = abs(defaults.double(forKey: Constants.Defaults.humidity)-Double(week.humidity))
+        let precipDiff = abs(defaults.double(forKey: Constants.Defaults.precip)-Double(week.precip))
+        let windDiff = abs(defaults.double(forKey: Constants.Defaults.wind)-Double(calculateWind(windInMph: week.windSpeed, intValue: true))!)
+
+        return Int(100 - (tempWeight * tempDiff) - (humidityWeight * humidityDiff) - (precipWeight * precipDiff) - (windWeight * windDiff))
+    }
+    
+    //Calculate Wind to either mph/kph
+    private func calculateWind(windInMph: Int16, intValue: Bool) -> String{
+        if intValue {
+            if isMetric {
+                let metricWind = Int((Double(windInMph)) * 1.6)
+                return "\(metricWind)"
+            }else{
+                return "\(windInMph)"
+            }
+        }else{
+            if isMetric {
+                let metricWind = Int((Double(windInMph)) * 1.6)
+                return "\(metricWind) kph"
+            }else{
+                return "\(windInMph) mph"
+            }
+        }
+    }
+    
+    //Set The temperature to either Fahrenheit/Celsius depending on the users pref.
+    private func calculateTemperature(temp: Int16) -> Int{
+        if isMetric {
+            let metricTemp = (Int(temp)-32) * 5/9
+            return metricTemp
+        }else{
+            return (Int(temp))
+        }
+    }
+    
+    /*
+     The daily summaries can get pretty long, so here we substring the first
+     two sentences and return those.
+     */
+    private func parseSentence(sentence: String?) -> String{
+        guard let sentence = sentence else{
+            return ""
+        }
+        
+        var subStringArray:[String] = []
+        var outputSentence: String = ""
+        
+        //substring by sentence and add to subStringArray
+        sentence.enumerateSubstrings(in: sentence.startIndex ..< sentence.endIndex, options: .bySentences) { (substring, range, rangeIndex, inoutBool) in
+            subStringArray.append(substring!)
+        }
+        
+        //If there are more than two sentences, append the first two and return it
+        //else just return the original sentence.
+        if subStringArray.count > 2 {
+            for index in 0...1 {
+                outputSentence.append(subStringArray[index])
+            }
+            return outputSentence
+        }else{
+            return sentence
+        }
+    }
+    
+    //Depending on the score, calculate the color of the gauge
+    private func mixGreenAndRed(score: Int) -> UIColor {
+        let x = (Float(score)/100.00)/3
+        return UIColor(hue:CGFloat(x), saturation:0.7, brightness:1.0, alpha:1.0)
+    }
+    
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+    }
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        
+        // Configure the view for the selected state
     }
 }

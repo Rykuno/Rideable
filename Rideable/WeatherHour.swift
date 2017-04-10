@@ -15,7 +15,7 @@ struct WeatherHour {
     enum Day: Int {
         case Tomorrow
         case Today
-    }
+    } 
     
     private var json: JSON!
     

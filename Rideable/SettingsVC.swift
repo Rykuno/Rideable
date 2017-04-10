@@ -10,15 +10,16 @@ import UIKit
 import SWRevealViewController
 import ASValueTrackingSlider
 import EasyToast
+import CoreLocation
+import LocationPickerViewController
 
 class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
     
     
-    @IBOutlet weak var captureWeatherButton: UIButton!
     @IBOutlet weak var timeMeasurementSwitch: UISwitch!
     @IBOutlet weak var unitMeasurementSwitch: UISwitch!
     @IBOutlet weak var menuButton: UIBarButtonItem!
-    @IBOutlet weak var tempWeightLabel: UILabel! 
+    @IBOutlet weak var tempWeightLabel: UILabel!
     @IBOutlet weak var humidityWeightLabel: UILabel!
     @IBOutlet weak var precipWeightLabel: UILabel!
     @IBOutlet weak var windWeightLabel: UILabel!
@@ -28,35 +29,51 @@ class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
     @IBOutlet weak var windStepper: UIStepper!
     @IBOutlet weak var tempSlider: ASValueTrackingSlider!
     @IBOutlet weak var humiditySlider: ASValueTrackingSlider!
-    @IBOutlet weak var precipSlider: ASValueTrackingSlider! 
+    @IBOutlet weak var precipSlider: ASValueTrackingSlider!
     @IBOutlet weak var windSlider: ASValueTrackingSlider!
-    @IBOutlet weak var locationTextField: UITextField!
-    let defaults = UserDefaults.standard
-     
+    @IBOutlet weak var locationServicesSwitch: UISwitch!
+    
+    private let defaults = UserDefaults.standard
+
+    @IBOutlet weak var locationButton: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
         let sliderArray: [ASValueTrackingSlider] = [tempSlider, humiditySlider, precipSlider, windSlider]
         setupSliders(sliders: sliderArray)
         menuButton.target = revealViewController()
         menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SettingsVC.dismissKeyboard))
-        view.addGestureRecognizer(tap)
-        locationTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
     }
     
+    @IBAction func locationServiceSwitched(_ sender: UISwitch) {
+        if sender.isOn{
+            if CLLocationManager.authorizationStatus() == .authorizedWhenInUse{
+                locationButton.isEnabled = false
+                WeatherInfo.sharedInstance.setUpdateOverrideStatus(shouldOverride: true)
+            }else{
+                presentOptionsDialog()
+                sender.isOn = false
+            }
+        }else{
+            locationButton.isEnabled = true
+        }
+    }
+    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+   
         //set switch values
         unitMeasurementSwitch.setOn(defaults.bool(forKey: Constants.Defaults.metricUnits), animated: true)
         timeMeasurementSwitch.setOn(defaults.bool(forKey: Constants.Defaults.standardTime), animated: true)
+        locationServicesSwitch.setOn(defaults.bool(forKey: Constants.Defaults.userPrefersLocationServices), animated: false)
         
         //Set slider values
         tempSlider.value = defaults.float(forKey: Constants.Defaults.temp)
         humiditySlider.value = defaults.float(forKey: Constants.Defaults.humidity)
         precipSlider.value = defaults.float(forKey: Constants.Defaults.precip)
         windSlider.value = defaults.float(forKey: Constants.Defaults.wind)
-
+        windSlider.maximumValue = 50
+        
         //set stepper values
         tempStepper.value = defaults.double(forKey: Constants.Defaults.tempWeight)
         humidityStepper.value = defaults.double(forKey: Constants.Defaults.humidityWeight)
@@ -64,8 +81,25 @@ class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
         windStepper.value = defaults.double(forKey: Constants.Defaults.windWeight)
         updateStepperState()
         
-        //set location text field
-        locationTextField.text = defaults.string(forKey: Constants.Defaults.location)
+        //set stepper label values
+        tempWeightLabel.text = "\(Int(tempStepper.value))%"
+        humidityWeightLabel.text = "\(Int(humidityStepper.value))%"
+        precipWeightLabel.text = "\(Int(precipStepper.value))%"
+        windWeightLabel.text = "\(Int(windStepper.value))%"
+        
+        // Select Location Button
+        locationButton.isEnabled = !locationServicesSwitch.isOn
+        
+        if let displayLocation = defaults.string(forKey: Constants.Defaults.displayLocation) {
+            locationButton.setTitle(displayLocation, for: .normal)
+        }else{
+            locationButton.setTitle("Select Location", for: .normal)
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        saveSettings()
     }
     
     private func setupSliders(sliders: [ASValueTrackingSlider]){
@@ -85,13 +119,18 @@ class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
         case "precip":
             return "\(Int(value))%"
         case "wind":
-            return "\(Int(value))"
+            return unitMeasurementSwitch.isOn ? "\(Int(value)) kph" : "\(Int(value)) mph"
         default:
             return String(Int(value))
         }
     }
     
     @IBAction func save(_ sender: Any) {
+        saveSettings()
+        self.displayMessage(message: Constants.Notifications.Messages.settingsUpdated, view: self.view)
+    }
+    
+    private func saveSettings(){
         defaults.set(tempSlider.value, forKey: Constants.Defaults.temp)
         defaults.set(humiditySlider.value, forKey: Constants.Defaults.humidity)
         defaults.set(precipSlider.value, forKey: Constants.Defaults.precip)
@@ -102,10 +141,7 @@ class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
         defaults.set(humidityStepper.value, forKey: Constants.Defaults.humidityWeight)
         defaults.set(precipStepper.value, forKey: Constants.Defaults.precipWeight)
         defaults.set(windStepper.value, forKey: Constants.Defaults.windWeight)
-        defaults.set(locationTextField.text, forKey: Constants.Defaults.location)
-        
-        // Display messave for feedback to user the settings were saved
-        self.displayMessage(message: Constants.Notifications.Messages.settingsUpdated, view: self.view)
+        defaults.set(locationServicesSwitch.isOn, forKey: Constants.Defaults.userPrefersLocationServices)
     }
     
     private func updateStepperState(){
@@ -125,13 +161,36 @@ class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
             precipStepper.maximumValue = 100
             windStepper.maximumValue = 100
         }
-    } 
+    }
+    
+    private func presentOptionsDialog() {
+        let alertController = UIAlertController (title: "Location Services Disabled", message: "In order to have the most accurate weather, please allow this app access to Location Services", preferredStyle: .alert)
+        
+        let settingsAction = UIAlertAction(title: "Enable Services", style: .default) { (_) -> Void in
+            guard let settingsUrl = URL(string: UIApplicationOpenSettingsURLString) else {
+                return
+            }
+            
+            if UIApplication.shared.canOpenURL(settingsUrl) {
+                UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                    print("Settings opened: \(success)") // Prints true
+                })
+            }
+        }
+        alertController.addAction(settingsAction)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    //MARK: - Counters
     
     @IBAction func tempCounter(_ sender: UIStepper) {
         let stepperValue = Int(sender.value)
         tempWeightLabel.text = "\(stepperValue)%"
         updateStepperState()
-    }  
+    }
     
     @IBAction func humidityCounter(_ sender: UIStepper) {
         let stepperValue = Int(sender.value)
@@ -151,13 +210,52 @@ class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
         updateStepperState()
     }
     
-    //Calls this function when the tap is recognized.
-    internal func dismissKeyboard() {
-        //Causes the view (or one of its embedded text fields) to resign the first responder status.
-        view.endEditing(true)
+    //dismisses keyboard upon tapping outside
+    private func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
     }
     
-    internal func textFieldDidChange(_ textField: UITextField) {
-        WeatherInfo.sharedInstance.setUpdateOverrideStatus(shouldOverride: true) 
+    @IBAction func locationPicker(_ sender: Any) {
+        let locationPicker = LocationPicker()
+        locationPicker.selectCompletion = { (pickedLocationItem) in
+            self.parseFormattedAddress(location: pickedLocationItem)
+            WeatherInfo.sharedInstance.setUpdateOverrideStatus(shouldOverride: true)
+            self.navigationController?.popToRootViewController(animated: true)
+        }
+        navigationController!.pushViewController(locationPicker, animated: true)
+    }
+    
+    
+    //Gets City,State,Coords, and Zip from a location
+    private func parseFormattedAddress(location: LocationItem){
+        
+        // Latitude and Longitude
+        if let latitude = location.coordinate?.latitude, let longitude = location.coordinate?.longitude {
+            let latLon = "\(latitude),\(longitude)"
+            defaults.set(latLon, forKey: Constants.Defaults.location)
+        }
+        
+        // Location name
+        if let state = location.addressDictionary?["State"] as? NSString, let city = location.addressDictionary?["City"] as? NSString
+        {
+            let cityState = "\(city), \(state)"
+            locationButton.setTitle(cityState, for: .normal)
+            defaults.set(cityState, forKey: Constants.Defaults.displayLocation)
+        }
+        
+        // Zip code
+        if let zip = location.addressDictionary?["ZIP"] as? NSString
+        {
+            print(zip)
+        }
+        
+    }
+}
+
+extension String {
+    //Removes whitespace form string for use in URL
+    func removingWhitespaces() -> String {
+        return components(separatedBy: .whitespaces).joined()
     }
 }

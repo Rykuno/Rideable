@@ -52,6 +52,8 @@ struct Constants {
         static let precipWeight = "precipWeight"
         static let windWeight = "windWeight"
         static let location = "location"
+        static let displayLocation = "displayLocation"
+        static let userPrefersLocationServices = "UserPrefersLocationServices"
     }
     
     // MARK: Menu Constants
@@ -61,23 +63,21 @@ struct Constants {
             private static let tomorrowWeather = UIImage(named: "tomorrowIcon")
             private static let weeklyWeather = UIImage(named: "10DayIcon")
             private static let settingsIcon = UIImage(named: "toolsIcon")
-            private static let aboutIcon = UIImage(named: "aboutIcon")
             private static let facebookIcon = UIImage(named: "facebookIcon")
             private static let twitterIcon = UIImage(named: "twitterIcon")
-            private static let githubIcon = UIImage(named: "githubIcon")
 
             
             static let weatherIcons = [todayWeather, tomorrowWeather, weeklyWeather]
-            static let optionsIcons = [settingsIcon, aboutIcon]
-            static let shareIcons = [facebookIcon, twitterIcon, githubIcon]
+            static let optionsIcons = [settingsIcon]
+            static let shareIcons = [facebookIcon, twitterIcon]
             
         }
         
         struct Items {
             static let weatherItems = ["Today", "Tomorrow", "10 Day"]
-            static let optionItems = ["Settings", "About"]
+            static let optionItems = ["Settings"]
             
-            static let shareItems = ["Facebook", "Twitter", "GitHub"]
+            static let shareItems = ["Facebook", "Twitter"]
         }
         
         struct Sections {

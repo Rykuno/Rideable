@@ -8,6 +8,7 @@ target 'Rideable' do
   # Pods for Rideable
 pod 'SwiftLocation', '~> 2.0'
 pod 'ASValueTrackingSlider', '~> 0.12'
+pod 'LocationPickerViewController', '~> 3.0'
 pod 'EasyToast', '~> 2.0'
 pod 'GaugeKit', '~> 0.4'
 pod 'SWRevealViewController', '~> 2.3'

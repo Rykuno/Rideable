@@ -23,6 +23,7 @@ class WeekVC: UITableViewController {
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var refreshButton: UIBarButtonItem!
+
     
     private var selectedIndexPath : IndexPath?
     private let stack = (UIApplication.shared.delegate as! AppDelegate).stack
@@ -33,20 +34,16 @@ class WeekVC: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let image = UIImage(named: "b3test")
-        let imageView = UIImageView(image: image)
-        tableView.backgroundView  = imageView
-        imageView.contentMode = .scaleAspectFill
+        setBackground() 
         setupFetchedResultsController()
         menuButton.target = revealViewController()
         menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
         self.activityIndicatorShowing(showing: WeatherInfo.sharedInstance.isCurrentlyLoading, view: self.view, tableView: self.tableView)
-        setupNotifications() //Add Observer to listen for data completion notifications.
+        setupNotifications() //Add Observer to listen for data completion notifications. 
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -54,6 +51,11 @@ class WeekVC: UITableViewController {
         NotificationCenter.default.removeObserver(notification)
     }
     
+    private func setBackground(){
+        let image = UIImage(named: "week")
+        let imageView = UIImageView(image: image)
+        tableView.backgroundView = imageView
+    }
     
     //User action to refresh data
     @IBAction func refreshInfo(_ sender: Any) {

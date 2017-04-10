@@ -43,13 +43,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if !UserDefaults.standard.bool(forKey: "locationalServicesEnabled") {
             switch CLLocationManager.authorizationStatus() {
             case .authorizedWhenInUse:
-                print("working")
-                UserDefaults.standard.set(false, forKey: "locationalServicesEnabled")
+                UserDefaults.standard.set(true, forKey: "locationalServicesEnabled")
+                UserDefaults.standard.set(true, forKey: Constants.Defaults.userPrefersLocationServices)
+                
                 break
-            case .denied:
-                print("denieeed")
-                UserDefaults.standard.set("90001", forKey: Constants.Defaults.location)
+            case .denied: 
+                UserDefaults.standard.set("Dallas,Texas", forKey: Constants.Defaults.location)
+                UserDefaults.standard.set(false, forKey: Constants.Defaults.userPrefersLocationServices)
                 WeatherInfo.sharedInstance.updateWeatherInfo()
+                break
             default: break
             }
         }

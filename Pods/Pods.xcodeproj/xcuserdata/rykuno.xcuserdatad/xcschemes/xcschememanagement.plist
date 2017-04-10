@@ -24,6 +24,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>LocationPickerViewController.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-Rideable.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -52,7 +57,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>27B315016B364D4D14DBB8E66625B88E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>3BB34B65184CA2C9ED1022EF61AF1D42</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>3DDE0C1F0020F6616D8124DAC439C1A5</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -67,7 +82,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B63F5B164BB2E14EB5C9E9E58FF09FA8</key>
+		<key>A3CEA9123D73E6AFD20C9CB67676DFB6</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -77,12 +92,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D66AF5712E0217E46EA5F7766C98AD94</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>E0D8981AE3360EA2E0D85474527082D1</key>
+		<key>DCB71CD01D785EC39D6DFDBA28DBF63E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -92,7 +102,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>F647F6627462FD3D80FD33197CAFD1DB</key>
+		<key>FDB5BE9A0CA6C4888CCB9C65E2731F36</key>
 		<dict>
 			<key>primary</key>
 			<true/>
