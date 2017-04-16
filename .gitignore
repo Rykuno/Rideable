@@ -26,7 +26,7 @@ xcuserdata/
 *.ipa
 *.dSYM.zip
 *.dSYM
-Rideable/IgnoreConstants.swift
+IgnoreConstants.swift
 ## Playgrounds
 timeline.xctimeline
 playground.xcworkspace
