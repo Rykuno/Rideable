@@ -86,8 +86,8 @@ class SWVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             if let score = UserDefaults.standard.object(forKey: "TodayScore") {
                 let vc = SLComposeViewController(forServiceType:SLServiceTypeFacebook)
                 vc?.add(UIImage(named: "shareIcon")!)
-                vc?.add(URL(string: "http://www.example.com/"))
-                vc?.setInitialText("Rideable scores today as a \(score).")
+                vc?.add(URL(string: ""))
+                vc?.setInitialText("Rideable scores today as a \(score)! Who's up for a ride?")
                 self.present(vc!, animated: true, completion: nil)
             }
         }
@@ -96,8 +96,8 @@ class SWVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             if let score = UserDefaults.standard.object(forKey: "TodayScore") {
                 let vc = SLComposeViewController(forServiceType:SLServiceTypeTwitter)
                 vc?.add(UIImage(named: "shareIcon")!)
-                vc?.add(URL(string: "http://www.example.com/"))
-                vc?.setInitialText("Rideable scores today as a \(score).")
+                vc?.add(URL(string: ""))
+                vc?.setInitialText("Rideable scores today as a \(score)! Who's up for a ride?")
                 self.present(vc!, animated: true, completion: nil)
             }
         }
