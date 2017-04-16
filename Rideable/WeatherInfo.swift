@@ -13,13 +13,15 @@ class WeatherInfo: NSObject {
     
     private(set) var isCurrentlyLoading = false
     private(set) var allowUpdateOverride = false
-    private var lastUpdateTime = UserDefaults.standard.object(forKey: "date") as! Date?
+    private var lastUpdateTime: Date?
 
     /*
      Updates Weather Info if the current info is expired
      */
     func updateWeatherInfo(){
         //Set lastUpdateTime
+        lastUpdateTime = UserDefaults.standard.object(forKey: "date") as! Date?
+        
         if weatherInfoExpired() {
             isCurrentlyLoading = true
             WeatherClient.sharedInstance.sendRequest { (success, error) in
@@ -28,7 +30,7 @@ class WeatherInfo: NSObject {
                     NotificationCenter.default.post(name: Constants.Notifications.REFRESH_NOTIFICATION, object: error)
                     return
                 }
-                
+                print("settings date")
                 UserDefaults.standard.set(Date(), forKey: "date")
                 self.isCurrentlyLoading = false
                 NotificationCenter.default.post(name: Constants.Notifications.REFRESH_NOTIFICATION, object: nil)
