@@ -50,7 +50,12 @@ class TodayCell: UITableViewCell {
         wind.text = "\(calculateWind(windInMph: day.wind, intValue: false))"
         
         //Condition
-        condition.text = day.summary
+        let wordList =  day.summary?.components(separatedBy: .punctuationCharacters).joined().components(separatedBy: " ").filter{!$0.isEmpty}
+        if (wordList?.count)! > 2 {
+            condition.text = wordList?[3]
+        }else{
+            condition.text = day.summary
+        }
         condition.adjustsFontSizeToFitWidth = true
         
         //Icon
@@ -159,7 +164,7 @@ class TodayCell: UITableViewCell {
      two sentences and return those.
      */
     private func parseSentence(sentence: String?) -> String{
-        guard let sentence = sentence else{
+        guard var sentence = sentence else{
             return ""
         }
         
@@ -177,12 +182,57 @@ class TodayCell: UITableViewCell {
             for index in 0...1 {
                 outputSentence.append(subStringArray[index])
             }
+            outputSentence = replaceUnitsInSentence(sentence: outputSentence)
             return outputSentence
         }else{
+            sentence = replaceUnitsInSentence(sentence: sentence)
             return sentence
         }
     }
     
+    //Replaces units from F to C within sentence so refreshing the weather is not needed when user swaps settings.
+    private func replaceUnitsInSentence(sentence: String) -> String {
+        //We only want to proceed if the user wants metric measurements since our default fetch is in standard
+        if !isMetric {return sentence}
+        
+        let pattern = "([0-9]{1,3})F|([0-9]{1,3})"
+        let arrayOfReplacements = sentence.matchingStrings(regex: pattern)
+        
+        //If there are no strings to match, lets just break
+        guard arrayOfReplacements.count > 0 else{
+            return sentence
+        }
+        //Loop over each word that needs replacing and replace with correct conversion
+        var newSentence = sentence
+        for replacement in arrayOfReplacements[0] {
+            newSentence = newSentence.replacingOccurrences(of: replacement, with: calculateConversion(input: replacement))
+        }
+        return newSentence
+    }
+    
+    //Converts strings that need converting from within sentence
+    private func calculateConversion(input: String?) -> String {
+        //If the input is nil, return
+        guard let input = input else {
+            return ""
+        }
+        //If the input contains F lets remove it and append C at then end of our conversion
+        guard !input.contains("F") else{
+            let number = Int(input.substring(to: input.index(before: input.endIndex)))
+            if let number = number {
+                return "\(calculateTemperature(temp: Int16(number)))C"
+            }
+            return ""
+        }
+        
+        //!contain "F" & !null so lets just convert the string to an int, and calculate it.
+        let number = Int(input)
+        if let number = number {
+            return "\(calculateTemperature(temp: Int16(number)))"
+        }else{
+            return ""
+        }
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -193,5 +243,24 @@ class TodayCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
         
         // Configure the view for the selected state
+    }
+}
+
+extension String {
+    func matchingStrings(regex: String) -> [[String]] {
+        guard let regex = try? NSRegularExpression(pattern: regex, options: []) else { return [] }
+        let nsString = self as NSString
+        let results  = regex.matches(in: self, options: [], range: NSMakeRange(0, nsString.length))
+        return results.map { result in
+            (0..<result.numberOfRanges).map { result.rangeAt($0).location != NSNotFound
+                ? nsString.substring(with: result.rangeAt($0))
+                : ""
+            }
+        }
+    }
+    
+    func replace(target: String, withString: String) -> String
+    {
+        return self.replacingOccurrences(of: target, with: withString, options: NSString.CompareOptions.literal, range: nil)
     }
 }

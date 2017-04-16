@@ -140,12 +140,21 @@ class WeekCell: UITableViewCell {
         }
     }
     
+    //Depending on the score, calculate the color of the gauge
+    private func mixGreenAndRed(score: Int) -> UIColor {
+        let x = (Float(score)/100.00)/3
+        return UIColor(hue:CGFloat(x), saturation:0.7, brightness:1.0, alpha:1.0)
+    }
+    
+    
+    //MARK: - Parsing Functions
+    
     /*
      The daily summaries can get pretty long, so here we substring the first
      two sentences and return those.
      */
     private func parseSentence(sentence: String?) -> String{
-        guard let sentence = sentence else{
+        guard var sentence = sentence else{
             return ""
         }
         
@@ -163,18 +172,58 @@ class WeekCell: UITableViewCell {
             for index in 0...1 {
                 outputSentence.append(subStringArray[index])
             }
+            outputSentence = replaceUnitsInSentence(sentence: outputSentence)
             return outputSentence
         }else{
+            sentence = replaceUnitsInSentence(sentence: sentence)
             return sentence
         }
     }
     
-    //Depending on the score, calculate the color of the gauge
-    private func mixGreenAndRed(score: Int) -> UIColor {
-        let x = (Float(score)/100.00)/3
-        return UIColor(hue:CGFloat(x), saturation:0.7, brightness:1.0, alpha:1.0)
+    //Replaces units from F to C within sentence so refreshing the weather is not needed when user swaps settings.
+    private func replaceUnitsInSentence(sentence: String) -> String {
+        //We only want to proceed if the user wants metric measurements since our default fetch is in standard
+        if !isMetric {return sentence}
+        
+        let pattern = "([0-9]{1,3})F|([0-9]{1,3})"
+        let arrayOfReplacements = sentence.matchingStrings(regex: pattern)
+        
+        //If there are no strings to match, lets just break
+        guard arrayOfReplacements.count > 0 else{
+            return sentence
+        }
+        //Loop over each word that needs replacing and replace with correct conversion
+        var newSentence = sentence
+        for replacement in arrayOfReplacements[0] {
+            newSentence = newSentence.replacingOccurrences(of: replacement, with: calculateConversion(input: replacement))
+        }
+        return newSentence
     }
     
+    //Converts strings that need converting from within sentence
+    private func calculateConversion(input: String?) -> String {
+        //If the input is nil, return
+        guard let input = input else {
+            return ""
+        }
+        //If the input contains F lets remove it and append C at then end of our conversion
+        guard !input.contains("F") else{
+            let number = Int(input.substring(to: input.index(before: input.endIndex)))
+            if let number = number {
+                return "\(calculateTemperature(temp: Int16(number)))C"
+            }
+            return ""
+        }
+        
+        //!contain "F" & !null so lets just convert the string to an int, and calculate it.
+        let number = Int(input)
+        if let number = number {
+            return "\(calculateTemperature(temp: Int16(number)))"
+        }else{
+            return ""
+        }
+    }
+
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -187,3 +236,5 @@ class WeekCell: UITableViewCell {
         // Configure the view for the selected state
     }
 }
+
+

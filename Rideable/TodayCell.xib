@@ -16,7 +16,7 @@
             <rect key="frame" x="0.0" y="0.0" width="350" height="545"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="350" height="544.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="350" height="545"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="aLo-7q-Utr">
@@ -75,13 +75,13 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="5Ay-aO-Brd">
-                                                <rect key="frame" x="246" y="29" width="64" height="98"/>
+                                                <rect key="frame" x="253.5" y="34.5" width="56.5" height="87"/>
                                                 <subviews>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" image="tstorms" translatesAutoresizingMaskIntoConstraints="NO" id="jO3-nm-zAc">
-                                                        <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>
+                                                        <rect key="frame" x="2" y="0.0" width="53" height="53"/>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sunny" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nfT-fO-YCs">
-                                                        <rect key="frame" x="4" y="74" width="56.5" height="24"/>
+                                                        <rect key="frame" x="0.0" y="63" width="56.5" height="24"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                         <color key="textColor" red="1" green="0.99912706900000003" blue="0.9874554914" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
@@ -236,7 +236,7 @@
     </objects>
     <resources>
         <image name="humidity" width="128" height="128"/>
-        <image name="tstorms" width="64" height="64"/>
+        <image name="tstorms" width="53" height="53"/>
         <image name="umbrella" width="128" height="128"/>
         <image name="wind" width="128" height="128"/>
     </resources>

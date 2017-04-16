@@ -60,6 +60,7 @@ extension UITableViewController{
         }
     }
     
+    //Displays messages in a certain style/color depending upon the message
     func displayMessage(message: String, view: UIView){
         switch message {
         case Constants.Notifications.Messages.alreadyUpdated, Constants.Notifications.Messages.settingsUpdated:
@@ -103,6 +104,8 @@ extension UITableViewController{
         return hours
     }
     
+    
+    //Sets background image depending upon the weather condition
     func setBackgroundImage(day: String, tableView: UITableView, condition: String?) {
         var imageView: UIImageView
         var image: UIImage
