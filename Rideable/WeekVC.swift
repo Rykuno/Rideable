@@ -29,7 +29,6 @@ class WeekVC: UITableViewController {
     private let stack = (UIApplication.shared.delegate as! AppDelegate).stack
     private var FRC: NSFetchedResultsController<Week>!
     private var weekDays: [Week]?
-    private var initialLoad = true
     private var notification: NSObjectProtocol!
     
     override func viewDidLoad() {
@@ -44,6 +43,10 @@ class WeekVC: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        if currentReachabilityStatus == .notReachable{
+            WeatherInfo.sharedInstance.setUpdateOverrideStatus(shouldOverride: true)
+        }
+        
         if WeatherInfo.sharedInstance.allowUpdateOverride {
             activityIndicatorShowing(showing: true, view: self.view, tableView: self.tableView)
             WeatherInfo.sharedInstance.updateWeatherInfo()
@@ -66,15 +69,17 @@ class WeekVC: UITableViewController {
         activityIndicatorShowing(showing: true, view: self.view, tableView: self.tableView)
         WeatherInfo.sharedInstance.messageShown = false
         WeatherInfo.sharedInstance.updateWeatherInfo()
-        self.viewDidLoad()
-        self.viewWillAppear(true)
-        self.tableView.reloadData()
+        tableView.reloadData()
     }
     
     private func setupNotifications(){
         /* Notification recieved from the WeatherInfo class. The classes obseving
          will listen for the download to be finished, update the table, and disable
          the activity indicator. */
+        guard notification == nil else{
+            return
+        }
+        
         notification = NotificationCenter.default.addObserver(forName: Constants.Notifications.REFRESH_NOTIFICATION, object: nil, queue: nil) { (notification) in
             DispatchQueue.main.async {
                 //If VC is current window, display message and cancel loading indicator
@@ -121,7 +126,8 @@ class WeekVC: UITableViewController {
             tableView.separatorStyle = .none
             return 1
         }
-        if let days = weekDays?.count {
+        tableView.separatorStyle = .singleLine
+        if let days = weekDays?.count, (weekDays?.count)! > 0{
             return days
         }else{
             return 1

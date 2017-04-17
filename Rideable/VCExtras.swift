@@ -64,10 +64,10 @@ extension UITableViewController{
         switch message {
         case Constants.Notifications.Messages.alreadyUpdated, Constants.Notifications.Messages.settingsUpdated:
             view.showToast(message, position: .bottom, popTime: 1.0, dismissOnTap: false)
-            break; 
+            break;
         default:
             if WeatherInfo.sharedInstance.messageShown == false {
-            view.showToast(message, tag: nil, position: .bottom, popTime: 2.5, dismissOnTap: true, bgColor: UIColor.red, textColor: UIColor.white, font: nil)
+                view.showToast(message, tag: nil, position: .bottom, popTime: 2.5, dismissOnTap: true, bgColor: UIColor.red, textColor: UIColor.white, font: nil)
                 WeatherInfo.sharedInstance.messageShown = true
             }
             break;
@@ -96,7 +96,7 @@ extension UITableViewController{
         }
         
         hours = hours.sorted(by: { (a, b) -> Bool in  //sort the hours and return result
-
+            
             if a.id < b.id {
                 return true
             }else{
@@ -117,7 +117,7 @@ extension UITableViewController{
             imageView = UIImageView(image: image)
             return
         }
-         
+        
         switch condition {
         case "chancerain", "chancetstorms", "rain", "tstorms":
             image = UIImage(named: "\(day)Rain")!

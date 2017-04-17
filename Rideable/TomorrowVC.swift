@@ -39,6 +39,9 @@ class TomorrowVC: UITableViewController {
         if let icon = self.FRC.fetchedObjects?.first?.icon {
             self.setBackgroundImage(day: Constants.TypeOfDay.TOMORROW, tableView: tableView, condition: icon)
         }
+        if currentReachabilityStatus == .notReachable{
+            WeatherInfo.sharedInstance.setUpdateOverrideStatus(shouldOverride: true)
+        }
         if WeatherInfo.sharedInstance.allowUpdateOverride {
             activityIndicatorShowing(showing: true, view: self.view, tableView: self.tableView)
             WeatherInfo.sharedInstance.updateWeatherInfo()
@@ -113,7 +116,7 @@ class TomorrowVC: UITableViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         //Only 2 sections, Day and Hour.
         return 2
-    } 
+    }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //Section 0 - Day cell(count = 1)

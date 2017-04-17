@@ -34,7 +34,7 @@ class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
     @IBOutlet weak var locationServicesSwitch: UISwitch!
     
     private let defaults = UserDefaults.standard
-
+    
     @IBOutlet weak var locationButton: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,10 +58,10 @@ class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
         }
     }
     
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-   
+        
         //set switch values
         unitMeasurementSwitch.setOn(defaults.bool(forKey: Constants.Defaults.metricUnits), animated: true)
         timeMeasurementSwitch.setOn(defaults.bool(forKey: Constants.Defaults.standardTime), animated: true)

@@ -39,6 +39,9 @@ class TodayVC: UITableViewController {
         if let condition = self.FRC.fetchedObjects?.first?.icon {
             self.setBackgroundImage(day: Constants.TypeOfDay.TODAY, tableView: self.tableView, condition: condition)
         }
+        if currentReachabilityStatus == .notReachable{
+            WeatherInfo.sharedInstance.setUpdateOverrideStatus(shouldOverride: true)
+        }
         if WeatherInfo.sharedInstance.allowUpdateOverride {
             activityIndicatorShowing(showing: true, view: self.view, tableView: self.tableView)
             WeatherInfo.sharedInstance.updateWeatherInfo()
@@ -76,7 +79,7 @@ class TodayVC: UITableViewController {
                 //If VC is current window, display message and cancel loading indicator
                 guard notification.object == nil && self.isViewLoaded && (self.view.window != nil) else{
                     if notification.object as? String != nil{
-                        self.displayMessage(message: notification.object as! String, view: self.view) 
+                        self.displayMessage(message: notification.object as! String, view: self.view)
                     }
                     self.activityIndicatorShowing(showing: false, view: self.view, tableView: self.tableView)
                     return
