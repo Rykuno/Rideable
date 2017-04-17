@@ -13,8 +13,9 @@ class WeatherInfo: NSObject {
     
     private(set) var isCurrentlyLoading = false
     private(set) var allowUpdateOverride = false
+    public var messageShown = false;
     private var lastUpdateTime: Date?
-
+    
     /*
      Updates Weather Info if the current info is expired
      */
@@ -72,10 +73,8 @@ class WeatherInfo: NSObject {
          */
         let unitsPassedSinceLastUpdate = Calendar.current.dateComponents([.minute], from: (lastUpdateTime)! as Date, to: Date()).minute ?? Constants.Data.weatherUpdateIntervalInMinutes
         if unitsPassedSinceLastUpdate >= Constants.Data.weatherUpdateIntervalInMinutes {
-            print("updating")
             return true
         }else{
-            print("up to date")
             return false
         }
     }

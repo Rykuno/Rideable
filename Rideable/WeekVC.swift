@@ -23,7 +23,7 @@ class WeekVC: UITableViewController {
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var refreshButton: UIBarButtonItem!
-
+    
     
     private var selectedIndexPath : IndexPath?
     private let stack = (UIApplication.shared.delegate as! AppDelegate).stack
@@ -34,12 +34,12 @@ class WeekVC: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setBackground() 
+        setBackground()
         setupFetchedResultsController()
         menuButton.target = revealViewController()
         menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
-        self.activityIndicatorShowing(showing: WeatherInfo.sharedInstance.isCurrentlyLoading, view: self.view, tableView: self.tableView)
-        setupNotifications() //Add Observer to listen for data completion notifications. 
+        activityIndicatorShowing(showing: WeatherInfo.sharedInstance.isCurrentlyLoading, view: self.view, tableView: self.tableView)
+        setupNotifications() //Add Observer to listen for data completion notifications.
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -64,6 +64,7 @@ class WeekVC: UITableViewController {
     //User action to refresh data
     @IBAction func refreshInfo(_ sender: Any) {
         activityIndicatorShowing(showing: true, view: self.view, tableView: self.tableView)
+        WeatherInfo.sharedInstance.messageShown = false
         WeatherInfo.sharedInstance.updateWeatherInfo()
         self.viewDidLoad()
         self.viewWillAppear(true)
@@ -90,7 +91,6 @@ class WeekVC: UITableViewController {
         }
     }
     
-    
     //Create the FRC to fetch Tomorrows Weather
     private func setupFetchedResultsController(){
         let fetchedRequest: NSFetchRequest<Week> = Week.fetchRequest()
@@ -101,7 +101,6 @@ class WeekVC: UITableViewController {
         
         do{
             try FRC.performFetch()
-            
             //set weekdays for easy access
             if let weekObjects = (FRC.fetchedObjects) {
                 print(weekObjects.count)
@@ -120,18 +119,20 @@ class WeekVC: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if ((FRC.fetchedObjects?.count)! == 0) && (currentReachabilityStatus == .notReachable){
             tableView.separatorStyle = .none
-            print("working")
-            return 0
+            return 1
         }
-        
-        return 9
+        if let days = weekDays?.count {
+            return days
+        }else{
+            return 1
+        }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if (weekDays?.count)! > 0 {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "WeekCell", for: indexPath) as! WeekCell
-        cell.initializeWeekCell(week: (weekDays?[indexPath.row])!)
-        return cell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "WeekCell", for: indexPath) as! WeekCell
+            cell.initializeWeekCell(week: (weekDays?[indexPath.row])!)
+            return cell
         }else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "WeekCell", for: indexPath) as! WeekCell
             return cell
@@ -139,6 +140,10 @@ class WeekVC: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if ((FRC.fetchedObjects?.count)! == 0) && (currentReachabilityStatus == .notReachable) {
+            return 0
+        }
+        
         if  self.isViewLoaded && (self.view.window != nil){
             if indexPath == selectedIndexPath {
                 return WeekCell.expandedHeight

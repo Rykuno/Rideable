@@ -62,6 +62,7 @@ class TodayVC: UITableViewController {
     //User action to refresh data
     @IBAction func refreshInfo(_ sender: Any) {
         activityIndicatorShowing(showing: true, view: self.view, tableView: self.tableView)
+        WeatherInfo.sharedInstance.messageShown = false
         WeatherInfo.sharedInstance.updateWeatherInfo()
         self.tableView.reloadData()
     }
@@ -87,7 +88,6 @@ class TodayVC: UITableViewController {
             }
         }
     }
-    
     
     //Create the FRC to fetch Tomorrows Weather
     private func setupFetchedResultsController(){
@@ -123,7 +123,11 @@ class TodayVC: UITableViewController {
             tableView.separatorStyle = .none
             return section == 0 ? 1 : 0
         }else{
-            return section == 0 ? 1 : 12
+            if let hours = hours?.count {
+                return section == 0 ? 1 : hours
+            }else{
+                return section == 0 ? 1: 0
+            }
         }
     }
     

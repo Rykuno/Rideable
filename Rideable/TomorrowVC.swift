@@ -53,6 +53,7 @@ class TomorrowVC: UITableViewController {
     //User action to refresh data
     @IBAction func refreshInfo(_ sender: Any) {
         activityIndicatorShowing(showing: true, view: self.view, tableView: self.tableView)
+        WeatherInfo.sharedInstance.messageShown = false
         WeatherInfo.sharedInstance.updateWeatherInfo()
         self.tableView.reloadData()
     }
@@ -75,7 +76,7 @@ class TomorrowVC: UITableViewController {
                 //If VC is current window, display message and cancel loading indicator
                 guard notification.object == nil && self.isViewLoaded && (self.view.window != nil) else{
                     if notification.object as? String != nil{
-                        self.displayMessage(message: notification.object as! String)
+                        self.displayMessage(message: notification.object as! String, view: self.view)
                     }
                     self.activityIndicatorShowing(showing: false, view: self.view, tableView: self.tableView)
                     return
@@ -84,17 +85,6 @@ class TomorrowVC: UITableViewController {
                 self.activityIndicatorShowing(showing: false, view: self.view, tableView: self.tableView)
                 self.tableView.reloadData()
             }
-        }
-    }
-    
-    private func displayMessage(message: String){
-        switch message {
-        case Constants.Notifications.Messages.alreadyUpdated:
-            self.view.showToast(message, position: .bottom, popTime: 1.0, dismissOnTap: true)
-            break;
-        default:
-            self.view.showToast(message, tag: nil, position: .bottom, popTime: 2.5, dismissOnTap: true, bgColor: UIColor.red, textColor: UIColor.white, font: nil)
-            break;
         }
     }
     
@@ -123,7 +113,7 @@ class TomorrowVC: UITableViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         //Only 2 sections, Day and Hour.
         return 2
-    }
+    } 
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //Section 0 - Day cell(count = 1)
@@ -132,7 +122,11 @@ class TomorrowVC: UITableViewController {
             tableView.separatorStyle = .none
             return section == 0 ? 1 : 0
         }else{
-            return section == 0 ? 1 : 12
+            if let hours = hours?.count {
+                return section == 0 ? 1 : hours
+            }else{
+                return section == 0 ? 1 : 0
+            }
         }
     }
     

@@ -27,13 +27,12 @@ class WeekCell: UITableViewCell {
     private let defaults = UserDefaults.standard
     private let isMetric: Bool = UserDefaults.standard.bool(forKey: Constants.Defaults.metricUnits)
     var isObserving = false;
-  
+    
     class var expandedHeight: CGFloat { get { return 150 } }
     class var defaultHeight: CGFloat  { get { return 70  } }
     
     
     func initializeWeekCell(week: Week){
-        
         //Score
         let score = calculateScore(week: week)
         gauge.rate = CGFloat(score)
@@ -44,7 +43,14 @@ class WeekCell: UITableViewCell {
         weekday.text = week.weekday
         
         //Condition
-        condition.text = week.condition
+        let wordList =  week.condition?.components(separatedBy: .punctuationCharacters).joined().components(separatedBy: " ").filter{!$0.isEmpty}
+        if (wordList?.count)! > 2 {
+            if let word = wordList?[3] {
+                condition.text = word
+            }
+        }else{
+            condition.text = week.condition
+        }
         condition.adjustsFontSizeToFitWidth = true
         
         //Icon
@@ -107,7 +113,7 @@ class WeekCell: UITableViewCell {
         let humidityDiff = abs(defaults.double(forKey: Constants.Defaults.humidity)-Double(week.humidity))
         let precipDiff = abs(defaults.double(forKey: Constants.Defaults.precip)-Double(week.precip))
         let windDiff = abs(defaults.double(forKey: Constants.Defaults.wind)-Double(calculateWind(windInMph: week.windSpeed, intValue: true))!)
-
+        
         return Int(100 - (tempWeight * tempDiff) - (humidityWeight * humidityDiff) - (precipWeight * precipDiff) - (windWeight * windDiff))
     }
     
@@ -223,7 +229,7 @@ class WeekCell: UITableViewCell {
             return ""
         }
     }
-
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()

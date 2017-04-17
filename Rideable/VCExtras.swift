@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 
 extension UITableViewController{
-    
     //MARK: - Display Error
     //displays error to user with a title and message
     func displayError(title: String, message: String){
@@ -67,7 +66,10 @@ extension UITableViewController{
             view.showToast(message, position: .bottom, popTime: 1.0, dismissOnTap: false)
             break; 
         default:
+            if WeatherInfo.sharedInstance.messageShown == false {
             view.showToast(message, tag: nil, position: .bottom, popTime: 2.5, dismissOnTap: true, bgColor: UIColor.red, textColor: UIColor.white, font: nil)
+                WeatherInfo.sharedInstance.messageShown = true
+            }
             break;
         }
     }

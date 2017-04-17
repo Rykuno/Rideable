@@ -66,7 +66,6 @@ struct Constants {
             private static let facebookIcon = UIImage(named: "facebookIcon")
             private static let twitterIcon = UIImage(named: "twitterIcon")
 
-            
             static let weatherIcons = [todayWeather, tomorrowWeather, weeklyWeather]
             static let optionsIcons = [settingsIcon]
             static let shareIcons = [facebookIcon, twitterIcon]
@@ -76,7 +75,6 @@ struct Constants {
         struct Items {
             static let weatherItems = ["Today", "Tomorrow", "10 Day"]
             static let optionItems = ["Settings"]
-            
             static let shareItems = ["Facebook", "Twitter"]
         }
         

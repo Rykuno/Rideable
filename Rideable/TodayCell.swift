@@ -52,7 +52,9 @@ class TodayCell: UITableViewCell {
         //Condition
         let wordList =  day.summary?.components(separatedBy: .punctuationCharacters).joined().components(separatedBy: " ").filter{!$0.isEmpty}
         if (wordList?.count)! > 2 {
-            condition.text = wordList?[3]
+            if let word = wordList?[3] {
+                condition.text = word
+            }
         }else{
             condition.text = day.summary
         }
