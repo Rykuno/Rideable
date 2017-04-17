@@ -44,6 +44,10 @@ class WeekVC: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        if WeatherInfo.sharedInstance.allowUpdateOverride {
+            activityIndicatorShowing(showing: true, view: self.view, tableView: self.tableView)
+            WeatherInfo.sharedInstance.updateWeatherInfo()
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -61,6 +65,9 @@ class WeekVC: UITableViewController {
     @IBAction func refreshInfo(_ sender: Any) {
         activityIndicatorShowing(showing: true, view: self.view, tableView: self.tableView)
         WeatherInfo.sharedInstance.updateWeatherInfo()
+        self.viewDidLoad()
+        self.viewWillAppear(true)
+        self.tableView.reloadData()
     }
     
     private func setupNotifications(){
@@ -111,13 +118,24 @@ class WeekVC: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if ((FRC.fetchedObjects?.count)! == 0) && (currentReachabilityStatus == .notReachable){
+            tableView.separatorStyle = .none
+            print("working")
+            return 0
+        }
+        
         return 9
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if (weekDays?.count)! > 0 {
         let cell = tableView.dequeueReusableCell(withIdentifier: "WeekCell", for: indexPath) as! WeekCell
         cell.initializeWeekCell(week: (weekDays?[indexPath.row])!)
         return cell
+        }else{
+            let cell = tableView.dequeueReusableCell(withIdentifier: "WeekCell", for: indexPath) as! WeekCell
+            return cell
+        }
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -127,7 +145,6 @@ class WeekVC: UITableViewController {
             } else {
                 return WeekCell.defaultHeight
             }
-            
         }
         return 100
     }

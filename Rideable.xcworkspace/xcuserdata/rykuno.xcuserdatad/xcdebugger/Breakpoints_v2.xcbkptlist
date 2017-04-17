@@ -9,14 +9,46 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Rideable/TodayCell.swift"
-            timestampString = "514003761.217199"
+            filePath = "Rideable/WeekVC.swift"
+            timestampString = "514094366.645445"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "54"
-            endingLineNumber = "54"
-            landmarkName = "initializeDayCell(day:shouldAnimate:isTodayCell:)"
+            startingLineNumber = "85"
+            endingLineNumber = "85"
+            landmarkName = "setupNotifications()"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Rideable.WeekVC.((setupNotifications in _166765696AA499752F3CF9B1AA7DC23A) () -&gt; ()).(closure #1)"
+                  moduleName = "Rideable"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rykuno/Desktop/ios/Rideable/Rideable/WeekVC.swift"
+                  timestampString = "514082501.148385"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "78"
+                  endingLineNumber = "78"
+                  offsetFromSymbolStart = "19">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Rideable.WeekVC.((setupNotifications in _166765696AA499752F3CF9B1AA7DC23A) () -&gt; ()).(closure #1).(closure #1)"
+                  moduleName = "Rideable"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rykuno/Desktop/ios/Rideable/Rideable/WeekVC.swift"
+                  timestampString = "514082501.150266"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "77"
+                  endingLineNumber = "77"
+                  offsetFromSymbolStart = "15">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -25,13 +57,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Rideable/TodayCell.swift"
-            timestampString = "514017453.372992"
+            filePath = "Rideable/WeekVC.swift"
+            timestampString = "514094366.645445"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "210"
-            endingLineNumber = "210"
-            landmarkName = "replaceUnitsInSentence(sentence:)"
+            startingLineNumber = "86"
+            endingLineNumber = "86"
+            landmarkName = "setupNotifications()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

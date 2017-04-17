@@ -26,6 +26,7 @@ class TomorrowVC: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setBackground()
         setupFetchedResultsController()
         menuButton.target = revealViewController()
         menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
@@ -35,7 +36,13 @@ class TomorrowVC: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.setBackgroundImage(day: Constants.TypeOfDay.TOMORROW, tableView: tableView, condition: (self.FRC.fetchedObjects?.first?.icon)!)
+        if let icon = self.FRC.fetchedObjects?.first?.icon {
+            self.setBackgroundImage(day: Constants.TypeOfDay.TOMORROW, tableView: tableView, condition: icon)
+        }
+        if WeatherInfo.sharedInstance.allowUpdateOverride {
+            activityIndicatorShowing(showing: true, view: self.view, tableView: self.tableView)
+            WeatherInfo.sharedInstance.updateWeatherInfo()
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -47,6 +54,16 @@ class TomorrowVC: UITableViewController {
     @IBAction func refreshInfo(_ sender: Any) {
         activityIndicatorShowing(showing: true, view: self.view, tableView: self.tableView)
         WeatherInfo.sharedInstance.updateWeatherInfo()
+        self.tableView.reloadData()
+    }
+    
+    private func setBackground(){
+        let image = UIImage(named: "tomorrow")!
+        let imageView = UIImageView(image: image)
+        
+        tableView.backgroundView = imageView
+        imageView.contentMode = .scaleAspectFill
+        imageView.backgroundColor = UIColor.black
     }
     
     private func setupNotifications(){
@@ -111,7 +128,12 @@ class TomorrowVC: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //Section 0 - Day cell(count = 1)
         //Section 1 - Hour cell(count = 12)
-        return section == 0 ? 1 : 12
+        if ((FRC.fetchedObjects?.count)! == 0) && (currentReachabilityStatus == .notReachable){
+            tableView.separatorStyle = .none
+            return section == 0 ? 1 : 0
+        }else{
+            return section == 0 ? 1 : 12
+        }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

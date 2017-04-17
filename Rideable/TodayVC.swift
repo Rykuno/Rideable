@@ -63,6 +63,7 @@ class TodayVC: UITableViewController {
     @IBAction func refreshInfo(_ sender: Any) {
         activityIndicatorShowing(showing: true, view: self.view, tableView: self.tableView)
         WeatherInfo.sharedInstance.updateWeatherInfo()
+        self.tableView.reloadData()
     }
     
     private func setupNotifications(){
@@ -118,7 +119,12 @@ class TodayVC: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //Section 0 - Day cell(count = 1)
         //Section 1 - Hour cell(count = 12)
-        return section == 0 ? 1 : 12
+        if ((FRC.fetchedObjects?.count)! == 0) && (currentReachabilityStatus == .notReachable){
+            tableView.separatorStyle = .none
+            return section == 0 ? 1 : 0
+        }else{
+            return section == 0 ? 1 : 12
+        }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
