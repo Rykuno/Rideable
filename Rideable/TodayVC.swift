@@ -36,6 +36,7 @@ class TodayVC: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        checkConnectionForFirstTimeLoad()
         if let condition = self.FRC.fetchedObjects?.first?.icon {
             self.setBackgroundImage(day: Constants.TypeOfDay.TODAY, tableView: self.tableView, condition: condition)
         }
@@ -48,6 +49,13 @@ class TodayVC: UITableViewController {
         }
     }
     
+    
+    //Since there are so many exceptions for the first time load if there is no connection, we will just mandate it for the first load only.
+    private func checkConnectionForFirstTimeLoad(){
+        if !UserDefaults.standard.bool(forKey: Constants.Defaults.firstTimeDataLoad) && currentReachabilityStatus == .notReachable {
+        displayError(title: "No Internet Connection", message: "Internet connection required for first time launch")
+        }
+    }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillAppear(animated)
         NotificationCenter.default.removeObserver(notification)
@@ -56,7 +64,6 @@ class TodayVC: UITableViewController {
     private func setBackground(){
         let image = UIImage(named: "today")!
         let imageView = UIImageView(image: image)
-        
         tableView.backgroundView = imageView
         imageView.contentMode = .scaleAspectFill
         imageView.backgroundColor = UIColor.black
@@ -68,6 +75,25 @@ class TodayVC: UITableViewController {
         WeatherInfo.sharedInstance.messageShown = false
         WeatherInfo.sharedInstance.updateWeatherInfo()
         self.tableView.reloadData()
+    }
+    
+    //displays error to user with a title and message
+    func displayError(title: String, message: String){
+        let alert = UIAlertController(title: "\(title)", message: "\(message)", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Retry", style: .default, handler: { (action) in
+            if self.currentReachabilityStatus == .notReachable {
+                print("not reachable")
+                self.present(alert, animated: true, completion: nil)
+            }else{
+                UserDefaults.standard.set(true, forKey: Constants.Defaults.firstTimeDataLoad)
+                self.activityIndicatorShowing(showing: true, view: self.view, tableView: self.tableView)
+                WeatherInfo.sharedInstance.updateWeatherInfo()
+                self.dismiss(animated: true, completion: nil)
+            }
+        }))
+        DispatchQueue.main.async {
+            self.present(alert, animated: true, completion: nil)
+        }
     }
     
     private func setupNotifications(){

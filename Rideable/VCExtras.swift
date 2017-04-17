@@ -10,14 +10,7 @@ import UIKit
 
 extension UITableViewController{
     //MARK: - Display Error
-    //displays error to user with a title and message
-    func displayError(title: String, message: String){
-        let alert = UIAlertController(title: "\(title)", message: "\(message)", preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
-        DispatchQueue.main.async {
-            self.present(alert, animated: true, completion: nil)
-        }
-    }
+
     
     //MARK: - Activity Indicator
     // Show activity indicator. Credit to raywenderlich.com

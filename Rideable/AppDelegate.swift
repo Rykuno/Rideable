@@ -72,6 +72,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             defaults.set(true, forKey: Constants.Defaults.standardTime)
             defaults.set(false, forKey: Constants.Defaults.metricUnits)
             defaults.set(true, forKey: Constants.Defaults.firstLaunch)
+            defaults.set(false, forKey: "firstDataLoad")
             defaults.set(70.0, forKey: Constants.Defaults.temp)
             defaults.set(30.0, forKey: Constants.Defaults.humidity)
             defaults.set(0.0, forKey: Constants.Defaults.precip)

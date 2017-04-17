@@ -54,6 +54,7 @@ struct Constants {
         static let location = "location"
         static let displayLocation = "displayLocation"
         static let userPrefersLocationServices = "UserPrefersLocationServices"
+        static let firstTimeDataLoad = "firstTimeDataLoad"
     }
     
     // MARK: Menu Constants

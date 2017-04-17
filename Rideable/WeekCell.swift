@@ -44,7 +44,7 @@ class WeekCell: UITableViewCell {
         
         //Condition
         let wordList =  week.condition?.components(separatedBy: .punctuationCharacters).joined().components(separatedBy: " ").filter{!$0.isEmpty}
-        if (wordList?.count)! > 2 {
+        if (wordList?.count)! > 3 {
             if let word = wordList?[3] {
                 condition.text = word
             }

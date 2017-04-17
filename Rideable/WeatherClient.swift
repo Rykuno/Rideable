@@ -15,7 +15,6 @@ import CoreLocation
 class WeatherClient {
     typealias completionHandler = (_ success : Bool, _ error: String?) -> Void
     
-    
     //Makes request to API
     func sendRequest(completionHandler: @escaping completionHandler) {
         let manager = Alamofire.SessionManager.default
