@@ -13,10 +13,11 @@ import EasyToast
 
 class TomorrowVC: UITableViewController {
     
-    
+    //MARK: - Outlets
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var refreshButton: UIBarButtonItem!
     
+    //MARK: - Variables
     private var selectedIndexPath : IndexPath?
     private let stack = (UIApplication.shared.delegate as! AppDelegate).stack
     private var FRC: NSFetchedResultsController<Day>!
@@ -24,9 +25,10 @@ class TomorrowVC: UITableViewController {
     private var initialLoad = true
     private var notification: NSObjectProtocol!
     
+    //MARK: - Lifecycle Functions
     override func viewDidLoad() {
         super.viewDidLoad()
-        setBackground()
+        setStaticBackground() 
         setupFetchedResultsController()
         menuButton.target = revealViewController()
         menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
@@ -36,16 +38,8 @@ class TomorrowVC: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if let icon = self.FRC.fetchedObjects?.first?.icon {
-            self.setBackgroundImage(day: Constants.TypeOfDay.TOMORROW, tableView: tableView, condition: icon)
-        }
-        if currentReachabilityStatus == .notReachable{
-            WeatherInfo.sharedInstance.setUpdateOverrideStatus(shouldOverride: true)
-        }
-        if WeatherInfo.sharedInstance.allowUpdateOverride {
-            activityIndicatorShowing(showing: true, view: self.view, tableView: self.tableView)
-            WeatherInfo.sharedInstance.updateWeatherInfo()
-        }
+        setDynamicBackground()
+        checkForRefreshOverrideStatus(view: view, tableView: tableView)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -53,27 +47,41 @@ class TomorrowVC: UITableViewController {
         NotificationCenter.default.removeObserver(notification)
     }
     
-    //User action to refresh data
+    //MARK: - IBActions
     @IBAction func refreshInfo(_ sender: Any) {
+        guard currentReachabilityStatus != .notReachable else{
+            displayMessage(message: "Check network connection and try again", view: view)
+            return
+        }
         activityIndicatorShowing(showing: true, view: self.view, tableView: self.tableView)
         WeatherInfo.sharedInstance.messageShown = false
         WeatherInfo.sharedInstance.updateWeatherInfo()
         self.tableView.reloadData()
     }
     
-    private func setBackground(){
+    //MARK: - Class Functions
+    private func setStaticBackground(){
         let image = UIImage(named: "tomorrow")!
         let imageView = UIImageView(image: image)
-        
         tableView.backgroundView = imageView
         imageView.contentMode = .scaleAspectFill
         imageView.backgroundColor = UIColor.black
+    }
+    
+    private func setDynamicBackground(){
+        if let condition = self.FRC.fetchedObjects?.first?.icon {
+            self.setBackgroundImage(day: Constants.TypeOfDay.TOMORROW, tableView: tableView, condition: condition)
+        }
     }
     
     private func setupNotifications(){
         /* Notification recieved from the WeatherInfo class. The classes obseving
          will listen for the download to be finished, update the table, and disable
          the activity indicator. */
+        
+        guard notification == nil else{
+            return
+        }
         notification = NotificationCenter.default.addObserver(forName: Constants.Notifications.REFRESH_NOTIFICATION, object: nil, queue: nil) { (notification) in
             DispatchQueue.main.async {
                 //If VC is current window, display message and cancel loading indicator
@@ -112,7 +120,7 @@ class TomorrowVC: UITableViewController {
         }
     }
     
-    // MARK: - Table view data source
+    // MARK: - TableView Functions
     override func numberOfSections(in tableView: UITableView) -> Int {
         //Only 2 sections, Day and Hour.
         return 2
@@ -135,11 +143,11 @@ class TomorrowVC: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0{ //Return Day Cell
-            if initialLoad {
+            if WeatherInfo.sharedInstance.loadTomorrowGauge {
                 let cell = Bundle.main.loadNibNamed("TodayCell", owner: self, options: nil)?.first as! TodayCell
                 cell.initializeDayCell(day: (FRC.fetchedObjects! as [Day]).first, shouldAnimate: true, isTodayCell: false)
-                initialLoad = false
-                return cell
+                WeatherInfo.sharedInstance.loadTomorrowGauge = false
+                return cell 
             }else{
                 let cell = Bundle.main.loadNibNamed("TodayCell", owner: self, options: nil)?.first as! TodayCell
                 cell.initializeDayCell(day: (FRC.fetchedObjects! as [Day]).first, shouldAnimate: false, isTodayCell: false)
@@ -188,7 +196,11 @@ class TomorrowVC: UITableViewController {
         }
         
         // If the selected row is the last, scroll the tableview up a little.
-        if selectedIndexPath?.row == 11 {
+        guard let hoursCount = hours?.count, hoursCount > 1 else{
+            return
+        }
+        
+        if selectedIndexPath?.row == hoursCount-1 {
             tableView.scrollToRow(at: indexPaths.last!, at: .bottom, animated: true)
         }
     }

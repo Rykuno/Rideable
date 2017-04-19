@@ -12,56 +12,58 @@ import SWRevealViewController
 import EasyToast
 
 class TodayVC: UITableViewController {
-    
-    
+    //MARK: - Outlets
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var refreshButton: UIBarButtonItem!
     
-    private var selectedIndexPath : IndexPath?
+    //MARK: - Variables
     private let stack = (UIApplication.shared.delegate as! AppDelegate).stack
     private var FRC: NSFetchedResultsController<Day>!
     private var hours: [Hour]?
     private var initialLoad = true
     private var notification: NSObjectProtocol!
+    private var selectedIndexPath : IndexPath?
     
+    
+    //MARK: - LifeCycle Functions
     override func viewDidLoad() {
         super.viewDidLoad()
-        setBackground()
+        setStaticBackground()
         setupFetchedResultsController()
         menuButton.target = revealViewController()
         menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
-        self.activityIndicatorShowing(showing: WeatherInfo.sharedInstance.isCurrentlyLoading, view: self.view, tableView: self.tableView)
-        setupNotifications() //Add Observer to listen for data completion notifications.
+        self.activityIndicatorShowing(showing: WeatherInfo.sharedInstance.isCurrentlyLoading, view: view, tableView: tableView)
+        setupNotifications()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         checkConnectionForFirstTimeLoad()
-        if let condition = self.FRC.fetchedObjects?.first?.icon {
-            self.setBackgroundImage(day: Constants.TypeOfDay.TODAY, tableView: self.tableView, condition: condition)
-        }
-        if currentReachabilityStatus == .notReachable{
-            WeatherInfo.sharedInstance.setUpdateOverrideStatus(shouldOverride: true)
-        }
-        if WeatherInfo.sharedInstance.allowUpdateOverride {
-            activityIndicatorShowing(showing: true, view: self.view, tableView: self.tableView)
-            WeatherInfo.sharedInstance.updateWeatherInfo()
-        }
+        setDynamicBackground()
+        checkForRefreshOverrideStatus(view: view, tableView: tableView)
     }
     
-    
-    //Since there are so many exceptions for the first time load if there is no connection, we will just mandate it for the first load only.
-    private func checkConnectionForFirstTimeLoad(){
-        if !UserDefaults.standard.bool(forKey: Constants.Defaults.firstTimeDataLoad) && currentReachabilityStatus == .notReachable {
-        displayError(title: "No Internet Connection", message: "Internet connection required for first time launch")
-        }
-    }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillAppear(animated)
         NotificationCenter.default.removeObserver(notification)
     }
     
-    private func setBackground(){
+    //MARK: - IBActions
+    @IBAction func refreshInfo(_ sender: Any) {
+        activityIndicatorShowing(showing: true, view: view, tableView: tableView)
+        WeatherInfo.sharedInstance.messageShown = false
+        WeatherInfo.sharedInstance.updateWeatherInfo()
+        self.tableView.reloadData()
+    }
+    
+    //MARK: - Class Functions
+    private func checkConnectionForFirstTimeLoad(){
+        if !UserDefaults.standard.bool(forKey: Constants.Defaults.firstTimeDataLoad) && currentReachabilityStatus == .notReachable {
+            displayFirstTimeConnectionError(title: "No Internet Connection", message: "Internet connection required for first time launch")
+        }
+    }
+    
+    private func setStaticBackground(){
         let image = UIImage(named: "today")!
         let imageView = UIImageView(image: image)
         tableView.backgroundView = imageView
@@ -69,20 +71,16 @@ class TodayVC: UITableViewController {
         imageView.backgroundColor = UIColor.black
     }
     
-    //User action to refresh data
-    @IBAction func refreshInfo(_ sender: Any) {
-        activityIndicatorShowing(showing: true, view: self.view, tableView: self.tableView)
-        WeatherInfo.sharedInstance.messageShown = false
-        WeatherInfo.sharedInstance.updateWeatherInfo()
-        self.tableView.reloadData()
+    private func setDynamicBackground(){
+        if let condition = FRC.fetchedObjects?.first?.icon {
+            self.setBackgroundImage(day: Constants.TypeOfDay.TODAY, tableView: tableView, condition: condition)
+        } 
     }
     
-    //displays error to user with a title and message
-    func displayError(title: String, message: String){
+    private func displayFirstTimeConnectionError(title: String, message: String){
         let alert = UIAlertController(title: "\(title)", message: "\(message)", preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "Retry", style: .default, handler: { (action) in
             if self.currentReachabilityStatus == .notReachable {
-                print("not reachable")
                 self.present(alert, animated: true, completion: nil)
             }else{
                 UserDefaults.standard.set(true, forKey: Constants.Defaults.firstTimeDataLoad)
@@ -97,9 +95,10 @@ class TodayVC: UITableViewController {
     }
     
     private func setupNotifications(){
-        /* Notification recieved from the WeatherInfo class. The classes obseving
-         will listen for the download to be finished, update the table, and disable
-         the activity indicator. */
+        guard notification == nil else {
+            return
+        }
+        
         notification = NotificationCenter.default.addObserver(forName: Constants.Notifications.REFRESH_NOTIFICATION, object: nil, queue: nil) { (notification) in
             DispatchQueue.main.async {
                 //If VC is current window, display message and cancel loading indicator
@@ -129,7 +128,6 @@ class TodayVC: UITableViewController {
         
         do{
             try FRC.performFetch()
-            
             //set hours for easy access
             if let dayObject = (FRC.fetchedObjects)!.first {
                 self.hours = self.sortHourArray(day: dayObject)
@@ -139,7 +137,7 @@ class TodayVC: UITableViewController {
         }
     }
     
-    // MARK: - Table view data source
+    // MARK: - TableView Functions
     override func numberOfSections(in tableView: UITableView) -> Int {
         //Only 2 sections, Day and Hour.
         return 2
@@ -162,10 +160,10 @@ class TodayVC: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0{ //Return Day Cell
-            if initialLoad {
+            if WeatherInfo.sharedInstance.loadTodayGauge {
                 let cell = Bundle.main.loadNibNamed("TodayCell", owner: self, options: nil)?.first as! TodayCell
                 cell.initializeDayCell(day: (FRC.fetchedObjects! as [Day]).first, shouldAnimate: true, isTodayCell: true)
-                initialLoad = false
+                WeatherInfo.sharedInstance.loadTodayGauge = false
                 return cell
             }else{
                 let cell = Bundle.main.loadNibNamed("TodayCell", owner: self, options: nil)?.first as! TodayCell
@@ -214,7 +212,11 @@ class TodayVC: UITableViewController {
         }
         
         // If the selected row is the last, scroll the tableview up a little.
-        if selectedIndexPath?.row == 11 {
+        guard let hoursCount = hours?.count, hoursCount > 1 else{
+            return
+        }
+        
+        if selectedIndexPath?.row == hoursCount-1 {
             tableView.scrollToRow(at: indexPaths.last!, at: .bottom, animated: true)
         }
     }

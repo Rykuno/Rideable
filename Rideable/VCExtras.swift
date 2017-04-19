@@ -52,6 +52,16 @@ extension UITableViewController{
         }
     }
     
+    func checkForRefreshOverrideStatus(view: UIView, tableView: UITableView){
+        if currentReachabilityStatus == .notReachable{
+            WeatherInfo.sharedInstance.allowUpdateOverride = true
+        }
+        if WeatherInfo.sharedInstance.allowUpdateOverride {
+            activityIndicatorShowing(showing: true, view: view, tableView: tableView)
+            WeatherInfo.sharedInstance.updateWeatherInfo()
+        }
+    }
+    
     //Displays messages in a certain style/color depending upon the message
     func displayMessage(message: String, view: UIView){
         switch message {
@@ -87,9 +97,7 @@ extension UITableViewController{
         guard let day = day, var hours = day.hour?.allObjects as? [Hour] else{
             return nil
         }
-        
-        hours = hours.sorted(by: { (a, b) -> Bool in  //sort the hours and return result
-            
+        hours = hours.sorted(by: { (a, b) -> Bool in  //sort the hours and return results
             if a.id < b.id {
                 return true
             }else{

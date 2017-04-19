@@ -48,7 +48,6 @@ class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
         if sender.isOn{
             if CLLocationManager.authorizationStatus() == .authorizedWhenInUse{
                 locationButton.isEnabled = false
-                WeatherInfo.sharedInstance.setUpdateOverrideStatus(shouldOverride: true)
             }else{
                 presentOptionsDialog()
                 sender.isOn = false
@@ -57,7 +56,6 @@ class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
             locationButton.isEnabled = true
         }
     }
-    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -130,6 +128,7 @@ class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
         self.displayMessage(message: Constants.Notifications.Messages.settingsUpdated, view: self.view)
     }
     
+    //Saves the user's preferences
     private func saveSettings(){
         defaults.set(tempSlider.value, forKey: Constants.Defaults.temp)
         defaults.set(humiditySlider.value, forKey: Constants.Defaults.humidity)
@@ -141,9 +140,20 @@ class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
         defaults.set(humidityStepper.value, forKey: Constants.Defaults.humidityWeight)
         defaults.set(precipStepper.value, forKey: Constants.Defaults.precipWeight)
         defaults.set(windStepper.value, forKey: Constants.Defaults.windWeight)
+        
+        //Override the refresh status if the user has changed the fetch method manually
+        if locationServicesSwitch.isOn != defaults.bool(forKey: Constants.Defaults.userPrefersLocationServices){
+            WeatherInfo.sharedInstance.allowUpdateOverride = true
+            
+            //When the settings have been changed, we want to reanimate the gauges
+            WeatherInfo.sharedInstance.loadTodayGauge = true
+            WeatherInfo.sharedInstance.loadTomorrowGauge = true
+        }
+        
         defaults.set(locationServicesSwitch.isOn, forKey: Constants.Defaults.userPrefersLocationServices)
     }
     
+    //Updates the steppers state, allowing only a total of 100% to be shared between the steppers.
     private func updateStepperState(){
         let temp = tempStepper.value
         let humidity = humidityStepper.value
@@ -164,7 +174,7 @@ class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
     }
     
     private func presentOptionsDialog() {
-        let alertController = UIAlertController (title: "Location Services Disabled", message: "In order to have the most accurate weather, please allow this app access to Location Services", preferredStyle: .alert)
+        let alertController = UIAlertController (title: "Location Services Disabled", message: "In order to have the most accurate weather, allow Rideable access to Location Services", preferredStyle: .alert)
         
         let settingsAction = UIAlertAction(title: "Enable Services", style: .default) { (_) -> Void in
             guard let settingsUrl = URL(string: UIApplicationOpenSettingsURLString) else {
@@ -210,17 +220,11 @@ class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
         updateStepperState()
     }
     
-    //dismisses keyboard upon tapping outside
-    private func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        self.view.endEditing(true)
-        return false
-    }
-    
     @IBAction func locationPicker(_ sender: Any) {
         let locationPicker = LocationPicker()
         locationPicker.selectCompletion = { (pickedLocationItem) in
             self.parseFormattedAddress(location: pickedLocationItem)
-            WeatherInfo.sharedInstance.setUpdateOverrideStatus(shouldOverride: true)
+            WeatherInfo.sharedInstance.allowUpdateOverride = true
             self.navigationController?.popToRootViewController(animated: true)
         }
         navigationController!.pushViewController(locationPicker, animated: true)

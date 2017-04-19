@@ -20,37 +20,31 @@ import SWRevealViewController
 import EasyToast
 
 class WeekVC: UITableViewController {
-    
+    //MARK: - Outlets
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var refreshButton: UIBarButtonItem!
     
-    
+    //MARK: - Variables
     private var selectedIndexPath : IndexPath?
     private let stack = (UIApplication.shared.delegate as! AppDelegate).stack
     private var FRC: NSFetchedResultsController<Week>!
     private var weekDays: [Week]?
     private var notification: NSObjectProtocol!
     
+    //MARK: - Lifecycle Functions
     override func viewDidLoad() {
         super.viewDidLoad()
-        setBackground()
+        setStaticBackground()
         setupFetchedResultsController()
         menuButton.target = revealViewController()
         menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
-        activityIndicatorShowing(showing: WeatherInfo.sharedInstance.isCurrentlyLoading, view: self.view, tableView: self.tableView)
+        activityIndicatorShowing(showing: WeatherInfo.sharedInstance.isCurrentlyLoading, view: view, tableView: tableView)
         setupNotifications() //Add Observer to listen for data completion notifications.
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if currentReachabilityStatus == .notReachable{
-            WeatherInfo.sharedInstance.setUpdateOverrideStatus(shouldOverride: true)
-        }
-        
-        if WeatherInfo.sharedInstance.allowUpdateOverride {
-            activityIndicatorShowing(showing: true, view: self.view, tableView: self.tableView)
-            WeatherInfo.sharedInstance.updateWeatherInfo()
-        }
+        checkForRefreshOverrideStatus(view: view, tableView: tableView)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -58,18 +52,19 @@ class WeekVC: UITableViewController {
         NotificationCenter.default.removeObserver(notification)
     }
     
-    private func setBackground(){
-        let image = UIImage(named: "week")
-        let imageView = UIImageView(image: image)
-        tableView.backgroundView = imageView
-    }
-    
-    //User action to refresh data
+    //MARK: - IBActions
     @IBAction func refreshInfo(_ sender: Any) {
         activityIndicatorShowing(showing: true, view: self.view, tableView: self.tableView)
         WeatherInfo.sharedInstance.messageShown = false
         WeatherInfo.sharedInstance.updateWeatherInfo()
         tableView.reloadData()
+    }
+    
+    //MARK: - Class Functions
+    private func setStaticBackground(){
+        let image = UIImage(named: "week")
+        let imageView = UIImageView(image: image)
+        tableView.backgroundView = imageView
     }
     
     private func setupNotifications(){
@@ -96,7 +91,6 @@ class WeekVC: UITableViewController {
         }
     }
     
-    //Create the FRC to fetch Tomorrows Weather
     private func setupFetchedResultsController(){
         let fetchedRequest: NSFetchRequest<Week> = Week.fetchRequest()
         fetchedRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
@@ -106,7 +100,6 @@ class WeekVC: UITableViewController {
         
         do{
             try FRC.performFetch()
-            //set weekdays for easy access
             if let weekObjects = (FRC.fetchedObjects) {
                 print(weekObjects.count)
                 weekDays = weekObjects
@@ -116,7 +109,7 @@ class WeekVC: UITableViewController {
         }
     }
     
-    // MARK: - Table view data source
+    // MARK: - TableView Functions
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -160,7 +153,6 @@ class WeekVC: UITableViewController {
         return 100
     }
     
-    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let previousIndexPath = selectedIndexPath
         if indexPath == selectedIndexPath {
@@ -181,7 +173,11 @@ class WeekVC: UITableViewController {
         }
         
         // If the selected row is the last, scroll the tableview up a little.
-        if selectedIndexPath?.row == 11 {
+        guard let dayCount = weekDays?.count, dayCount > 1 else{
+            return
+        }
+        
+        if selectedIndexPath?.row == dayCount-1 {
             tableView.scrollToRow(at: indexPaths.last!, at: .bottom, animated: true)
         }
     }

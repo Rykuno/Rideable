@@ -12,9 +12,13 @@ import SwiftLocation
 class WeatherInfo: NSObject {
     
     private(set) var isCurrentlyLoading = false
-    private(set) var allowUpdateOverride = false
-    public var messageShown = false;
+    public var allowUpdateOverride = false
     private var lastUpdateTime: Date?
+    public var messageShown = false
+    
+    //Runtime variables that change frequently so I just decided to store them in the singleton. Unsure if I should store in UserDefaults later.
+    public var loadTodayGauge = true
+    public var loadTomorrowGauge = true
     
     /*
      Updates Weather Info if the current info is expired
@@ -40,11 +44,6 @@ class WeatherInfo: NSObject {
             let updateMsg = "Weather up to date"
             NotificationCenter.default.post(name: Constants.Notifications.REFRESH_NOTIFICATION, object: updateMsg)
         }
-    }
-    
-    //Special case where we need to update weather even though its not out of date(i.e. changing locations)
-    public func setUpdateOverrideStatus(shouldOverride: Bool) {
-        allowUpdateOverride = shouldOverride
     }
     
     //Checks to see if the weather info has expired.
