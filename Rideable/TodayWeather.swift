@@ -25,6 +25,8 @@ struct TodayWeather{
         day.currentTemp = Int16(currentObservation["temp_f"].intValue)
         day.time = currentObservation["observation_time"].stringValue
         day.wind = Int16(Int(currentObservation["wind_mph"].doubleValue))
+        print("TODAYS WIND SPEED IS : \(day.wind)") 
+        day.windDirectionDegrees = Int16(Int(currentObservation["wind_degrees"].intValue))
         day.humidity = currentObservation["relative_humidity"].stringValue
         day.location = currentObservation["display_location"]["full"].stringValue
         day.icon = currentObservation["icon"].stringValue

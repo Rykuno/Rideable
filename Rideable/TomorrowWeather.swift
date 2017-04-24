@@ -31,6 +31,7 @@ struct TomorrowWeather {
         day.icon = currentForecast["icon"].stringValue
         day.humidity = "\(currentForecast["avehumidity"].intValue)%"
         day.wind = Int16(currentForecast["avewind"]["mph"].intValue)
+        day.windDirectionDegrees = Int16(Int(currentObservation["wind_degrees"].intValue))
         day.created = Date() as NSDate
         day.type = Constants.TypeOfDay.TOMORROW
         day.daySummary = json["forecast"]["txt_forecast"]["forecastday"][2]["fcttext"].stringValue

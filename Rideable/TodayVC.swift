@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 import SWRevealViewController
 import EasyToast
+import UserNotifications
 
 class TodayVC: UITableViewController {
     //MARK: - Outlets

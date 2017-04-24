@@ -35,6 +35,7 @@ struct WeeklyWeather {
                 week.precip = Int16(forecast["pop"].intValue) 
                 week.windSpeed = Int16(forecast["avewind"]["mph"].intValue)
                 week.windDirection = forecast["avewind"]["dir"].stringValue
+                week.windDegrees = Int16(forecast["avewind"]["degrees"].intValue)
                 week.humidity = Int16(forecast["avehumidity"].intValue)
                 week.id = Int16(index)
 
@@ -53,9 +54,9 @@ struct WeeklyWeather {
                 week.precip = Int16(forecast["pop"].intValue)
                 week.windSpeed = Int16(forecast["avewind"]["mph"].intValue)
                 week.windDirection = forecast["avewind"]["dir"].stringValue
+                week.windDegrees = Int16(forecast["avewind"]["degrees"].intValue)
                 week.humidity = Int16(forecast["avehumidity"].intValue)
                 week.detailCondition = txtForecast["fcttext"].stringValue
-
             }
             return weekDays!
         }

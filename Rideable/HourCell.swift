@@ -24,61 +24,85 @@ class HourCell: UITableViewCell {
     @IBOutlet weak var precipChance: UILabel!
     @IBOutlet weak var icon: UIImageView!
     @IBOutlet weak var view: UIView!
+    @IBOutlet weak var windDirectionIcon: UIImageView!
     
     var isObserving = false;
     private let defaults = UserDefaults.standard
     private let isMetric: Bool = UserDefaults.standard.bool(forKey: Constants.Defaults.metricUnits)
-    
+    private var hour: Hour!
+
     class var expandedHeight: CGFloat { get { return 130 } }
     class var defaultHeight: CGFloat  { get { return 70  } }
-    
     
     //MARK: - Cell Initialization
     //Initializes the cell with the hour from the VC
     func initializeHourCell(hour: Hour?){
-        
-        guard let hour = hour else{
-            return
-        }
-        
-        //Score
+        guard let hour = hour else{return}
+        self.hour = hour
+        initializeScore()
+        initializeCondition()
+        initializeWind()
+        initializeHumidity()
+        initializeTime()
+        initializeTemperature()
+        initializePrecipitation()
+        initializeIcon()
+        initializeGauge()
+    }
+   
+    //MARK : - Initialize Outlets
+    private func initializeScore() {
         let calcScore = calculateScore(hour: hour)
         score.text = "\(calcScore)"
         score.adjustsFontSizeToFitWidth = true
-        
-        //Condition
+    }
+    
+    private func initializeCondition() {
         condition.text = hour.condition
-        
-        //Wind
-        wind.text = "\(calculateWind(windInMph: hour.windSpeed)) \(hour.windDir!)"
+    }
+    
+    private func initializeWind() {
+        wind.text = "\(calculateWind(windInMph: hour.windSpeed)) \(getCurrentMeasurement())"
+        windDirectionIcon.transform = CGAffineTransform(rotationAngle: CGFloat(Double(hour.windDegrees) * Double.pi)/180)
         wind.adjustsFontSizeToFitWidth = true
-        
-        //Humidity
+    }
+    
+    private func initializeHumidity() {
         humidity.text = "\(hour.humidity)%"
         humidity.adjustsFontSizeToFitWidth = true
-        
-        //Time
+    }
+    
+    private func initializeTime(){
         time.text = calculateTime(time: Int(hour.time))
-        
-        //Temperature
+    }
+    
+    private func initializeTemperature(){
         temp.text = "\(calculateTemperature(temp: hour.temp))\(Constants.Symbols.degree)"
-        
-        //Precipitation
-        precipChance.text = calculatePrecip(precip: hour.precip)
-        precipDetail.text = calculatePrecip(precip: hour.precip)
+    }
+    
+    private func initializePrecipitation() {
+        let calculatedPrecip = calculatePrecip(precip: hour.precip)
+        precipChance.text = calculatedPrecip
+        precipDetail.text = calculatedPrecip
         precipDetail.adjustsFontSizeToFitWidth = true
-        
-        //Icon
-        icon.image = UIImage(named: hour.icon!)
-        
-        //Gauge
+    }
+    
+    private func initializeIcon() {
+        if let image = UIImage(named: hour.icon!) {
+            icon.image = image
+        }else{
+            icon.image = UIImage(named: "unknown")
+        }
+    }
+    
+    private func initializeGauge() {
+        let calcScore = calculateScore(hour: hour)
         gauge.rate = CGFloat(calcScore)
         gauge.startColor = mixGreenAndRed(score: calcScore)
     }
     
     
     //MARK: - Expanding Cell Functions
-    
     func checkHeight() {
         view.isHidden = (frame.size.height < HourCell.expandedHeight)
     }
@@ -103,9 +127,7 @@ class HourCell: UITableViewCell {
         }
     }
     
-    
     //MARK: - Computing Functions
-    
     //Calculates precipitation on cell row.
     //NOTE: If we hide the views, it breaks the UI for some reason so fixing via opacity.
     private func calculatePrecip(precip: Int16) -> String{
@@ -142,6 +164,10 @@ class HourCell: UITableViewCell {
         }else{
             return "\(temp)"
         }
+    }
+    
+    private func getCurrentMeasurement()-> String {
+        return isMetric ? "kph" : "mph"
     }
     
     //Calculates wind kpm/mph

@@ -36,6 +36,7 @@ class WeatherInfo: NSObject {
                     return
                 }
                 print("settings date")
+                UserDefaults.standard.set(false, forKey: Constants.Defaults.firstTimeDataLoad)
                 UserDefaults.standard.set(Date(), forKey: "date")
                 self.isCurrentlyLoading = false
                 NotificationCenter.default.post(name: Constants.Notifications.REFRESH_NOTIFICATION, object: nil)
@@ -77,7 +78,7 @@ class WeatherInfo: NSObject {
             return false
         }
     }
-    
+
     // MARK: Singleton
     static let sharedInstance = WeatherInfo()
     private override init() {}

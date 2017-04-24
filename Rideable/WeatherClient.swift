@@ -59,11 +59,10 @@ class WeatherClient {
     }
     
     
-    //Get location of user depending on whether locaiton services is on.
+    //Get location of user depending on weather location services is on.
     private func getLocation(completionHandler: @escaping (_ location: String?, _ error: String?) -> Void) {
         
-        //If the user has not accepted or has declined the auth, provide a default and
-        //resort to user input in the settings for location
+        //If the user has not accepted or has declined the auth, provide a default and resort to user input in the settings for location
         guard CLLocationManager.authorizationStatus() == .authorizedWhenInUse || CLLocationManager.authorizationStatus() == .notDetermined else {
             if UserDefaults.standard.string(forKey: Constants.Defaults.location) == nil {
                 completionHandler("Dallas,Texas", nil)

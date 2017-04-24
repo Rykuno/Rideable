@@ -24,70 +24,67 @@ class TodayCell: UITableViewCell {
     @IBOutlet weak var humidity: UILabel!
     @IBOutlet weak var wind: UILabel!
     @IBOutlet weak var precip: UILabel!
+    @IBOutlet weak var windDirectionIcon: UIImageView!
+    @IBOutlet weak var summaryView: UIView!
     
+    private var day: Day!
     private let defaults = UserDefaults.standard
     private let isMetric: Bool = UserDefaults.standard.bool(forKey: Constants.Defaults.metricUnits)
     
     //MARK: - Cell Initialization
     //Initializes the cell with the day from the VC
     func initializeDayCell(day: Day?, shouldAnimate: Bool, isTodayCell: Bool){
-        
-        guard let day = day else{
-            return
-        }
-        
-        //Score
+        guard let day = day else{return}
+        self.day = day
+        initializeScore(isTodayCell: isTodayCell)
+        initializePrecipitation()
+        initializeWind()
+        initializeCondition()
+        initializeIcon()
+        initializeTemperature(isTodayCell: isTodayCell)
+        initializeSummary()
+        initializeLocation()
+        initializeUpdatedAt()
+        initializeGauge(shouldAnimate: shouldAnimate, isTodayCell: isTodayCell)
+    }
+    
+    private func initializeScore(isTodayCell: Bool){
         let calculatedScore = calculateScore(day: day, isTodayCell: isTodayCell)
         score.text = "\(calculatedScore)"
-        
-        //Precipitation
+    }
+    
+    private func initializePrecipitation(){
         precip.text = "\(day.precipitation)%"
-        
-        //Humidity
+    }
+    private func initializeHumidity(){
         humidity.text = day.humidity
-        
-        //Wind
+    }
+    private func initializeWind(){
         wind.text = "\(calculateWind(windInMph: day.wind, intValue: false))"
-        
-        //Condition
-        let wordList =  day.summary?.components(separatedBy: .punctuationCharacters).joined().components(separatedBy: " ").filter{!$0.isEmpty}
-        if (wordList?.count)! > 2 {
-            if let word = wordList?[2] {
-                condition.text = word
-            }
-        }else{
-            condition.text = day.summary
-        }
+        self.windDirectionIcon.transform = CGAffineTransform(rotationAngle: CGFloat(Double(day.windDirectionDegrees) * Double.pi)/180)
+    }
+    private func initializeCondition(){
+        condition.text = "\(parseCondition(day: day))"
         condition.adjustsFontSizeToFitWidth = true
-        
-        //Icon
-        icon.image = UIImage(named: day.icon!)
-        
-        //Temperature
+    }
+    private func initializeIcon(){
+        if let image = UIImage(named: day.icon!) {
+            icon.image = image
+        }else{
+            icon.image = UIImage(named: "unknown")
+        }
+    }
+    private func initializeTemperature(isTodayCell: Bool){
         tempLow.text = "\(Constants.Symbols.downArrow)\(calculateTemperature(temp: day.tempLow))"
         tempHigh.text = "\(Constants.Symbols.upArrow)\(calculateTemperature(temp:day.tempHigh))"
         currentTemp.text = "\(calculateTemperature(temp: day.currentTemp))\(Constants.Symbols.degree)"
-        
-        //Summary
-        daySummary.text = parseSentence(sentence: day.daySummary)
-        daySummary.backgroundColor = UIColor.gray.withAlphaComponent(0.25)
-        daySummary.numberOfLines = 2
-        daySummary.adjustsFontSizeToFitWidth = true
-        
-        //Location
-        location.text = "\(day.location!)"
-        location.adjustsFontSizeToFitWidth = true
-        
-        //UpdatedAt
-        updatedAtLabel.text = "\(day.time!)"
-        updatedAtLabel.adjustsFontSizeToFitWidth = true
         
         //Configure labels dependent upon the type of day
         if isTodayCell{ //If the cell is today
             tempLow.text = "\(Constants.Symbols.downArrow)\(calculateTemperature(temp: day.tempLow))"
             tempHigh.text = "\(Constants.Symbols.upArrow)\(calculateTemperature(temp:day.tempHigh))"
             currentTemp.text = "\(calculateTemperature(temp: day.currentTemp))\(Constants.Symbols.degree)"
-            defaults.set(calculatedScore, forKey: "TodayScore")
+            defaults.set(calculateScore(day: day, isTodayCell: isTodayCell), forKey: "TodayScore")
         }else{ //If the cell is tomorrow lets replace current temperature with the high/low temp
             currentTemp.text = "\(Constants.Symbols.downArrow)\(calculateTemperature(temp: day.tempLow))\(Constants.Symbols.degree)\(Constants.Symbols.upArrow)\(calculateTemperature(temp:day.tempHigh))\(Constants.Symbols.degree)"
             currentTemp.font = currentTemp.font.withSize(35)
@@ -97,8 +94,24 @@ class TodayCell: UITableViewCell {
             tempLow.isHidden = true
             location.isHidden = true
         }
-        
-        //Determines if the gauge view should animate or not
+    }
+    
+    private func initializeSummary(){
+        daySummary.text = parseSentence(sentence: day.daySummary)
+        summaryView.backgroundColor = UIColor.gray.withAlphaComponent(0.25)
+        //daySummary.backgroundColor = UIColor.gray.withAlphaComponent(0.25)
+        daySummary.numberOfLines = 2
+        daySummary.adjustsFontSizeToFitWidth = true
+    }
+    private func initializeLocation(){
+        location.text = "\(day.location!)"
+        location.adjustsFontSizeToFitWidth = true
+    }
+    private func initializeUpdatedAt(){
+        updatedAtLabel.text = "\(day.time!)"
+        updatedAtLabel.adjustsFontSizeToFitWidth = true
+    }
+    private func initializeGauge(shouldAnimate: Bool, isTodayCell: Bool){
         if shouldAnimate == false {
             gauge.rate = CGFloat(calculateScore(day: day, isTodayCell: isTodayCell))
         }else{
@@ -132,7 +145,6 @@ class TodayCell: UITableViewCell {
         return Int(100 - (tempWeight * tempDiff) - (humidityWeight * humidityDiff) - (precipWeight * precipDiff) - (windWeight * windDiff))
     }
     
-    //Set The temperature to either Fahrenheit/Celsius depending on the users pref.
     private func calculateTemperature(temp: Int16) -> Int{
         if isMetric {
             let metricTemp = (Int(temp)-32) * 5/9
@@ -142,7 +154,6 @@ class TodayCell: UITableViewCell {
         }
     }
     
-    //Calculate Wind to either mph/kph
     private func calculateWind(windInMph: Int16, intValue: Bool) -> String{
         if intValue {
             if isMetric {
@@ -159,6 +170,20 @@ class TodayCell: UITableViewCell {
                 return "\(windInMph) mph"
             }
         }
+    }
+    
+    private func parseCondition(day: Day) -> String {
+        guard var condition = day.summary else {
+            return ""
+        }
+        
+        let phraseToRemove = ["Chance of a", "Chance of"]
+        for phrase in phraseToRemove {
+            if let range = condition.range(of: phrase) {
+                condition.removeSubrange(range)
+            }
+        }
+        return condition
     }
     
     /*
@@ -180,6 +205,12 @@ class TodayCell: UITableViewCell {
         
         //If there are more than two sentences, append the first two and return it
         //else just return the original sentence.
+        if sentence.contains(",") {
+            print(sentence)
+            outputSentence.append(subStringArray[0])
+            outputSentence = replaceUnitsInSentence(sentence: outputSentence)
+            return outputSentence
+        }
         if subStringArray.count > 2 {
             for index in 0...1 {
                 outputSentence.append(subStringArray[index])
@@ -211,6 +242,7 @@ class TodayCell: UITableViewCell {
         }
         return newSentence
     }
+    
     
     //Converts strings that need converting from within sentence
     private func calculateConversion(input: String?) -> String {

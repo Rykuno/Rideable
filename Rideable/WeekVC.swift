@@ -130,7 +130,16 @@ class WeekVC: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if (weekDays?.count)! > 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "WeekCell", for: indexPath) as! WeekCell
-            cell.initializeWeekCell(week: (weekDays?[indexPath.row])!)
+            switch indexPath.row {
+            case 0:
+                cell.initializeWeekCell(week: (weekDays?[indexPath.row])!, typeOfDay: .today)
+                break
+            case 1:
+                cell.initializeWeekCell(week: (weekDays?[indexPath.row])!, typeOfDay: .tomorrow)
+                break
+            default:
+                cell.initializeWeekCell(week: (weekDays?[indexPath.row])!, typeOfDay: .weekDay)
+            }
             return cell
         }else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "WeekCell", for: indexPath) as! WeekCell

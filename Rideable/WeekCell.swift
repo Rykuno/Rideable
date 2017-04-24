@@ -23,26 +23,57 @@ class WeekCell: UITableViewCell {
     @IBOutlet weak var rain: UILabel!
     @IBOutlet weak var humidity: UILabel!
     @IBOutlet weak var wind: UILabel!
+    @IBOutlet weak var windIcon: UIImageView!
     
     private let defaults = UserDefaults.standard
     private let isMetric: Bool = UserDefaults.standard.bool(forKey: Constants.Defaults.metricUnits)
+    private var week: Week!
     var isObserving = false;
     
     class var expandedHeight: CGFloat { get { return 150 } }
     class var defaultHeight: CGFloat  { get { return 70  } }
     
+    enum TypeOfDay {
+        case today
+        case tomorrow
+        case weekDay
+    }
     
-    func initializeWeekCell(week: Week){
-        //Score
+    func initializeWeekCell(week: Week?, typeOfDay: TypeOfDay){
+        guard let week = week else{return}
+        self.week = week
+        initializeScore()
+        initializeWeekday(typeOfDay: typeOfDay)
+        initializeCondition()
+        initializeIcon()
+        initializeTemperature()
+        initializeDetailSummary()
+        initializePrecipitation()
+        initializeHumidity()
+        initializeWind()
+    }
+    
+    private func initializeScore(){
         let score = calculateScore(week: week)
         gauge.rate = CGFloat(score)
         gauge.startColor = mixGreenAndRed(score: score)
         scoreDetail.text = "\(score)"
-        
-        //Weekday
-        weekday.text = week.weekday
-        
-        //Condition
+    }
+    
+    private func initializeWeekday(typeOfDay: TypeOfDay){
+        switch typeOfDay {
+        case .today:
+            weekday.text = "Today"
+            break
+        case .tomorrow:
+            weekday.text = "Tomorrow"
+            break
+        default:
+            weekday.text = week.weekday
+        }
+    }
+    
+    private func initializeCondition(){
         let wordList =  week.condition?.components(separatedBy: .punctuationCharacters).joined().components(separatedBy: " ").filter{!$0.isEmpty}
         if (wordList?.count)! > 3 {
             if let word = wordList?[3] {
@@ -52,30 +83,41 @@ class WeekCell: UITableViewCell {
             condition.text = week.condition
         }
         condition.adjustsFontSizeToFitWidth = true
-        
-        //Icon
-        icon.image = UIImage(named: week.icon!)
-        
-        //Temperature
+    }
+    
+    private func initializeIcon(){
+        if let image = UIImage(named: week.icon!) {
+            icon.image = image
+        }else{
+            icon.image = UIImage(named: "unknown")
+        }
+    }
+    
+    private func initializeTemperature(){
         let avgTemp = (week.tempLow + week.tempHigh)/2
         temperature.text = "\(calculateTemperature(temp: avgTemp))\(Constants.Symbols.degree)"
-        
-        //Detail Summary
+    }
+    
+    private func initializeDetailSummary(){
         daySummary.text = parseSentence(sentence: week.detailCondition)
         daySummary.adjustsFontSizeToFitWidth = true
-        
-        //Precipitation
+    }
+    
+    private func initializePrecipitation(){
         rain.text = "\(Int(week.precip))%"
-        
-        //Humidity
+    }
+    
+    private func initializeHumidity(){
         humidity.text = "\(Int(week.humidity))%"
-        
-        //Wind
-        wind.text = "\(week.windSpeed) \(week.windDirection!)"
+        humidity.adjustsFontSizeToFitWidth = true
+    }
+    
+    private func initializeWind(){
+        wind.text = "\(calculateWind(windInMph: week.windSpeed)) \(getCurrentMeasurement())"
+        windIcon.transform = CGAffineTransform(rotationAngle: CGFloat(Double(week.windDegrees) * Double.pi)/180)
     }
     
     //MARK: - Expanding Cell Functions
-    
     func checkHeight() {
         view.isHidden = (frame.size.height < WeekCell.expandedHeight)
     }
@@ -112,27 +154,18 @@ class WeekCell: UITableViewCell {
         let tempDiff = abs(defaults.double(forKey: Constants.Defaults.temp)-Double(calculateTemperature(temp: avgHighLowTemp)))
         let humidityDiff = abs(defaults.double(forKey: Constants.Defaults.humidity)-Double(week.humidity))
         let precipDiff = abs(defaults.double(forKey: Constants.Defaults.precip)-Double(week.precip))
-        let windDiff = abs(defaults.double(forKey: Constants.Defaults.wind)-Double(calculateWind(windInMph: week.windSpeed, intValue: true))!)
+        let windDiff = abs(defaults.double(forKey: Constants.Defaults.wind)-Double(calculateWind(windInMph: week.windSpeed))!)
         
         return Int(100 - (tempWeight * tempDiff) - (humidityWeight * humidityDiff) - (precipWeight * precipDiff) - (windWeight * windDiff))
     }
     
-    //Calculate Wind to either mph/kph
-    private func calculateWind(windInMph: Int16, intValue: Bool) -> String{
-        if intValue {
-            if isMetric {
-                let metricWind = Int((Double(windInMph)) * 1.6)
-                return "\(metricWind)"
-            }else{
-                return "\(windInMph)"
-            }
+    //Calculates wind kpm/mph
+    private func calculateWind(windInMph: Int16) -> String{
+        if isMetric {
+            let metricWind = Int((Double(windInMph)) * 1.6)
+            return "\(metricWind)"
         }else{
-            if isMetric {
-                let metricWind = Int((Double(windInMph)) * 1.6)
-                return "\(metricWind) kph"
-            }else{
-                return "\(windInMph) mph"
-            }
+            return "\(windInMph)"
         }
     }
     
@@ -152,6 +185,9 @@ class WeekCell: UITableViewCell {
         return UIColor(hue:CGFloat(x), saturation:0.7, brightness:1.0, alpha:1.0)
     }
     
+    private func getCurrentMeasurement()-> String {
+        return isMetric ? "kph" : "mph"
+    }
     
     //MARK: - Parsing Functions
     
@@ -174,6 +210,12 @@ class WeekCell: UITableViewCell {
         
         //If there are more than two sentences, append the first two and return it
         //else just return the original sentence.
+        if sentence.contains(",") {
+            print(sentence)
+            outputSentence.append(subStringArray[0])
+            outputSentence = replaceUnitsInSentence(sentence: outputSentence)
+            return outputSentence
+        }
         if subStringArray.count > 2 {
             for index in 0...1 {
                 outputSentence.append(subStringArray[index])

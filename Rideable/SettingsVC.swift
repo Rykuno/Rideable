@@ -12,6 +12,7 @@ import ASValueTrackingSlider
 import EasyToast
 import CoreLocation
 import LocationPickerViewController
+import UserNotifications
 
 class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
     
@@ -207,7 +208,7 @@ class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
         humidityWeightLabel.text = "\(stepperValue)%"
         updateStepperState()
     }
-    
+     
     @IBAction func precipCounter(_ sender: UIStepper) {
         let stepperValue = Int(sender.value)
         precipWeightLabel.text = "\(stepperValue)%"
@@ -247,13 +248,6 @@ class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
             locationButton.setTitle(cityState, for: .normal)
             defaults.set(cityState, forKey: Constants.Defaults.displayLocation)
         }
-        
-        // Zip code
-        if let zip = location.addressDictionary?["ZIP"] as? NSString
-        {
-            print(zip)
-        }
-        
     }
 }
 

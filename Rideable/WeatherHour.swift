@@ -43,6 +43,7 @@ struct WeatherHour {
             hour.condition = currentHour["condition"].stringValue
             hour.icon = currentHour["icon"].stringValue
             hour.windDir = currentHour["wdir"]["dir"].stringValue
+            hour.windDegrees = Int16(currentHour["wdir"]["degrees"].intValue)
             hour.time = Int16(currentHour["FCTTIME"]["hour"].intValue)
             hour.id = Int16(index)
             hours.append(hour)
@@ -65,6 +66,7 @@ struct WeatherHour {
             hour.condition = currentHour["condition"].stringValue
             hour.icon = currentHour["icon"].stringValue
             hour.windDir = currentHour["wdir"]["dir"].stringValue
+            hour.windDegrees = Int16(currentHour["wdir"]["degrees"].intValue)
             hour.time = Int16(currentHour["FCTTIME"]["hour"].intValue)
             hour.id = Int16(start)
             hourArray.append(hour)

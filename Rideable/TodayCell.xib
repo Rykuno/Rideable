@@ -129,17 +129,6 @@
                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IFc-K1-ILn">
-                        <rect key="frame" x="0.0" y="494" width="350" height="50"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="50" id="4I0-iH-eBy"/>
-                        </constraints>
-                        <string key="text">Considerable cloudiness. High of 94F.
- ser or thunderstorm is possible</string>
-                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" alignment="center" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="c0K-zB-dfS">
                         <rect key="frame" x="18" y="467" width="314" height="25"/>
                         <subviews>
@@ -182,7 +171,7 @@
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="yez-Ds-lMv">
                                 <rect key="frame" x="240" y="0.0" width="74" height="25"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="wind" translatesAutoresizingMaskIntoConstraints="NO" id="ID7-ZQ-f2Y">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="windDirectionIcon" translatesAutoresizingMaskIntoConstraints="NO" id="ID7-ZQ-f2Y">
                                         <rect key="frame" x="0.0" y="0.0" width="25" height="25"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="25" id="JwI-gl-XDZ"/>
@@ -199,20 +188,41 @@
                             </stackView>
                         </subviews>
                     </stackView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="raz-XT-vQY">
+                        <rect key="frame" x="0.0" y="494" width="350" height="50"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IFc-K1-ILn">
+                                <rect key="frame" x="8" y="0.0" width="334" height="50"/>
+                                <string key="text">Considerable cloudiness. High of 94F.
+ ser or thunderstorm is possible</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="IFc-K1-ILn" firstAttribute="leading" secondItem="raz-XT-vQY" secondAttribute="leading" constant="8" id="1vY-pH-u7u"/>
+                            <constraint firstAttribute="trailing" secondItem="IFc-K1-ILn" secondAttribute="trailing" constant="8" id="Lma-gg-Wgp"/>
+                            <constraint firstItem="IFc-K1-ILn" firstAttribute="top" secondItem="raz-XT-vQY" secondAttribute="top" id="Qdn-aR-jvk"/>
+                            <constraint firstAttribute="bottom" secondItem="IFc-K1-ILn" secondAttribute="bottom" id="bxd-JK-Qne"/>
+                            <constraint firstAttribute="height" constant="50" id="nEq-1A-WmT"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 <constraints>
-                    <constraint firstItem="IFc-K1-ILn" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="9D6-Uq-xnq"/>
+                    <constraint firstAttribute="bottom" secondItem="raz-XT-vQY" secondAttribute="bottom" id="0uV-Dz-4BU"/>
+                    <constraint firstItem="raz-XT-vQY" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="A0k-RC-NFc"/>
                     <constraint firstAttribute="trailingMargin" secondItem="c0K-zB-dfS" secondAttribute="trailing" constant="10" id="CQT-lR-ThT"/>
                     <constraint firstItem="ezl-Mh-zr3" firstAttribute="centerX" secondItem="jIf-df-D43" secondAttribute="centerX" id="OQ9-9d-7Uo"/>
-                    <constraint firstItem="IFc-K1-ILn" firstAttribute="top" secondItem="c0K-zB-dfS" secondAttribute="bottom" constant="2" id="P4B-wZ-D2J"/>
-                    <constraint firstAttribute="trailing" secondItem="IFc-K1-ILn" secondAttribute="trailing" id="PdL-VF-Ida"/>
-                    <constraint firstAttribute="bottom" secondItem="IFc-K1-ILn" secondAttribute="bottom" id="RkZ-Tp-2Wh"/>
                     <constraint firstAttribute="bottomMargin" secondItem="aLo-7q-Utr" secondAttribute="bottom" constant="82.5" id="Whu-MG-pLa"/>
+                    <constraint firstItem="raz-XT-vQY" firstAttribute="top" secondItem="c0K-zB-dfS" secondAttribute="bottom" constant="2" id="fbJ-EA-GiW"/>
                     <constraint firstItem="aLo-7q-Utr" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="hnN-eg-6VF"/>
                     <constraint firstItem="c0K-zB-dfS" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="10" id="r6I-TO-itz"/>
                     <constraint firstAttribute="trailing" secondItem="aLo-7q-Utr" secondAttribute="trailing" constant="20" id="s6u-k9-B1T"/>
+                    <constraint firstAttribute="trailing" secondItem="raz-XT-vQY" secondAttribute="trailing" id="szg-qY-hZF"/>
                     <constraint firstItem="aLo-7q-Utr" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="tlZ-3U-W3e"/>
                     <constraint firstItem="ezl-Mh-zr3" firstAttribute="centerY" secondItem="jIf-df-D43" secondAttribute="centerY" id="yMC-jo-kND"/>
                 </constraints>
@@ -228,10 +238,12 @@
                 <outlet property="location" destination="2BX-Nf-FYc" id="pCp-od-CeI"/>
                 <outlet property="precip" destination="yDP-du-Pk0" id="xyh-dV-MhV"/>
                 <outlet property="score" destination="ezl-Mh-zr3" id="l3R-6v-Fel"/>
+                <outlet property="summaryView" destination="raz-XT-vQY" id="EsL-rg-zgr"/>
                 <outlet property="tempHigh" destination="9PO-1l-idD" id="Eaj-jV-Whu"/>
                 <outlet property="tempLow" destination="CWh-3I-QGx" id="CSt-u9-feh"/>
                 <outlet property="updatedAtLabel" destination="xxF-Bs-qUC" id="D5D-d7-NUO"/>
                 <outlet property="wind" destination="m8W-XV-ydE" id="gVw-8b-pO6"/>
+                <outlet property="windDirectionIcon" destination="ID7-ZQ-f2Y" id="Nzq-Oz-k5P"/>
             </connections>
             <point key="canvasLocation" x="40" y="-198.5"/>
         </tableViewCell>
@@ -240,6 +252,6 @@
         <image name="humidity" width="60" height="60"/>
         <image name="tstorms" width="53" height="53"/>
         <image name="umbrella" width="60" height="60"/>
-        <image name="wind" width="60" height="60"/>
+        <image name="windDirectionIcon" width="64" height="64"/>
     </resources>
 </document>

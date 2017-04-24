@@ -16,6 +16,7 @@
         <attribute name="time" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="wind" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="windDirectionDegrees" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="hour" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Hour" inverseName="day" inverseEntity="Hour" syncable="YES"/>
     </entity>
     <entity name="Hour" representedClassName="Hour" syncable="YES" codeGenerationType="class">
@@ -27,6 +28,7 @@
         <attribute name="score" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="temp" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="time" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="windDegrees" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="windDir" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="windSpeed" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="day" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Day" inverseName="hour" inverseEntity="Day" syncable="YES"/>
@@ -41,12 +43,13 @@
         <attribute name="tempHigh" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="tempLow" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="weekday" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="windDegrees" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="windDirection" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="windSpeed" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Day" positionX="-36" positionY="81" width="128" height="285"/>
-        <element name="Hour" positionX="-54" positionY="-9" width="128" height="210"/>
-        <element name="Week" positionX="-45" positionY="144" width="128" height="210"/>
+        <element name="Day" positionX="-36" positionY="81" width="128" height="300"/>
+        <element name="Hour" positionX="-54" positionY="-9" width="128" height="225"/>
+        <element name="Week" positionX="-45" positionY="144" width="128" height="225"/>
     </elements>
 </model>

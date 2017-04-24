@@ -107,7 +107,6 @@ extension UITableViewController{
         return hours
     }
     
-    
     //Sets background image depending upon the weather condition
     func setBackgroundImage(day: String, tableView: UITableView, condition: String?) {
         var imageView: UIImageView
@@ -133,7 +132,7 @@ extension UITableViewController{
         default:
             image = UIImage(named: "\(day)")!
             imageView = UIImageView(image: image)
-            imageView.layer.opacity = day == Constants.TypeOfDay.TODAY ? 0.95 : 0.8
+            imageView.layer.opacity = day == Constants.TypeOfDay.TODAY ? 0.85 : 0.7
             break
         }
         
