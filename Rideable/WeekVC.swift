@@ -34,12 +34,12 @@ class WeekVC: UITableViewController {
     //MARK: - Lifecycle Functions
     override func viewDidLoad() {
         super.viewDidLoad()
-        setStaticBackground()
+        configureNavigationBar()
+        //setStaticBackground()
         setupFetchedResultsController()
-        menuButton.target = revealViewController()
-        menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
         activityIndicatorShowing(showing: WeatherInfo.sharedInstance.isCurrentlyLoading, view: view, tableView: tableView)
         setupNotifications() //Add Observer to listen for data completion notifications.
+        setTableViewBackgroundGradient()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -52,6 +52,24 @@ class WeekVC: UITableViewController {
         NotificationCenter.default.removeObserver(notification)
     }
     
+    func setTableViewBackgroundGradient() {
+        let topColor = UIColor(hex: "436e8c")
+        let bottomColor = UIColor(hex: "2980b9")
+
+        let gradientBackgroundColors = [topColor.cgColor, bottomColor.cgColor]
+        let gradientLocations = [0.0,1.0]
+        
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = gradientBackgroundColors
+        gradientLayer.locations = gradientLocations as [NSNumber]
+        
+        gradientLayer.frame = tableView.bounds
+        let backgroundView = UIView(frame: tableView.bounds)
+        backgroundView.layer.insertSublayer(gradientLayer, at: 0)
+        tableView.backgroundView = backgroundView
+    }
+ 
+    
     //MARK: - IBActions
     @IBAction func refreshInfo(_ sender: Any) {
         activityIndicatorShowing(showing: true, view: self.view, tableView: self.tableView)
@@ -62,9 +80,13 @@ class WeekVC: UITableViewController {
     
     //MARK: - Class Functions
     private func setStaticBackground(){
-        let image = UIImage(named: "week")
-        let imageView = UIImageView(image: image)
-        tableView.backgroundView = imageView
+        tableView.backgroundColor = UIColor(hex: "436e8c")
+    }
+    
+    private func configureNavigationBar() {
+        navigationController?.hidesBarsOnSwipe = true
+        menuButton.target = revealViewController()
+        menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
     }
     
     private func setupNotifications(){

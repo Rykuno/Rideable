@@ -51,6 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 break
             case .denied: 
                 UserDefaults.standard.set("Dallas,Texas", forKey: Constants.Defaults.location)
+                UserDefaults.standard.set("Dallas,Texas", forKey: Constants.Defaults.displayLocation)
                 UserDefaults.standard.set(false, forKey: Constants.Defaults.userPrefersLocationServices)
                 WeatherInfo.sharedInstance.updateWeatherInfo()
                 break

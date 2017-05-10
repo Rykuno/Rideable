@@ -4,7 +4,7 @@ PODS:
   - EasyToast (2.0.2)
   - GaugeKit (0.4.0)
   - LocationPickerViewController (3.0.0)
-  - SwiftLocation (2.0.2)
+  - SwiftLocation (2.0.7)
   - SwiftyJSON (3.1.4)
   - SWRevealViewController (2.3.0)
 
@@ -24,10 +24,10 @@ SPEC CHECKSUMS:
   EasyToast: 2844de2158fe8d2313c6de81b5a858a909d82532
   GaugeKit: 422d082cfd8abf68d6df0b4ec625b4d19d39c89e
   LocationPickerViewController: ee898cc76d9a06083b398c59e67d3c16aa298636
-  SwiftLocation: 887fa007f6f0567dfd00543c3fb356c4c793c2a6
+  SwiftLocation: 1fe2e15a5812e961496e82eeaca71d03e829e47a
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
   SWRevealViewController: 6d3fd97f70112fd7cef9de14df4260eacce4c63a
 
-PODFILE CHECKSUM: 3916b957edad43f0f17158d04575cb6981dca0ff
+PODFILE CHECKSUM: 73e1451f6d28afd30a585d8416ed9306bc94c1a6
 
 COCOAPODS: 1.2.0

@@ -24,6 +24,15 @@ class SWVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         tableView.dataSource = self
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setTableviewBackground()
+        setNeedsFocusUpdate()
+    }
+    
+    func setTableviewBackground() {
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return optionsArray[section].count
     }
@@ -37,10 +46,18 @@ class SWVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.backgroundColor = UIColor.clear
+        cell.textLabel?.textColor = UIColor.white
+        cell.textLabel?.font = UIFont(name: "Avenir Next Medium", size: 20)
+    }
+    
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         let header = view as! UITableViewHeaderFooterView
-        header.textLabel?.font = UIFont(name: "Futura", size: 20)
-        header.textLabel?.textColor = UIColor.lightGray
+        header.textLabel?.font = UIFont(name: "Avenir Next Condensed", size: 28)
+        header.textLabel?.textColor = UIColor(hex: "e5601d")
+        header.backgroundColor = UIColor.clear
+        header.backgroundView = tableView.backgroundView
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -51,11 +68,15 @@ class SWVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         return sectionsArray.count
     }
     
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 40
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let revealViewController: SWRevealViewController = self.revealViewController()
         
         let cell = tableView.cellForRow(at: indexPath)
-        
+ 
         if cell?.textLabel?.text == "Today" {
             let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
             let todayVC = mainStoryboard.instantiateViewController(withIdentifier: "TodayVC")
@@ -101,5 +122,26 @@ class SWVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 self.present(vc!, animated: true, completion: nil)
             }
         }
+    }
+}
+
+extension UIColor {
+    convenience init(hex: String) {
+        let scanner = Scanner(string: hex)
+        scanner.scanLocation = 0
+        
+        var rgbValue: UInt64 = 0
+        
+        scanner.scanHexInt64(&rgbValue)
+        
+        let r = (rgbValue & 0xff0000) >> 16
+        let g = (rgbValue & 0xff00) >> 8
+        let b = rgbValue & 0xff
+        
+        self.init(
+            red: CGFloat(r) / 0xff,
+            green: CGFloat(g) / 0xff,
+            blue: CGFloat(b) / 0xff, alpha: 1
+        )
     }
 }

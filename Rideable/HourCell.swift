@@ -56,7 +56,7 @@ class HourCell: UITableViewCell {
         score.text = "\(calcScore)"
         score.adjustsFontSizeToFitWidth = true
     }
-    
+     
     private func initializeCondition() {
         condition.text = hour.condition
     }

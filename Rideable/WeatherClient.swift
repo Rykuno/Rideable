@@ -5,7 +5,6 @@
 //  Created by Donny Blaine on 2/27/17.
 //  Copyright © 2017 RyStudios. All rights reserved.
 //
-
 import Foundation
 import Alamofire
 import SwiftyJSON
@@ -13,10 +12,10 @@ import SwiftLocation
 import CoreLocation
 
 class WeatherClient {
-    typealias completionHandler = (_ success : Bool, _ error: String?) -> Void
+    typealias requestCompletionHandler = (_ success : Bool, _ error: String?) -> Void
     
     //Makes request to API
-    func sendRequest(completionHandler: @escaping completionHandler) {
+    func sendRequest(completionHandler: @escaping requestCompletionHandler) {
         let manager = Alamofire.SessionManager.default
         manager.session.configuration.timeoutIntervalForRequest = Constants.Data.timeoutInSeconds
         
@@ -24,7 +23,7 @@ class WeatherClient {
         let headers = [
             "Cookie":"DT=1487473989:26720:ip-10-226-237-178; Prefs=FAVS:1|WXSN:1|PWSOBS:1|WPHO:1|PHOT:1|RADC:0|RADALL:0|HIST0:NULL|GIFT:1|PHOTOTHUMBS:50|EXPFCT:1|",
             ]
-        
+         
         getLocation { (location, error) in
             guard error == nil else{
                 completionHandler(false, error)
@@ -59,10 +58,11 @@ class WeatherClient {
     }
     
     
-    //Get location of user depending on weather location services is on.
+    //Get location of user depending on whether locaiton services is on.
     private func getLocation(completionHandler: @escaping (_ location: String?, _ error: String?) -> Void) {
         
-        //If the user has not accepted or has declined the auth, provide a default and resort to user input in the settings for location
+        //If the user has not accepted or has declined the auth, provide a default and
+        //resort to user input in the settings for location
         guard CLLocationManager.authorizationStatus() == .authorizedWhenInUse || CLLocationManager.authorizationStatus() == .notDetermined else {
             if UserDefaults.standard.string(forKey: Constants.Defaults.location) == nil {
                 completionHandler("Dallas,Texas", nil)
@@ -92,4 +92,3 @@ class WeatherClient {
     static let sharedInstance = WeatherClient()
     private init() {} //To prevent others from using the default '()' initializer
 }
-

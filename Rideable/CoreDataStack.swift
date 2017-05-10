@@ -60,7 +60,7 @@ struct CoreDataStack {
             print("Unable to reach the documents folder")
             return nil
         }
-        
+         
         self.dbURL = docUrl.appendingPathComponent("model.sqlite")
         print(dbURL)
         

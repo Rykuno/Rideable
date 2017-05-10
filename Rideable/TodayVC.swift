@@ -25,15 +25,13 @@ class TodayVC: UITableViewController {
     private var notification: NSObjectProtocol!
     private var selectedIndexPath : IndexPath?
     
-    
     //MARK: - LifeCycle Functions
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureNavigationBar()
         setStaticBackground()
         setupFetchedResultsController()
-        menuButton.target = revealViewController()
-        menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
-        self.activityIndicatorShowing(showing: WeatherInfo.sharedInstance.isCurrentlyLoading, view: view, tableView: tableView)
+        activityIndicatorShowing(showing: WeatherInfo.sharedInstance.isCurrentlyLoading, view: view, tableView: tableView)
         setupNotifications()
     }
     
@@ -75,7 +73,14 @@ class TodayVC: UITableViewController {
     private func setDynamicBackground(){
         if let condition = FRC.fetchedObjects?.first?.icon {
             self.setBackgroundImage(day: Constants.TypeOfDay.TODAY, tableView: tableView, condition: condition)
-        } 
+        }
+    }
+    
+    private func configureNavigationBar(){
+        navigationController?.navigationBar.makeTransparent()
+        navigationController?.hidesBarsOnSwipe = true
+        menuButton.target = revealViewController()
+        menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
     }
     
     private func displayFirstTimeConnectionError(title: String, message: String){
@@ -118,7 +123,6 @@ class TodayVC: UITableViewController {
         }
     }
     
-    //Create the FRC to fetch Tomorrows Weather
     private func setupFetchedResultsController(){
         let fetchedRequest: NSFetchRequest<Day> = Day.fetchRequest()
         fetchedRequest.predicate = NSPredicate(format: "type == %@", Constants.TypeOfDay.TODAY)
@@ -129,7 +133,6 @@ class TodayVC: UITableViewController {
         
         do{
             try FRC.performFetch()
-            //set hours for easy access
             if let dayObject = (FRC.fetchedObjects)!.first {
                 self.hours = self.sortHourArray(day: dayObject)
             }
@@ -245,6 +248,7 @@ extension TodayVC: NSFetchedResultsControllerDelegate{
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         self.tableView.endUpdates()
     }
-    
 }
+
+
 

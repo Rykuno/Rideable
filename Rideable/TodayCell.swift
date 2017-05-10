@@ -117,7 +117,8 @@ class TodayCell: UITableViewCell {
         }else{
             gauge.animateRate(TimeInterval(1), newValue: CGFloat(calculateScore(day: day, isTodayCell: isTodayCell))) { (success) in}
         }
-    }
+        //gauge.startColor = mixGreenAndRed(score: calculateScore(day: day, isTodayCell: isTodayCell))
+    } 
     
     //MARK: - Computing Functions
     //Calculate Score depending on user's weight/preferences
@@ -126,9 +127,7 @@ class TodayCell: UITableViewCell {
         let humidityWeight = defaults.double(forKey: Constants.Defaults.humidityWeight)/100 * 1.5
         let precipWeight = defaults.double(forKey: Constants.Defaults.precipWeight)/100 * 1.5
         let windWeight = defaults.double(forKey: Constants.Defaults.windWeight)/100 * 1.5
-        
-        //regex to remove any non digit characters from the humidity
-        let humidityInt = Int((day.humidity?.replacingOccurrences(of: "\\D", with: "", options: .regularExpression, range: (day.humidity?.startIndex)!..<(day.humidity?.endIndex)!))!)
+        let humidityInt = Int((day.humidity?.extractDigits())!)
         
         let tempDiff: Double!
         if isTodayCell{
@@ -243,14 +242,12 @@ class TodayCell: UITableViewCell {
         return newSentence
     }
     
-    
     //Converts strings that need converting from within sentence
     private func calculateConversion(input: String?) -> String {
-        //If the input is nil, return
         guard let input = input else {
             return ""
         }
-        //If the input contains F lets remove it and append C at then end of our conversion
+        
         guard !input.contains("F") else{
             let number = Int(input.substring(to: input.index(before: input.endIndex)))
             if let number = number {
@@ -278,6 +275,12 @@ class TodayCell: UITableViewCell {
         
         // Configure the view for the selected state
     }
+    
+    //Depending on the score, calculate the color of the gauge
+    private func mixGreenAndRed(score: Int) -> UIColor {
+        let x = (Float(score)/100.00)/3
+        return UIColor(hue:CGFloat(x), saturation:0.7, brightness:1.0, alpha:1.0)
+    }
 }
 
 extension String {
@@ -293,8 +296,11 @@ extension String {
         }
     }
     
-    func replace(target: String, withString: String) -> String
-    {
+    func replace(target: String, withString: String) -> String {
         return self.replacingOccurrences(of: target, with: withString, options: NSString.CompareOptions.literal, range: nil)
+    }
+    
+    func extractDigits() -> String {
+        return self.replacingOccurrences(of: "\\D", with: "", options: .regularExpression, range: (self.startIndex)..<(self.endIndex))
     }
 }

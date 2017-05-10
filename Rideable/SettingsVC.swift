@@ -16,7 +16,6 @@ import UserNotifications
 
 class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
     
-    
     @IBOutlet weak var timeMeasurementSwitch: UISwitch!
     @IBOutlet weak var unitMeasurementSwitch: UISwitch!
     @IBOutlet weak var menuButton: UIBarButtonItem!
@@ -43,6 +42,7 @@ class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
         setupSliders(sliders: sliderArray)
         menuButton.target = revealViewController()
         menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
+        locationButton.setTitleColor(UIColor.darkGray, for: .disabled)
     }
     
     @IBAction func locationServiceSwitched(_ sender: UISwitch) {
@@ -60,6 +60,8 @@ class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        tableView.backgroundColor = UIColor(hex: "436e8c")
         
         //set switch values
         unitMeasurementSwitch.setOn(defaults.bool(forKey: Constants.Defaults.metricUnits), animated: true)
@@ -89,6 +91,7 @@ class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
         // Select Location Button
         locationButton.isEnabled = !locationServicesSwitch.isOn
         
+        
         if let displayLocation = defaults.string(forKey: Constants.Defaults.displayLocation) {
             locationButton.setTitle(displayLocation, for: .normal)
         }else{
@@ -105,7 +108,8 @@ class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
         for slider in sliders{
             slider.dataSource = self
             slider.popUpViewArrowLength = 0.1
-            slider.popUpViewColor = self.view.tintColor
+            slider.minimumTrackTintColor = UIColor(hex: "F17C38")
+            slider.popUpViewColor = UIColor(hex: "F17C38")
         }
     }
     
@@ -144,7 +148,7 @@ class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
         
         //Override the refresh status if the user has changed the fetch method manually
         if locationServicesSwitch.isOn != defaults.bool(forKey: Constants.Defaults.userPrefersLocationServices){
-            WeatherInfo.sharedInstance.allowUpdateOverride = true
+            WeatherInfo.sharedInstance.shouldAllowUpdateOverride = true
             
             //When the settings have been changed, we want to reanimate the gauges
             WeatherInfo.sharedInstance.loadTodayGauge = true
@@ -225,22 +229,19 @@ class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
         let locationPicker = LocationPicker()
         locationPicker.selectCompletion = { (pickedLocationItem) in
             self.parseFormattedAddress(location: pickedLocationItem)
-            WeatherInfo.sharedInstance.allowUpdateOverride = true
+            WeatherInfo.sharedInstance.shouldAllowUpdateOverride = true
             self.navigationController?.popToRootViewController(animated: true)
         }
         navigationController!.pushViewController(locationPicker, animated: true)
     }
     
-    
     //Gets City,State,Coords, and Zip from a location
     private func parseFormattedAddress(location: LocationItem){
-        
         // Latitude and Longitude
         if let latitude = location.coordinate?.latitude, let longitude = location.coordinate?.longitude {
             let latLon = "\(latitude),\(longitude)"
             defaults.set(latLon, forKey: Constants.Defaults.location)
         }
-        
         // Location name
         if let state = location.addressDictionary?["State"] as? NSString, let city = location.addressDictionary?["City"] as? NSString
         {
@@ -249,11 +250,17 @@ class SettingsVC: UITableViewController, ASValueTrackingSliderDataSource {
             defaults.set(cityState, forKey: Constants.Defaults.displayLocation)
         }
     }
-}
-
-extension String {
-    //Removes whitespace form string for use in URL
-    func removingWhitespaces() -> String {
-        return components(separatedBy: .whitespaces).joined()
+    
+    
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.backgroundColor = .clear
+    }
+    
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        let header = view as! UITableViewHeaderFooterView
+        header.textLabel?.textColor = UIColor.white
+        header.contentView.backgroundColor = UIColor.clear
+        header.backgroundColor = UIColor.orange
+        //header.tintColor = UIColor(hex: "b2907c")
     }
 }

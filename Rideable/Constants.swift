@@ -79,7 +79,7 @@ struct Constants {
             static let shareItems = ["Facebook", "Twitter"]
         }
         
-        struct Sections {
+        struct Sections { 
             static let sections = ["Weather", "Options", "Share"]
         }
     }

@@ -165,11 +165,13 @@ public class LocationRequest: Request {
 	///
 	/// - Returns: `true` if request is paused, `false` otherwise.
 	public func pause() {
+		self.stopTimeout()
 		Location.pause(self)
 	}
 	
 	/// Cancel request and remove it from queue.
 	public func cancel() {
+		self.stopTimeout()
 		Location.cancel(self)
 	}
 
@@ -228,6 +230,11 @@ public class LocationRequest: Request {
 	
 	@objc func timeoutTimerFired() {
 		self.dispatch(error: LocationError.timeout)
+		
+		// If continous location restart timer
+		if self.cancelOnError == false {
+			self.startTimeout()
+		}
 	}
 	
 	//MARK: Events from Location Dispatcher
@@ -257,7 +264,10 @@ public class LocationRequest: Request {
 		}
 		
 		// Remove request from queue if some conditions are verified
-		stopRequestIfNeeded()
+		if stopRequestIfNeeded() == false {
+			// Stop and restart timeout timer if needed
+			startTimeout()
+		}
 	}
 	
 	private func isValidMinimumDistance(_ loc: CLLocation) -> Bool {

@@ -28,11 +28,10 @@ class TomorrowVC: UITableViewController {
     //MARK: - Lifecycle Functions
     override func viewDidLoad() {
         super.viewDidLoad()
-        setStaticBackground() 
+        configureNavigationBar()
+        setStaticBackground()
         setupFetchedResultsController()
-        menuButton.target = revealViewController()
-        menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
-        self.activityIndicatorShowing(showing: WeatherInfo.sharedInstance.isCurrentlyLoading, view: self.view, tableView: self.tableView)
+        activityIndicatorShowing(showing: WeatherInfo.sharedInstance.isCurrentlyLoading, view: self.view, tableView: self.tableView)
         setupNotifications() //Add Observer to listen for data completion notifications.
     }
     
@@ -49,15 +48,11 @@ class TomorrowVC: UITableViewController {
     
     //MARK: - IBActions
     @IBAction func refreshInfo(_ sender: Any) {
-        guard currentReachabilityStatus != .notReachable else{
-            displayMessage(message: "Check network connection and try again", view: view)
-            return
-        }
         activityIndicatorShowing(showing: true, view: self.view, tableView: self.tableView)
         WeatherInfo.sharedInstance.messageShown = false
         WeatherInfo.sharedInstance.updateWeatherInfo()
-        self.tableView.reloadData()
-    }
+        tableView.reloadData()
+    } 
     
     //MARK: - Class Functions
     private func setStaticBackground(){
@@ -72,6 +67,13 @@ class TomorrowVC: UITableViewController {
         if let condition = self.FRC.fetchedObjects?.first?.icon {
             self.setBackgroundImage(day: Constants.TypeOfDay.TOMORROW, tableView: tableView, condition: condition)
         }
+    }
+    
+    private func configureNavigationBar(){
+        navigationController?.navigationBar.makeTransparent()
+        navigationController?.hidesBarsOnSwipe = true
+        menuButton.target = revealViewController()
+        menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
     }
     
     private func setupNotifications(){

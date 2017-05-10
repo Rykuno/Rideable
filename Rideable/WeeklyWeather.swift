@@ -38,7 +38,6 @@ struct WeeklyWeather {
                 week.windDegrees = Int16(forecast["avewind"]["degrees"].intValue)
                 week.humidity = Int16(forecast["avehumidity"].intValue)
                 week.id = Int16(index)
-
                 weekArray.append(week)
             }
             return weekArray

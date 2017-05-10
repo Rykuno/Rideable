@@ -24,7 +24,6 @@ class WeekCell: UITableViewCell {
     @IBOutlet weak var humidity: UILabel!
     @IBOutlet weak var wind: UILabel!
     @IBOutlet weak var windIcon: UIImageView!
-    
     private let defaults = UserDefaults.standard
     private let isMetric: Bool = UserDefaults.standard.bool(forKey: Constants.Defaults.metricUnits)
     private var week: Week!

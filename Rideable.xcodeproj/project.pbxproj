@@ -15,9 +15,10 @@
 		FC0F5E5A1E9836410002F315 /* WeekVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC0F5E591E9836410002F315 /* WeekVC.swift */; };
 		FC1C7B1D1E7060B600DD0A66 /* TodayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1C7B1B1E7060B600DD0A66 /* TodayCell.swift */; };
 		FC1C7B1E1E7060B600DD0A66 /* TodayCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC1C7B1C1E7060B600DD0A66 /* TodayCell.xib */; };
+		FC3345B11EC1077A00ECCFDF /* RideableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3345B01EC1077A00ECCFDF /* RideableTests.swift */; };
+		FC3345B31EC403E100ECCFDF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FC3345B21EC403E100ECCFDF /* Assets.xcassets */; };
 		FC34F38D1E6A8A2E00EE3DFD /* WeatherParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC34F38C1E6A8A2E00EE3DFD /* WeatherParser.swift */; };
 		FC34F3901E6C8D3A00EE3DFD /* IgnoreConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC34F38F1E6C8D3A00EE3DFD /* IgnoreConstants.swift */; };
-		FC34F3921E6CAF7900EE3DFD /* TodayVCTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC34F3911E6CAF7900EE3DFD /* TodayVCTest.swift */; };
 		FC34F3F41E6CF32700EE3DFD /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC34F3F31E6CF32700EE3DFD /* CoreDataStack.swift */; };
 		FC34F3F61E6CF48C00EE3DFD /* SWVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC34F3F51E6CF48C00EE3DFD /* SWVC.swift */; };
 		FC3C62211E6901FF00E37D49 /* TodayVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3C62201E6901FF00E37D49 /* TodayVC.swift */; };
@@ -28,7 +29,6 @@
 		FC3D12241E64A85F0050B401 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3D12231E64A85F0050B401 /* AppDelegate.swift */; };
 		FC3D12291E64A85F0050B401 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC3D12271E64A85F0050B401 /* Main.storyboard */; };
 		FC3D122C1E64A85F0050B401 /* Rideable.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FC3D122A1E64A85F0050B401 /* Rideable.xcdatamodeld */; };
-		FC3D122E1E64A85F0050B401 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FC3D122D1E64A85F0050B401 /* Assets.xcassets */; };
 		FC3D12311E64A85F0050B401 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC3D122F1E64A85F0050B401 /* LaunchScreen.storyboard */; };
 		FC3D124B1E64A9180050B401 /* WeatherClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3D124A1E64A9180050B401 /* WeatherClient.swift */; };
 		FC3D124D1E64A93E0050B401 /* WeatherInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3D124C1E64A93E0050B401 /* WeatherInfo.swift */; };
@@ -60,9 +60,11 @@
 		FC0F5E591E9836410002F315 /* WeekVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeekVC.swift; sourceTree = "<group>"; };
 		FC1C7B1B1E7060B600DD0A66 /* TodayCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodayCell.swift; sourceTree = "<group>"; };
 		FC1C7B1C1E7060B600DD0A66 /* TodayCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TodayCell.xib; sourceTree = "<group>"; };
+		FC3345AF1EC1077A00ECCFDF /* RideableTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RideableTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		FC3345B01EC1077A00ECCFDF /* RideableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RideableTests.swift; sourceTree = "<group>"; };
+		FC3345B21EC403E100ECCFDF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FC34F38C1E6A8A2E00EE3DFD /* WeatherParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherParser.swift; sourceTree = "<group>"; };
 		FC34F38F1E6C8D3A00EE3DFD /* IgnoreConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IgnoreConstants.swift; sourceTree = "<group>"; };
-		FC34F3911E6CAF7900EE3DFD /* TodayVCTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodayVCTest.swift; sourceTree = "<group>"; };
 		FC34F3F31E6CF32700EE3DFD /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		FC34F3F51E6CF48C00EE3DFD /* SWVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SWVC.swift; sourceTree = "<group>"; };
 		FC3C62201E6901FF00E37D49 /* TodayVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodayVC.swift; sourceTree = "<group>"; };
@@ -75,7 +77,6 @@
 		FC3D12231E64A85F0050B401 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FC3D12281E64A85F0050B401 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FC3D122B1E64A85F0050B401 /* Rideable.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Rideable.xcdatamodel; sourceTree = "<group>"; };
-		FC3D122D1E64A85F0050B401 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FC3D12301E64A85F0050B401 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FC3D12321E64A85F0050B401 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FC3D12371E64A85F0050B401 /* RideableTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RideableTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -172,7 +173,8 @@
 			isa = PBXGroup;
 			children = (
 				FC3D123D1E64A85F0050B401 /* Info.plist */,
-				FC34F3911E6CAF7900EE3DFD /* TodayVCTest.swift */,
+				FC3345B01EC1077A00ECCFDF /* RideableTests.swift */,
+				FC3345AF1EC1077A00ECCFDF /* RideableTests-Bridging-Header.h */,
 			);
 			path = RideableTests;
 			sourceTree = "<group>";
@@ -216,10 +218,10 @@
 			children = (
 				FC3C62261E6A1CE900E37D49 /* VCExtras.swift */,
 				FC3D125B1E65F43C0050B401 /* Constants.swift */,
+				FC3345B21EC403E100ECCFDF /* Assets.xcassets */,
 				FC34F38F1E6C8D3A00EE3DFD /* IgnoreConstants.swift */,
 				FC3D12231E64A85F0050B401 /* AppDelegate.swift */,
 				FC3D12271E64A85F0050B401 /* Main.storyboard */,
-				FC3D122D1E64A85F0050B401 /* Assets.xcassets */,
 				FC3D122F1E64A85F0050B401 /* LaunchScreen.storyboard */,
 				FC3D12321E64A85F0050B401 /* Info.plist */,
 			);
@@ -299,6 +301,7 @@
 					FC3D12361E64A85F0050B401 = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = L594ZX5N55;
+						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 						TestTargetID = FC3D121F1E64A85F0050B401;
 					};
@@ -329,8 +332,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				FC3D12311E64A85F0050B401 /* LaunchScreen.storyboard in Resources */,
-				FC3D122E1E64A85F0050B401 /* Assets.xcassets in Resources */,
 				FC3D12291E64A85F0050B401 /* Main.storyboard in Resources */,
+				FC3345B31EC403E100ECCFDF /* Assets.xcassets in Resources */,
 				FC1C7B1E1E7060B600DD0A66 /* TodayCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -470,7 +473,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FC34F3921E6CAF7900EE3DFD /* TodayVCTest.swift in Sources */,
+				FC3345B11EC1077A00ECCFDF /* RideableTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -544,7 +547,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -587,7 +590,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -600,12 +603,14 @@
 			baseConfigurationReference = B9286D39414142F898371EBF /* Pods-Rideable.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = L594ZX5N55;
 				INFOPLIST_FILE = Rideable/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.rykuno.Rideable;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -616,12 +621,14 @@
 			baseConfigurationReference = 6CE2862EAA36A8A180C4BFAE /* Pods-Rideable.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = L594ZX5N55;
 				INFOPLIST_FILE = Rideable/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.rykuno.Rideable;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -633,11 +640,14 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = L594ZX5N55;
 				INFOPLIST_FILE = RideableTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.rykuno.RideableTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "RideableTests/RideableTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Rideable.app/Rideable";
 			};
@@ -649,11 +659,13 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = L594ZX5N55;
 				INFOPLIST_FILE = RideableTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.rykuno.RideableTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "RideableTests/RideableTests-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Rideable.app/Rideable";
 			};

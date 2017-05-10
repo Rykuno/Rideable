@@ -54,9 +54,9 @@ extension UITableViewController{
     
     func checkForRefreshOverrideStatus(view: UIView, tableView: UITableView){
         if currentReachabilityStatus == .notReachable{
-            WeatherInfo.sharedInstance.allowUpdateOverride = true
-        }
-        if WeatherInfo.sharedInstance.allowUpdateOverride {
+            WeatherInfo.sharedInstance.shouldAllowUpdateOverride = true
+        } 
+        if WeatherInfo.sharedInstance.shouldAllowUpdateOverride {
             activityIndicatorShowing(showing: true, view: view, tableView: tableView)
             WeatherInfo.sharedInstance.updateWeatherInfo()
         }
@@ -67,6 +67,7 @@ extension UITableViewController{
         switch message {
         case Constants.Notifications.Messages.alreadyUpdated, Constants.Notifications.Messages.settingsUpdated:
             view.showToast(message, position: .bottom, popTime: 1.0, dismissOnTap: false)
+            WeatherInfo.sharedInstance.messageShown = true //maybe remove this?
             break;
         default:
             if WeatherInfo.sharedInstance.messageShown == false {
@@ -142,6 +143,18 @@ extension UITableViewController{
     }
 }
 
+extension UINavigationBar {
+    
+    func makeTransparent(){
+        let visualEffectView   = UIVisualEffectView(effect: UIBlurEffect(style: .light))
+        visualEffectView.frame =  (self.bounds.insetBy(dx: 0, dy: -10).offsetBy(dx: 0, dy: -10))
+        self.isTranslucent = true
+        self.setBackgroundImage(UIImage(), for: .default)
+        self.addSubview(visualEffectView)
+        self.sendSubview(toBack: visualEffectView)
+    }
+}
+
 //MARK: - Network Status
 import SystemConfiguration
 
@@ -193,5 +206,12 @@ extension NSObject:Utilities{
         else {
             return .notReachable
         }
+    }
+}
+
+extension String {
+    //Removes whitespace form string for use in URL
+    func removingWhitespaces() -> String {
+        return components(separatedBy: .whitespaces).joined()
     }
 }

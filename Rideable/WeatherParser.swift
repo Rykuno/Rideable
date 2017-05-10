@@ -14,7 +14,7 @@ extension WeatherClient {
     
     // MARK: Parsing
     // Here we parse the Today, Tomorrow, and 10Day forecasts.
-    func parseJson(json: JSON, completionHandler: @escaping completionHandler){
+    func parseJson(json: JSON, completionHandler: @escaping requestCompletionHandler){
         let stack = (UIApplication.shared.delegate as! AppDelegate).stack
         
         //Parse Todays Weather
@@ -23,7 +23,7 @@ extension WeatherClient {
                 completionHandler(false, error)
                 return
             }
-        }
+        } 
         
         //Parse Tomorrows Weather
         parseTomorrow(json, stack) { (success, error) in
@@ -53,7 +53,7 @@ extension WeatherClient {
      
      NOTE: Today and Tomorrow use the same entity due to similarities and are
      differentiated through the type attribute. */
-    private func parseToday(_ json: JSON, _ stack: CoreDataStack, completionHandler: @escaping completionHandler) {
+    private func parseToday(_ json: JSON, _ stack: CoreDataStack, completionHandler: @escaping requestCompletionHandler) {
         stack.performAndWaitBackgroundBatchOperation { (moc) in
             let request: NSFetchRequest<Day> = Day.fetchRequest()
             request.predicate = NSPredicate(format: "type == %@", Constants.TypeOfDay.TODAY)
@@ -77,7 +77,7 @@ extension WeatherClient {
      
      NOTE: Today and Tomorrow use the same entity due to similarities and are
      differentiated through the type attribute. */
-    private func parseTomorrow(_ json: JSON, _ stack: CoreDataStack, completionHandler: @escaping completionHandler){
+    private func parseTomorrow(_ json: JSON, _ stack: CoreDataStack, completionHandler: @escaping requestCompletionHandler){
         stack.performAndWaitBackgroundBatchOperation { (moc) in
             let request: NSFetchRequest<Day> = Day.fetchRequest()
             request.predicate = NSPredicate(format: "type == %@", Constants.TypeOfDay.TOMORROW)
@@ -100,7 +100,7 @@ extension WeatherClient {
      can work
      
      NOTE: Week is its own entity without a relation to hours. */
-    private func parseWeek(_ json: JSON, _ stack: CoreDataStack, completionHandler: @escaping completionHandler){
+    private func parseWeek(_ json: JSON, _ stack: CoreDataStack, completionHandler: @escaping requestCompletionHandler){
         stack.performAndWaitBackgroundBatchOperation { (moc) in
             let request: NSFetchRequest<Week> = Week.fetchRequest()
             
