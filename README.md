@@ -2,6 +2,8 @@
 
 iOS application to provide riders with customizable weather information relevant to their personal preference and location.
 
+## Demo
+![demo](rideable.gif)
 
 ## Instructions
 * Place your personal API key for [WundergroundWeather] within a file named `IgnoreConstants.swift`.
